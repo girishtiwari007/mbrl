@@ -89,7 +89,7 @@ tr[data-pu].tot:hover td{background:inherit!important}
 
 table{width:100%;border-collapse:collapse;font-size:11px}
 thead tr{background:var(--navy);color:#fff}
-thead th{padding:7px 9px;text-align:right;font-size:9px;font-weight:600;letter-spacing:.3px;white-space:nowrap;border:none;position:sticky;top:0;z-index:10;background:var(--navy)}
+thead th{padding:7px 9px;text-align:right;font-size:9px;font-weight:600;letter-spacing:.3px;border:none;position:sticky;top:0;z-index:10;background:var(--navy)}
 thead th.la{text-align:left}
 thead th.sub{background:var(--steel);border-bottom:2px solid var(--gold);font-size:8px}
 tbody tr{border-bottom:1px solid #EDF1F6}
@@ -100,7 +100,7 @@ tbody tr.co-row{background:var(--co)}
 tbody tr.pl-row{background:var(--pl)}
 tbody tr.neg-row{background:#FFE0DF}
 tbody tr:hover{filter:brightness(.97)}
-td{padding:6px 9px;white-space:nowrap}
+td{padding:6px 9px;}
 td.n{text-align:right;font-variant-numeric:tabular-nums}
 td.puc{font-weight:700;color:var(--steel)}
 td.desc{max-width:180px;overflow:hidden;text-overflow:ellipsis;font-weight:600}
@@ -135,6 +135,80 @@ td.neg-val{color:#CC0000;font-weight:600}
 .rec-banner p{font-size:10px;color:#FFB8B8;margin-top:2px}
 .rec-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;padding:0 20px 10px}
 .rec-card{background:var(--white);border-radius:var(--r);padding:12px 14px;box-shadow:var(--sh);border-top:3px solid #CC0000}
+/* ── RESPONSIVE TABLE ──────────────────────────────────────── */
+/* Remove global nowrap — let browser wrap where needed */
+td { white-space:normal; word-break:break-word; }
+/* Numbers and codes stay on one line */
+td.n, td.puc, .badge, .mp { white-space:nowrap; }
+/* Description column wraps nicely */
+td.desc { white-space:normal; word-break:break-word; min-width:120px; max-width:200px; line-height:1.4; }
+/* thead stays compact */
+thead th { white-space:normal; word-break:break-word; line-height:1.3; min-width:60px; vertical-align:bottom; }
+thead th.la { min-width:80px; }
+/* twrap scrolls only if truly needed (very small screens) */
+.twrap { overflow-x:auto; }
+/* On wide screens table fills width */
+@media (min-width:1200px) {
+  .twrap table { width:100%; }
+  td.desc { max-width:220px; }
+}
+/* Medium screens */
+@media (max-width:1200px) and (min-width:768px) {
+  td.desc { max-width:150px; }
+  thead th { font-size:7px; padding:5px 6px; }
+  td { padding:5px 6px; font-size:11px; }
+}
+/* Small screens — stack-friendly */
+@media (max-width:768px) {
+  .cards { grid-template-columns:1fr 1fr; }
+  .twrap { margin:8px 8px 16px; }
+  .tabs, .jun-sec, .note-box, .fbar { margin-left:8px; margin-right:8px; }
+  thead th { font-size:7px; padding:4px 5px; }
+  td { padding:4px 5px; font-size:10px; }
+  td.desc { max-width:110px; font-size:10px; }
+  .hdr { height:auto; padding:10px 14px; flex-wrap:wrap; }
+  .ht h1 { font-size:11px; }
+  .hdr-r { flex-wrap:wrap; gap:6px; }
+}
+
+/* ── LOGIN OVERLAY ──────────────────────────────────────────── */
+#loginOverlay{
+  position:fixed;inset:0;z-index:99999;
+  background:linear-gradient(135deg,#0A1628 0%,#1A3A6A 60%,#0F2444 100%);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Segoe UI',Arial,sans-serif;
+}
+#loginOverlay.hidden{display:none}
+.login-box{
+  background:#fff;border-radius:12px;padding:40px 48px;
+  box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 0 1px rgba(201,168,76,.3);
+  text-align:center;max-width:400px;width:92%;
+}
+.login-emblem{font-size:48px;margin-bottom:10px}
+.login-title{font-size:17px;font-weight:800;color:#0A1628;letter-spacing:.4px}
+.login-sub{font-size:10px;color:#607080;margin:4px 0 24px;line-height:1.5}
+.login-field{margin-bottom:14px;text-align:left}
+.login-field label{display:block;font-size:10px;font-weight:700;color:#4A6A90;margin-bottom:4px;text-transform:uppercase;letter-spacing:.4px}
+.login-inp-wrap{position:relative}
+.login-inp{
+  width:100%;background:#F5F8FC;border:1.5px solid #D0DAEC;
+  color:#0A1628;padding:10px 38px 10px 12px;border-radius:6px;
+  font-size:13px;outline:none;transition:border .2s;
+}
+.login-inp:focus{border-color:#1A6FD9;background:#fff}
+.login-eye{position:absolute;right:10px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:14px;color:#8AAAC8;user-select:none}
+.login-btn{
+  width:100%;background:linear-gradient(135deg,#0A1628 0%,#1A3A6A 100%);
+  color:#fff;border:none;padding:12px;border-radius:6px;
+  font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.5px;
+  margin-top:4px;transition:all .2s;
+  box-shadow:0 4px 14px rgba(10,22,40,.3);
+}
+.login-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(10,22,40,.4)}
+.login-err{color:#CC0000;font-size:10px;margin-top:8px;min-height:14px;font-weight:600}
+.login-badge{display:inline-block;background:linear-gradient(135deg,#C9A84C,#F4C842);
+  color:#0A1628;font-size:9px;font-weight:700;padding:2px 8px;border-radius:10px;margin-bottom:10px}
+
 </style>
 <script>/* SheetJS v0.18.5 - embedded for offline/GitHub Pages use */
 /*! xlsx.js (C) 2013-present SheetJS -- http://sheetjs.com */
@@ -163,6 +237,35 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
 </script>
 </head>
 <body>
+
+<!-- ══ LOGIN OVERLAY ══════════════════════════════════════════ -->
+<div id="loginOverlay">
+  <div class="login-box">
+    <div class="login-emblem">🚂</div>
+    <div class="login-badge">NORTHERN RAILWAY</div>
+    <div class="login-title">REVENUE LIABILITY PORTAL</div>
+    <div class="login-sub">Moradabad Division &nbsp;·&nbsp; Financial Authority Dashboard<br>Please sign in to continue</div>
+    <div class="login-field">
+      <label>User ID</label>
+      <div class="login-inp-wrap">
+        <input class="login-inp" type="text" id="loginUser" placeholder="Enter User ID" autocomplete="off"
+          onkeydown="if(event.key==='Enter')document.getElementById('loginPwd').focus()">
+      </div>
+    </div>
+    <div class="login-field">
+      <label>Password</label>
+      <div class="login-inp-wrap">
+        <input class="login-inp" type="password" id="loginPwd" placeholder="Enter Password"
+          onkeydown="if(event.key==='Enter')doLogin()">
+        <span class="login-eye" onclick="var i=document.getElementById('loginPwd');i.type=i.type==='password'?'text':'password'">👁</span>
+      </div>
+    </div>
+    <button class="login-btn" onclick="doLogin()">SIGN IN &nbsp;→</button>
+    <div class="login-err" id="loginErr"></div>
+    <div style="font-size:9px;color:#A0B8D0;margin-top:16px">For Official Use Only &nbsp;·&nbsp; FY 2026-27</div>
+  </div>
+</div>
+
 
 <!-- HEADER -->
 <div class="hdr">
@@ -203,6 +306,7 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
     <option value="Planned">Planned</option>
   </select>
   <span class="rg-note" id="rgNote">⚠ RG not active — using BG_ISL</span>
+  <span style="background:#1A7A4A;color:#fff;font-size:9px;padding:2px 8px;border-radius:4px;font-weight:700">📅 Current Month: <span id="curMonBadge">JUN 2026</span></span>
   <span class="live-clock" id="liveClock"></span>
   <button class="dl-btn" onclick="downloadExcel()">⬇ Download Excel</button>
 </div>
@@ -221,13 +325,17 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
 </div>
 
 <!-- NOTE -->
-<div class="note-box">
-  ℹ️ &nbsp;
-  <span>
-    <strong>Figures:</strong> Stored in ₹ '000s — e.g. 6,687,224 means ₹ 6,687,224,000 (₹ 668.72 Cr).
-    &nbsp;|&nbsp; <strong>Budget:</strong> BG_ISL active (RG operative from 1st week Jan 2027; once available, RG replaces BG_ISL).
-    &nbsp;|&nbsp; <strong>Liability Formula:</strong> APR Actuals + MAY Actuals + JUN Committed (till date) + JUN Remaining = Total Jun Liability → Balance ÷ remaining months (JUL–MAR) = Projected per month.
-    &nbsp;|&nbsp; FY runs APR → MAR (12 months).
+<div class="note-box" style="background:#FFFBE6;border:1.5px solid #F4C842;border-radius:6px;padding:10px 14px;margin:0 20px 10px;display:flex;align-items:flex-start;gap:8px">
+  <span style="font-size:16px;flex-shrink:0">⚠️</span>
+  <span style="font-size:10px;color:#5A3E00;font-weight:700;line-height:1.7">
+    <span style="background:#F4C842;padding:1px 5px;border-radius:3px;font-weight:800">Figures:</span> Stored in ₹ '000s — e.g. 6,687,224 means ₹ 6,687,224,000 (₹ 668.72 Cr).
+    &nbsp;|&nbsp;
+    <span style="background:#F4C842;padding:1px 5px;border-radius:3px;font-weight:800">Budget:</span> BG_ISL active (RG operative from 1st week Jan 2027; once available, RG replaces BG_ISL automatically).
+    &nbsp;|&nbsp;
+    <span style="background:#F4C842;padding:1px 5px;border-radius:3px;font-weight:800">Liability Formula:</span> APR Actuals + MAY Actuals + <span id="noteMonLabel">JUN</span> Committed (till date) + <span id="noteMonLabel2">JUN</span> Remaining = Total <span id="noteMonLabel3">JUN</span> Liability → Balance ÷ remaining months = Projected per month.
+    &nbsp;|&nbsp;
+    <span style="background:#F4C842;padding:1px 5px;border-radius:3px;font-weight:800">FY runs APR → MAR (12 months).</span>
+    Current month auto-detected from system date.
   </span>
 </div>
 
@@ -384,6 +492,38 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
 </div>
 
 <script>
+// ── LOGIN SYSTEM ─────────────────────────────────────────────
+const USERS = {
+  'srdfm':  'srdfm@2627',
+  'itcentre':  'itcentre@2627',
+  'ADMIN':   'Admin@2627',
+};
+
+function doLogin() {
+  const user = document.getElementById('loginUser').value.trim().toUpperCase();
+  const pwd  = document.getElementById('loginPwd').value;
+  const err  = document.getElementById('loginErr');
+  if (!USERS[user]) {
+    err.textContent = '❌ User ID not found. Contact administrator.';
+    setTimeout(()=>err.textContent='', 3000);
+    return;
+  }
+  if (USERS[user] !== pwd) {
+    err.textContent = '❌ Incorrect password. Please try again.';
+    document.getElementById('loginPwd').value = '';
+    setTimeout(()=>err.textContent='', 3000);
+    return;
+  }
+  document.getElementById('loginOverlay').classList.add('hidden');
+  // Store session (tab-scoped only)
+  sessionStorage.setItem('rlp_auth', user);
+}
+
+// Auto-login if session exists (tab refresh)
+if (sessionStorage.getItem('rlp_auth')) {
+  document.getElementById('loginOverlay').classList.add('hidden');
+}
+
 // ═══════════════════════════════════════════════════════
 // MASTER DATA — from uploaded files (figures in ₹ '000s)
 // ═══════════════════════════════════════════════════════
@@ -966,31 +1106,400 @@ function switchTab(name) {
 // ═══════════════════════════════════════════════
 function downloadExcel() {
   const wb = XLSX.utils.book_new();
-  const liabData = [['PU','Description','PU Type','Liability','Budget(₹000s)','Budget(₹Cr)','APR Actual','MAY Actual','JUN Committed','JUN Remaining','JUN Total','JUN%Done','Total Committed','Balance Budget','Proj/Month','%Utilised','Status']];
-  PU_META.filter(p=>!p.isNeg).forEach(pu => {
-    const c=compute(pu.code); const md=MONTH[pu.code]||{};
-    const pctStr = c.utilisedFlag==='no-budget'?'No Budget':c.utilisedFlag==='none'?'Nil':c.utilisedPct!=null?c.utilisedPct.toFixed(1)+'%':'–';
-    liabData.push([pu.code,pu.desc,pu.puType,pu.liab,c.budget,(c.budget*1000/10000000).toFixed(2),
-      md.apr||0,md.may||0,c.curCommitted,c.curRemaining,c.curMonthTotal,c.curDonePct.toFixed(1)+'%',
-      c.totalCommitted,c.balanceBudget,Math.round(c.projPerMonth),pctStr,
-      c.utilisedFlag==='over'?'OVER BUDGET':c.utilisedFlag==='no-budget'?'NO BUDGET':'OK']);
+  const HDR_TITLE = 'REVENUE LIABILITY PORTAL — MORADABAD DIVISION';
+  const HDR_SUB   = "Northern Railway  |  Financial Authority Dashboard  |  All figures in ₹ Thousands ('000s) — multiply by 1,000 for actual rupees";
+  const {cur} = getMonthStatus();
+
+  // ── Style helpers ─────────────────────────────────────────
+  function mkStyle(opts={}) {
+    return {
+      font:   { name:'Calibri', sz: opts.sz||10, bold:!!opts.bold, color:{rgb: opts.fc||'000000'} },
+      fill:   opts.bg ? {patternType:'solid', fgColor:{rgb:opts.bg}} : undefined,
+      border: opts.border ? {
+        top:{style:'thin',color:{rgb:'B8C8E0'}}, bottom:{style:'thin',color:{rgb:'B8C8E0'}},
+        left:{style:'thin',color:{rgb:'B8C8E0'}}, right:{style:'thin',color:{rgb:'B8C8E0'}}
+      } : undefined,
+      alignment:{ horizontal:opts.h||'left', vertical:'center', wrapText:!!opts.wrap }
+    };
+  }
+
+  function addSheet(wb, sheetName, titleRow, subRow, headers, dataRows, colWidths) {
+    const aoa = [];
+    // Title rows
+    aoa.push([titleRow]);
+    aoa.push([subRow]);
+    aoa.push([]); // blank spacer
+    aoa.push(headers);
+    dataRows.forEach(r => aoa.push(r));
+
+    const ws = XLSX.utils.aoa_to_sheet(aoa);
+    ws['!cols'] = colWidths.map(w => ({wch:w}));
+
+    // Apply styles if XLSX supports it (xlsx-style or sheetjs pro — graceful fallback)
+    try {
+      const range = XLSX.utils.decode_range(ws['!ref']);
+      for (let R=range.s.r; R<=range.e.r; R++) {
+        for (let C=range.s.c; C<=range.e.c; C++) {
+          const addr = XLSX.utils.encode_cell({r:R,c:C});
+          if (!ws[addr]) ws[addr]={v:'',t:'s'};
+          if (R===0) ws[addr].s = mkStyle({bold:true,sz:13,bg:'0A1628',fc:'C9A84C',h:'center',wrap:true});
+          else if (R===1) ws[addr].s = mkStyle({bold:true,sz:9,bg:'1C3A5E',fc:'B8D0F0',h:'center',wrap:true});
+          else if (R===3) ws[addr].s = mkStyle({bold:true,sz:9,bg:'1A3A6A',fc:'FFFFFF',h:'center'});
+          else {
+            // Data rows — color by row type
+            const rowData = dataRows[R-4];
+            let bg = 'FFFFFF';
+            if (rowData) {
+              const label = String(rowData[0]||'');
+              if (label==='98') bg='FFE8E8';
+              else if (rowData._cs) bg='E8FAF0';
+              else if (rowData._co) bg='FFF8E8';
+              else if (rowData._tot) bg='E8EFF8';
+            }
+            ws[addr].s = mkStyle({bg, border:true, h: C>1?'right':'left'});
+          }
+        }
+      }
+      // Merge title rows across all columns
+      const maxC = headers.length - 1;
+      ws['!merges'] = [
+        {s:{r:0,c:0},e:{r:0,c:maxC}},
+        {s:{r:1,c:0},e:{r:1,c:maxC}},
+      ];
+      ws['!rows'] = [{hpt:22},{hpt:16},{hpt:6},{hpt:18}];
+    } catch(e) { /* style not supported — data still exports fine */ }
+
+    XLSX.utils.book_append_sheet(wb, ws, sheetName);
+  }
+
+  // ── Sheet 1: LIABILITY ────────────────────────────────────
+  const liabHdrs = ['PU','Description','PU Type','Liability Type',
+    'Budget (₹\'000s)','Budget (₹ Cr)',
+    'APR Actual (₹\'000s)','APR (₹ Cr)',
+    'MAY Actual (₹\'000s)','MAY (₹ Cr)',
+    cur.label+' Committed',''+cur.label+' Remaining',''+cur.label+' Total',''+cur.label+' % Done',
+    'Total Committed (₹\'000s)','Balance Budget (₹\'000s)','Proj/Month (₹\'000s)',
+    '% Utilised','Status'];
+  const liabRows=[];
+  PU_META.filter(p=>!p.isNeg).forEach(pu=>{
+    const cv=compute(pu.code); const md=MONTH[pu.code]||{};
+    const apr=md.apr||0, may=md.may||0;
+    const pctStr=cv.utilisedFlag==='no-budget'?'No Budget — Excess Spend':
+                 cv.utilisedFlag==='none'?'Nil (no activity)':
+                 cv.utilisedPct!=null?cv.utilisedPct.toFixed(1)+'%':'–';
+    const status=cv.utilisedFlag==='over'?'OVER BUDGET':
+                 cv.utilisedFlag==='no-budget'?'NO BUDGET ALLOCATED':
+                 cv.utilisedPct>85?'Near Exhausted':cv.utilisedPct>60?'Watch':'On Track';
+    const row=[pu.code,pu.desc,pu.puType,pu.liab,
+      cv.budget, parseFloat((cv.budget*1000/10000000).toFixed(2)),
+      apr, parseFloat((apr*1000/10000000).toFixed(2)),
+      may, parseFloat((may*1000/10000000).toFixed(2)),
+      cv.curCommitted,cv.curRemaining,cv.curMonthTotal,
+      cv.curDonePct!=null?parseFloat(cv.curDonePct.toFixed(1)):0,
+      cv.totalCommitted,cv.balanceBudget,Math.round(cv.projPerMonth),
+      pctStr, status];
+    row._cs = (pu.puType==='Staff PU' && pu.liab==='Committed');
+    row._co = (!row._cs && pu.liab==='Committed');
+    liabRows.push(row);
   });
-  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(liabData), 'Liability');
-  const mwData=[['PU','Description','APR','MAY','JUN Committed','JUN Remaining','JUN Total','JUL','AUG','SEP','OCT','NOV','DEC','JAN','FEB','MAR','Budget','Committed','Balance','%Used']];
-  PU_META.filter(p=>!p.isNeg).forEach(pu => {
-    const c=compute(pu.code); const md=MONTH[pu.code]||{};
-    const proj=Math.round(c.projPerMonth);
-    mwData.push([pu.code,pu.desc,md.apr||0,md.may||0,c.curCommitted,c.curRemaining,c.curMonthTotal,proj,proj,proj,proj,proj,proj,proj,proj,proj,c.budget,c.totalCommitted,c.balanceBudget,c.utilisedPct!=null?c.utilisedPct.toFixed(1)+'%':'N/A']);
+  // Total row
+  const lt={};
+  liabRows.forEach(r=>{ [4,6,8,10,11,12,14,15,16].forEach(i=>lt[i]=(lt[i]||0)+(r[i]||0)); });
+  const totRow=['','GRAND TOTAL (excl. Recoveries)','','',
+    lt[4],parseFloat((lt[4]*1000/10000000).toFixed(2)),
+    lt[6],parseFloat((lt[6]*1000/10000000).toFixed(2)),
+    lt[8],parseFloat((lt[8]*1000/10000000).toFixed(2)),
+    lt[10],lt[11],lt[12],'',lt[14],lt[15],lt[16],
+    lt[4]?parseFloat((lt[14]/lt[4]*100).toFixed(1))+'%':'–',''];
+  totRow._tot=true; liabRows.push(totRow);
+  addSheet(wb,'Revenue Liability',HDR_TITLE,HDR_SUB,liabHdrs,liabRows,
+    [6,24,14,12,14,10,14,10,14,10,14,14,14,10,15,14,14,10,16]);
+
+  // ── Sheet 2: MONTH WISE ───────────────────────────────────
+  const mwHdrs=['PU','Description',
+    'APR Actual','MAY Actual',
+    cur.label+' Committed',cur.label+' Remaining',cur.label+' Total',
+    'JUL Proj','AUG Proj','SEP Proj','OCT Proj','NOV Proj','DEC Proj','JAN Proj','FEB Proj','MAR Proj',
+    'Budget (₹\'000s)','Total Committed','Balance','% Used'];
+  const mwRows=[];
+  PU_META.filter(p=>!p.isNeg).forEach(pu=>{
+    const cv=compute(pu.code); const md=MONTH[pu.code]||{};
+    const proj=Math.round(cv.projPerMonth);
+    const pct=cv.utilisedFlag==='no-budget'?'No Budget':
+               cv.utilisedPct!=null?parseFloat(cv.utilisedPct.toFixed(1))+'%':'Nil';
+    const row=[pu.code,pu.desc,md.apr||0,md.may||0,
+      cv.curCommitted,cv.curRemaining,cv.curMonthTotal,
+      proj,proj,proj,proj,proj,proj,proj,proj,proj,
+      cv.budget,cv.totalCommitted,cv.balanceBudget,pct];
+    row._cs=(pu.puType==='Staff PU'&&pu.liab==='Committed');
+    row._co=(!row._cs&&pu.liab==='Committed');
+    mwRows.push(row);
   });
-  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(mwData), 'Month Wise');
-  const c98=compute('98'); const md98=MONTH['98']||{};
-  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([
-    ['PU','Description','Budget(₹000s)','Budget(₹Cr)','APR','MAY','JUN Committed','JUN Remaining','Total Committed','Balance','Proj/Month','%Used'],
-    ['98','Credit or Recoveries',c98.budget,(c98.budget*1000/10000000).toFixed(2),md98.apr||0,md98.may||0,c98.curCommitted,c98.curRemaining,c98.totalCommitted,c98.balanceBudget,Math.round(c98.projPerMonth),c98.utilisedPct!=null?c98.utilisedPct.toFixed(1)+'%':'–']
-  ]), 'Recoveries');
-  XLSX.writeFile(wb, `Revenue_Liability_MBD_${new Date().toISOString().slice(0,10)}.xlsx`);
+  // Total
+  const mt={};
+  mwRows.forEach(r=>{ [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18].forEach(i=>mt[i]=(mt[i]||0)+(+r[i]||0)); });
+  const mwTot=['','GRAND TOTAL',...[2,3,4,5,6,7,8,9,10,11,12,13,14,15].map(i=>mt[i]),mt[16],mt[17],mt[18],
+    mt[16]?parseFloat((mt[17]/mt[16]*100).toFixed(1))+'%':'–'];
+  mwTot._tot=true; mwRows.push(mwTot);
+  addSheet(wb,'Month Wise',HDR_TITLE,HDR_SUB,mwHdrs,mwRows,
+    [6,24,12,12,14,14,12,10,10,10,10,10,10,10,10,10,14,14,12,10]);
+
+  // ── Sheet 3: RECOVERIES ───────────────────────────────────
+  const r98=compute('98'); const m98=MONTH['98']||{};
+  const recHdrs=['PU','Description','Budget (₹\'000s)','Budget (₹ Cr)',
+    'APR Actual','MAY Actual',cur.label+' Committed',cur.label+' Remaining',
+    'Total Committed','Balance','Proj/Month','% Used'];
+  const recRows=[[
+    '98','Credit or Recoveries',r98.budget,parseFloat((r98.budget*1000/10000000).toFixed(2)),
+    m98.apr||0,m98.may||0,r98.curCommitted,r98.curRemaining,
+    r98.totalCommitted,r98.balanceBudget,Math.round(r98.projPerMonth),
+    r98.utilisedPct!=null?parseFloat(r98.utilisedPct.toFixed(1))+'%':'–'
+  ]];
+  recRows[0]._neg=true;
+  addSheet(wb,'Recoveries PU-98',HDR_TITLE,HDR_SUB,recHdrs,recRows,
+    [6,24,14,12,12,12,14,14,15,14,12,10]);
+
+  // ── Sheet 4: PU MASTER ────────────────────────────────────
+  const pmHdrs=['PU Code','Description','Type of PU','Type of Liability',
+    'BG_ISL Budget (₹\'000s)','Budget (₹ Cr)','Actuals Till Date (₹\'000s)','% Utilised'];
+  const pmRows=[];
+  PU_META.forEach(pu=>{
+    const bud=BUDGET[pu.code]||{}; const cv=compute(pu.code);
+    const pct=cv.utilisedFlag==='no-budget'?'No Budget':
+               cv.utilisedFlag==='none'?'Nil':
+               cv.utilisedPct!=null?parseFloat(cv.utilisedPct.toFixed(1))+'%':'–';
+    const row=[pu.code,pu.desc,pu.puType,pu.liab,
+      bud.bg_isl||0,parseFloat(((bud.bg_isl||0)*1000/10000000).toFixed(2)),
+      bud.actuals_till||0,pct];
+    row._cs=(pu.puType==='Staff PU'&&pu.liab==='Committed');
+    row._co=(!row._cs&&pu.liab==='Committed');
+    row._neg=pu.isNeg;
+    pmRows.push(row);
+  });
+  addSheet(wb,'PU Master',HDR_TITLE,HDR_SUB,pmHdrs,pmRows,
+    [8,28,16,14,18,12,20,12]);
+
+  XLSX.writeFile(wb, `Revenue_Liability_MBD_FY2026-27_${new Date().toISOString().slice(0,10)}.xlsx`);
 }
 
+
+// ── PU DETAIL PAGE ───────────────────────────────────────────
+function openPUDetail(code) {
+  const pu   = PU_META.find(p => p.code === code);
+  if (!pu) return;
+  const cv   = compute(code);
+  const md   = MONTH[code] || {};
+  const b    = BUDGET[code] || {};
+  const {futureMonths, cur} = getMonthStatus();
+
+  // ── Helpers ──────────────────────────────────────────────
+  function fCr(n)  { if(!n||n===0) return '–'; return (Math.abs(n)*1000/10000000).toFixed(2)+' Cr'; }
+  function fT(n)   { if(!n||n===0) return '–'; return (n<0?'('+Math.abs(Math.round(n)).toLocaleString('en-IN')+')':Math.round(n).toLocaleString('en-IN'))+' ₹\'000s'; }
+  function pctStr(cv) {
+    if (cv.utilisedFlag==='no-budget') return '<span style="color:#CC0000;font-weight:700">⚠ No Budget Allocated — Excess Spend</span>';
+    if (cv.utilisedFlag==='none')      return '<span style="color:#aaa">— Nil (no activity)</span>';
+    if (cv.utilisedFlag==='over')      return `<span style="color:#CC0000;font-weight:700">🔴 ${Math.abs(cv.utilisedPct).toFixed(1)}% (OVER BUDGET)</span>`;
+    const p = cv.utilisedPct;
+    const col = p>85?'#CC0000':p>60?'#E85D04':p>30?'#C07000':'#1A7A4A';
+    return `<span style="color:${col};font-weight:700">${p.toFixed(1)}%</span>`;
+  }
+  const typeCol = pu.puType.includes('Staff PU')&&!pu.puType.includes('Non')?'#1A7A4A':
+                  pu.puType.includes('Contractual')?'#9A5A00':'#1C3A5E';
+
+  // ── All 12 FY months ──────────────────────────────────────
+  const FY_LABELS=['APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC','JAN','FEB','MAR'];
+  const FY_KEYS  =['apr','may','jun','jul','aug','sep','oct','nov','dec','jan','feb','mar'];
+  const curIdx   = FY_KEYS.indexOf(cur.key);
+  const monthRows = FY_LABELS.map((lbl,i) => {
+    const isPast    = i < curIdx;
+    const isCurrent = i === curIdx;
+    const isFuture  = i > curIdx;
+    const val       = isPast||isCurrent ? (md[FY_KEYS[i]]||0) : Math.round(cv.projPerMonth)||0;
+    const valCr     = (Math.abs(val)*1000/10000000).toFixed(2);
+    const tag       = isPast?'Actual':isCurrent?'Committed (Till Date)':'Projected';
+    const bg        = isCurrent?'#FFF8E0':isFuture?'#F0F6FF':'#FAFAFA';
+    const tagCol    = isCurrent?'#8A5A00':isFuture?'#1A4A8A':'#607080';
+    const barW      = cv.budget ? Math.min(100, Math.abs(val)/Math.abs(cv.budget/12)*100) : 0;
+    const barCol    = isFuture?'#1E6FD9':isCurrent?'#F4A932':'#1C3A5E';
+    return `<tr style="background:${bg}">
+      <td style="padding:7px 12px;font-weight:700;color:#0A1628;border-bottom:1px solid #E8EFF8">${lbl} ${i<=8?2026:2027}</td>
+      <td style="padding:7px 12px;color:${tagCol};font-size:10px;border-bottom:1px solid #E8EFF8"><em>${tag}</em></td>
+      <td style="padding:7px 12px;text-align:right;font-family:monospace;border-bottom:1px solid #E8EFF8">${val?val.toLocaleString('en-IN'):'-'}</td>
+      <td style="padding:7px 12px;text-align:right;font-weight:600;border-bottom:1px solid #E8EFF8">${valCr} Cr</td>
+      <td style="padding:7px 20px;border-bottom:1px solid #E8EFF8">
+        <div style="background:#E8EFF8;border-radius:3px;height:10px;min-width:120px;overflow:hidden">
+          <div style="width:${barW}%;height:100%;background:${barCol};border-radius:3px;transition:width .4s"></div>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+
+  // ── Budget breakdown rows ────────────────────────────────
+  const summaryRows = [
+    ['BG_ISL Budget', b.bg_isl||0, '#0A1628'],
+    ['Revised Grant (RG)', b.rg||0, '#1C3A5E'],
+    ['Current Budget (Active)', cv.budget, '#1A4E9A'],
+    ['APR 2026 Actuals', md.apr||0, '#607080'],
+    ['MAY 2026 Actuals', md.may||0, '#607080'],
+    [`${cur.label} ${cur.year} Committed`, cv.curCommitted, '#8A5A00'],
+    [`${cur.label} Remaining (this month)`, cv.curRemaining, '#1A7A4A'],
+    ['Total Committed (Till Date)', cv.totalCommitted, '#1A4E9A'],
+    ['Balance Budget', cv.balanceBudget, cv.balanceBudget<0?'#CC0000':'#1A7A4A'],
+    [`Projected per Month (${futureMonths.length} months left)`, Math.round(cv.projPerMonth), '#0F5A8A'],
+    ['Actuals Till Date (Budget Report)', b.actuals_till||0, '#607080'],
+  ].map(([lbl,val,col]) => `<tr>
+    <td style="padding:7px 14px;color:#4A6A90;border-bottom:1px solid #EEF2F8;width:55%">${lbl}</td>
+    <td style="padding:7px 14px;text-align:right;font-family:monospace;border-bottom:1px solid #EEF2F8;font-weight:600;color:${col}">${val?(val<0?'('+Math.abs(Math.round(val)).toLocaleString('en-IN')+')':Math.round(val).toLocaleString('en-IN')):'–'}</td>
+    <td style="padding:7px 14px;text-align:right;border-bottom:1px solid #EEF2F8;color:${col};font-weight:700">${fCr(val)}</td>
+  </tr>`).join('');
+
+  // ── Build full HTML page ──────────────────────────────────
+  const pctVal = cv.utilisedPct!==null ? Math.min(100,Math.abs(cv.utilisedPct)) : 0;
+  const ringCol = cv.utilisedFlag==='over'||cv.utilisedFlag==='no-budget'?'#CC0000':
+                  cv.utilisedPct>85?'#E85D04':cv.utilisedPct>60?'#C07000':'#1A7A4A';
+  const r=54, circ=2*Math.PI*r, dash=(pctVal/100)*circ;
+  const pctLabel = cv.utilisedFlag==='no-budget'?'No Budget':
+                   cv.utilisedFlag==='none'?'0%':Math.abs(cv.utilisedPct).toFixed(1)+'%';
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PU-${pu.code} — ${pu.desc} | Revenue Liability Portal</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',Arial,sans-serif;background:#F0F4FA;color:#0A1628;font-size:13px}
+  .page-hdr{background:linear-gradient(135deg,#0A1628 0%,#1A3A6A 100%);color:#fff;padding:16px 32px;display:flex;align-items:center;gap:16px;border-bottom:3px solid #C9A84C}
+  .pu-num{font-size:36px;font-weight:800;color:#C9A84C;line-height:1}
+  .pu-info h1{font-size:18px;font-weight:700;color:#fff}
+  .pu-info p{font-size:11px;color:#A8C0D8;margin-top:3px}
+  .badges{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+  .pbadge{font-size:10px;font-weight:700;padding:3px 10px;border-radius:12px;border:1px solid rgba(255,255,255,.3);color:#fff}
+  .print-btn{margin-left:auto;background:#C9A84C;color:#0A1628;border:none;padding:8px 18px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:700}
+  .print-btn:hover{background:#E8C050}
+  .section{background:#fff;border-radius:8px;padding:20px 24px;margin:16px 24px;box-shadow:0 2px 10px rgba(10,22,40,.08);border:1px solid #E0EAF4}
+  .sec-title{font-size:13px;font-weight:700;color:#1C3A5E;border-bottom:2px solid #E0EAF4;padding-bottom:8px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+  .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+  .kpi{background:#F5F8FC;border-radius:6px;padding:14px 16px;border-left:3px solid ${typeCol}}
+  .kpi-lbl{font-size:9px;color:#607080;font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+  .kpi-val{font-size:18px;font-weight:700;color:#0A1628;margin:4px 0 2px}
+  .kpi-sub{font-size:9px;color:#607080}
+  .ring-wrap{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+  .ring-info{flex:1;min-width:200px}
+  .ring-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #EEF2F8;font-size:12px}
+  .ring-row:last-child{border-bottom:none}
+  .ring-row .lbl{color:#607080}
+  .ring-row .val{font-weight:700;color:#0A1628}
+  table.data-tbl{width:100%;border-collapse:collapse}
+  table.data-tbl thead tr{background:#1A3A6A}
+  table.data-tbl thead th{padding:8px 12px;color:#B8D0F0;font-size:10px;font-weight:600;text-align:left;letter-spacing:.3px;text-transform:uppercase}
+  table.data-tbl thead th.r{text-align:right}
+  footer{text-align:center;padding:16px;font-size:10px;color:#8AAAC8;border-top:1px solid #E0EAF4;margin-top:8px}
+  @media print{.print-btn{display:none}.section{box-shadow:none;border:1px solid #ccc}}
+</style>
+</head>
+<body>
+<div class="page-hdr">
+  <div class="pu-num">PU-${pu.code}</div>
+  <div class="pu-info">
+    <h1>${pu.desc}</h1>
+    <p>Moradabad Division / Northern Railway &nbsp;·&nbsp; FY 2026-27 &nbsp;·&nbsp; All figures in ₹ '000s</p>
+    <div class="badges">
+      <span class="pbadge" style="background:${typeCol}">${pu.puType}</span>
+      <span class="pbadge" style="background:${pu.liab==='Committed'?'#1A7A4A':pu.liab==='Recovery'?'#8B0000':'#4A6A90'}">${pu.liab}</span>
+      <span class="pbadge" style="background:#8A5A00">${cur.label} ${cur.year} — Active Month</span>
+    </div>
+  </div>
+  <button class="print-btn" onclick="window.print()">🖨 Print / PDF</button>
+</div>
+
+<!-- KPI CARDS -->
+<div class="section">
+  <div class="sec-title">📊 Key Performance Indicators</div>
+  <div class="kpi-grid">
+    <div class="kpi"><div class="kpi-lbl">BG_ISL Budget</div><div class="kpi-val">${fCr(b.bg_isl||0)}</div><div class="kpi-sub">${(b.bg_isl||0).toLocaleString('en-IN')} ₹'000s</div></div>
+    <div class="kpi"><div class="kpi-lbl">Total Committed</div><div class="kpi-val" style="color:${typeCol}">${fCr(cv.totalCommitted)}</div><div class="kpi-sub">${cv.totalCommitted.toLocaleString('en-IN')} ₹'000s</div></div>
+    <div class="kpi"><div class="kpi-lbl">Balance Budget</div><div class="kpi-val" style="color:${cv.balanceBudget<0?'#CC0000':'#1A7A4A'}">${fCr(cv.balanceBudget)}</div><div class="kpi-sub">${cv.balanceBudget.toLocaleString('en-IN')} ₹'000s</div></div>
+    <div class="kpi"><div class="kpi-lbl">% Budget Used</div><div class="kpi-val" style="color:${ringCol}">${pctLabel}</div><div class="kpi-sub">${pctStr(cv)}</div></div>
+    <div class="kpi"><div class="kpi-lbl">Projected / Month</div><div class="kpi-val" style="color:#1A4E9A">${fCr(cv.projPerMonth)}</div><div class="kpi-sub">${futureMonths.length} months remaining</div></div>
+    <div class="kpi"><div class="kpi-lbl">${cur.label} Committed</div><div class="kpi-val" style="color:#8A5A00">${fCr(cv.curCommitted)}</div><div class="kpi-sub">Remaining: ${fCr(cv.curRemaining)}</div></div>
+  </div>
+</div>
+
+<!-- UTILISATION RING -->
+<div class="section">
+  <div class="sec-title">🎯 Budget Utilisation</div>
+  <div class="ring-wrap">
+    <svg width="140" height="140" viewBox="0 0 140 140">
+      <circle cx="70" cy="70" r="${r}" fill="none" stroke="#E8EFF8" stroke-width="14"/>
+      <circle cx="70" cy="70" r="${r}" fill="none" stroke="${ringCol}" stroke-width="14"
+        stroke-dasharray="${dash.toFixed(1)} ${circ.toFixed(1)}"
+        stroke-dashoffset="${(circ/4).toFixed(1)}" stroke-linecap="round"/>
+      <text x="70" y="65" text-anchor="middle" font-size="20" font-weight="800" fill="${ringCol}">${pctLabel}</text>
+      <text x="70" y="82" text-anchor="middle" font-size="10" fill="#607080">Utilised</text>
+    </svg>
+    <div class="ring-info">
+      <div class="ring-row"><span class="lbl">BG_ISL Budget</span><span class="val">${fCr(b.bg_isl||0)}</span></div>
+      <div class="ring-row"><span class="lbl">APR Actuals</span><span class="val">${fCr(md.apr||0)}</span></div>
+      <div class="ring-row"><span class="lbl">MAY Actuals</span><span class="val">${fCr(md.may||0)}</span></div>
+      <div class="ring-row"><span class="lbl">${cur.label} Committed</span><span class="val">${fCr(cv.curCommitted)}</span></div>
+      <div class="ring-row"><span class="lbl">Total Committed</span><span class="val" style="color:${typeCol}">${fCr(cv.totalCommitted)}</span></div>
+      <div class="ring-row"><span class="lbl">Balance</span><span class="val" style="color:${cv.balanceBudget<0?'#CC0000':'#1A7A4A'}">${fCr(cv.balanceBudget)}</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- BUDGET BREAKDOWN TABLE -->
+<div class="section">
+  <div class="sec-title">📋 Budget Breakdown</div>
+  <table class="data-tbl">
+    <thead><tr><th>Parameter</th><th class="r">₹ '000s</th><th class="r">₹ Crore</th></tr></thead>
+    <tbody>${summaryRows}</tbody>
+  </table>
+</div>
+
+<!-- MONTHLY PROJECTION TABLE -->
+<div class="section">
+  <div class="sec-title">📅 Month-wise Actuals & Projections — FY 2026-27</div>
+  <table class="data-tbl">
+    <thead><tr>
+      <th>Month</th><th>Type</th>
+      <th class="r">Amount (₹ '000s)</th><th class="r">Amount (₹ Cr)</th>
+      <th>vs Monthly Allocation</th>
+    </tr></thead>
+    <tbody>${monthRows}</tbody>
+  </table>
+</div>
+
+<footer>
+  PU-${pu.code}: ${pu.desc} &nbsp;·&nbsp; Moradabad Division / Northern Railway &nbsp;·&nbsp; FY 2026-27 &nbsp;·&nbsp; For Official Use Only<br>
+  Generated: ${new Date().toLocaleString('en-IN')} &nbsp;·&nbsp; Revenue Liability Portal v4.0
+</footer>
+</body></html>`;
+
+  const w = window.open('', '_blank');
+  w.document.write(html);
+  w.document.close();
+}
+
+// ── Event delegation: one listener on document covers all tables ──────────
+document.addEventListener('mouseover', function(e){
+  const tr = e.target.closest('tr[data-pu]');
+  if (!tr) return;
+  showPUPopup(e, tr.dataset.pu);
+});
+document.addEventListener('mouseout', function(e){
+  const tr = e.target.closest('tr[data-pu]');
+  if (!tr) return;
+  // Only hide if moving outside the row entirely
+  if (!tr.contains(e.relatedTarget)) hidePUPopup();
+});
+document.addEventListener('click', function(e){
+  const tr = e.target.closest('tr[data-pu]');
+  if (!tr) return;
+  showPUPopup(e, tr.dataset.pu);
+});
 
 // Live clock
 (function tick(){
@@ -1020,7 +1529,9 @@ _pp.style.cssText='position:fixed;z-index:9999;pointer-events:none;background:#f
 document.body.appendChild(_pp);
 let _ppTimer=null;
 
+let currentPopupCode=null;
 function showPUPopup(e,code){
+  currentPopupCode=code;
   clearTimeout(_ppTimer);
   const pu=PU_META.find(p=>p.code===code); if(!pu) return;
   const cv=compute(code); const md=MONTH[code]||{};
@@ -1075,7 +1586,10 @@ function showPUPopup(e,code){
       ${bars}${projBar}
     </div>
     </div>
-    <div style="background:#F5F8FC;border-top:1px solid #E0EAF4;padding:4px 14px;font-size:8px;color:#8AAAC8;text-align:center">Hover for details &nbsp;·&nbsp; Figures in ₹ '000s</div>
+    <div style="background:#F5F8FC;border-top:1px solid #E0EAF4;padding:6px 14px;display:flex;align-items:center;justify-content:space-between">
+      <span style="font-size:8px;color:#8AAAC8">₹ '000s &nbsp;·&nbsp; Click row for details</span>
+      <button onclick="openPUDetail(currentPopupCode)" style="background:#1C3A5E;color:#fff;border:none;padding:4px 10px;border-radius:4px;cursor:pointer;font-size:9px;font-weight:700;pointer-events:auto">View Full Details →</button>
+    </div>
     </div>`;
   const vw=window.innerWidth,vh=window.innerHeight;
   let x=e.clientX+14, y=e.clientY+8;
@@ -1090,24 +1604,6 @@ function attachPUPopup(){
   // (listeners are only added once)
 }
 
-// ── Event delegation: one listener on document covers all tables ──────────
-document.addEventListener('mouseover', function(e){
-  const tr = e.target.closest('tr[data-pu]');
-  if (!tr) return;
-  showPUPopup(e, tr.dataset.pu);
-});
-document.addEventListener('mouseout', function(e){
-  const tr = e.target.closest('tr[data-pu]');
-  if (!tr) return;
-  // Only hide if moving outside the row entirely
-  if (!tr.contains(e.relatedTarget)) hidePUPopup();
-});
-document.addEventListener('click', function(e){
-  const tr = e.target.closest('tr[data-pu]');
-  if (!tr) return;
-  showPUPopup(e, tr.dataset.pu);
-});
-
 function renderAll() {
   renderCards();
   renderJuneBars();
@@ -1116,6 +1612,11 @@ function renderAll() {
   renderRecovery();
   renderPUMaster();
   document.getElementById('rgNote').textContent=isRGActive()?'✅ RG Active':'⚠ RG not active — using BG_ISL';
+  const {cur:_cur}=getMonthStatus();
+  const _cmb=document.getElementById('curMonBadge'); if(_cmb) _cmb.textContent=_cur.label+' '+_cur.year;
+  ['noteMonLabel','noteMonLabel2','noteMonLabel3'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.textContent=_cur.label+' '+_cur.year;
+  });
   setTimeout(()=>{addDualScroll();attachPUPopup();},80);
 }
 
