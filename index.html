@@ -87,7 +87,7 @@ tr[data-pu].tot:hover td{background:inherit!important}
 .leg-box.cs{background:var(--cs)}.leg-box.co{background:var(--co)}.leg-box.pl{background:var(--pl);border-color:var(--border)}
 .leg-box.neg{background:#FFE0DF}
 
-table{width:100%;border-collapse:collapse;font-size:11px}
+table{width:100%;border-collapse:collapse;font-size:12px}
 thead tr{background:var(--navy);color:#fff}
 thead th{padding:7px 9px;text-align:right;font-size:9px;font-weight:600;letter-spacing:.3px;border:none;position:sticky;top:0;z-index:10;background:var(--navy)}
 thead th.la{text-align:left}
@@ -100,7 +100,7 @@ tbody tr.co-row{background:var(--co)}
 tbody tr.pl-row{background:var(--pl)}
 tbody tr.neg-row{background:#FFE0DF}
 tbody tr:hover{filter:brightness(.97)}
-td{padding:6px 9px;}
+td{padding:6px 9px;font-size:12px;}
 td.n{text-align:right;font-variant-numeric:tabular-nums}
 td.puc{font-weight:700;color:var(--steel)}
 td.desc{max-width:180px;overflow:hidden;text-overflow:ellipsis;font-weight:600}
@@ -208,6 +208,62 @@ thead th.la { min-width:80px; }
 .login-err{color:#CC0000;font-size:10px;margin-top:8px;min-height:14px;font-weight:600}
 .login-badge{display:inline-block;background:linear-gradient(135deg,#C9A84C,#F4C842);
   color:#0A1628;font-size:9px;font-weight:700;padding:2px 8px;border-radius:10px;margin-bottom:10px}
+
+/* ── UPLOAD TAB ─────────────────────────────────────────────── */
+.upload-wrap{padding:20px;max-width:900px;margin:0 auto}
+.upload-banner{background:linear-gradient(135deg,#0A1628 0%,#1A3A6A 100%);
+  color:#fff;border-radius:8px;padding:16px 20px;margin-bottom:18px;
+  display:flex;align-items:center;gap:12px;border-left:4px solid #C9A84C}
+.upload-banner .ub-icon{font-size:28px}
+.upload-banner h2{font-size:14px;font-weight:700;margin-bottom:2px}
+.upload-banner p{font-size:10px;color:#A8C0D8}
+.upload-lock{display:flex;align-items:center;gap:8px;margin-left:auto;
+  background:rgba(201,168,76,.2);border:1px solid #C9A84C;
+  border-radius:6px;padding:4px 12px;font-size:10px;color:#C9A84C;font-weight:700}
+.upload-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+@media(max-width:600px){.upload-cards{grid-template-columns:1fr}}
+.upload-card{background:#fff;border:1.5px solid #D0DAEC;border-radius:10px;
+  padding:20px 22px;box-shadow:0 2px 10px rgba(10,22,40,.07)}
+.upload-card h3{font-size:13px;font-weight:700;color:#0A1628;margin-bottom:4px;
+  display:flex;align-items:center;gap:8px}
+.upload-card p{font-size:10px;color:#607080;margin-bottom:16px;line-height:1.5}
+.drop-zone{border:2px dashed #B8C8E0;border-radius:8px;padding:28px 16px;
+  text-align:center;cursor:pointer;transition:all .2s;background:#F5F8FC;
+  position:relative}
+.drop-zone:hover,.drop-zone.drag-over{border-color:#1A6FD9;background:#EEF4FF}
+.drop-zone.done{border-color:#1A7A4A;background:#E8FAF0;border-style:solid}
+.drop-zone.error{border-color:#CC0000;background:#FFF0F0;border-style:solid}
+.drop-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.dz-icon{font-size:32px;margin-bottom:8px;display:block}
+.dz-text{font-size:11px;font-weight:600;color:#4A6A90}
+.dz-sub{font-size:9px;color:#8AAAC8;margin-top:4px}
+.dz-status{font-size:10px;font-weight:700;margin-top:8px;min-height:16px}
+.dz-status.ok{color:#1A7A4A}
+.dz-status.err{color:#CC0000}
+.upload-log{background:#fff;border:1px solid #D0DAEC;border-radius:8px;padding:16px 20px}
+.upload-log h3{font-size:12px;font-weight:700;color:#0A1628;margin-bottom:12px;
+  display:flex;align-items:center;gap:7px;border-bottom:1px solid #E8EFF8;padding-bottom:8px}
+.log-table{width:100%;border-collapse:collapse;font-size:10px}
+.log-table th{background:#F0F4FA;padding:6px 10px;text-align:left;font-weight:700;
+  color:#4A6A90;border-bottom:1px solid #E0E8F4}
+.log-table td{padding:6px 10px;border-bottom:1px solid #EEF2F8;vertical-align:top}
+.log-table tr:last-child td{border-bottom:none}
+.log-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}
+.log-dot.ok{background:#1A7A4A}.log-dot.warn{background:#F4A932}.log-dot.na{background:#D0DAEC}
+.apply-btn{background:linear-gradient(135deg,#0A1628,#1A3A6A);color:#fff;
+  border:none;padding:10px 24px;border-radius:6px;cursor:pointer;
+  font-size:11px;font-weight:700;display:flex;align-items:center;gap:7px;
+  box-shadow:0 3px 10px rgba(10,22,40,.2);transition:all .2s;margin-top:14px}
+.apply-btn:hover{transform:translateY(-1px);box-shadow:0 5px 16px rgba(10,22,40,.3)}
+.apply-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.cur-data-box{background:#EEF8FF;border:1px solid #B0D4F0;border-radius:6px;
+  padding:12px 16px;margin-top:14px;font-size:10px}
+.cur-data-box h4{font-size:11px;font-weight:700;color:#1A4E9A;margin-bottom:8px}
+.cdb-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}
+.cdb-item{background:#fff;border-radius:4px;padding:8px 10px;border:1px solid #D0E8F8}
+.cdb-lbl{font-size:8px;color:#607080;font-weight:600;text-transform:uppercase}
+.cdb-val{font-size:13px;font-weight:700;color:#0A1628;margin-top:2px}
+.admin-only-msg{display:none}
 
 </style>
 <script>/* SheetJS v0.18.5 - embedded for offline/GitHub Pages use */
@@ -342,9 +398,10 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
 <!-- TABS -->
 <div class="tabs">
   <div class="tab active" onclick="switchTab('liability')">📊 Revenue Liability</div>
-  <div class="tab" onclick="switchTab('monthwise')">📅 Month-wise Actuals/Projected</div>
+  <div class="tab" onclick="switchTab('monthwise')">📅 Month-wise Actuals</div>
   <div class="tab" onclick="switchTab('recovery')">🔴 Recoveries / Credits</div>
   <div class="tab" onclick="switchTab('pumaster')">📋 PU Master</div>
+  <div class="tab" id="uploadTab" onclick="switchTab('upload')" style="display:none">📤 Data Upload</div>
 </div>
 
 <!-- TAB: LIABILITY -->
@@ -366,9 +423,8 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
           <th class="la" rowspan="2">PU Type</th>
           <th class="la" rowspan="2">Liability</th>
           <th rowspan="2">Budget<br>(₹'000s)</th>
-          <th rowspan="2">Budget<br>(₹ Cr)</th>
-          <th class="sub" colspan="2">APR 2026</th>
-          <th class="sub" colspan="2">MAY 2026</th>
+          <th class="sub" colspan="1">APR 2026</th>
+          <th class="sub" colspan="1">MAY 2026</th>
           <th class="sub" colspan="4" id="curMonHdr">JUN 2026 (Current)</th>
           <th rowspan="2">Total Committed<br>(₹'000s)</th>
           <th rowspan="2">Balance Budget<br>(₹'000s)</th>
@@ -377,10 +433,12 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
           <th rowspan="2">Status</th>
         </tr>
         <tr>
-          <th class="sub">Actual (₹'000s)</th><th class="sub">₹ Cr</th>
-          <th class="sub">Actual (₹'000s)</th><th class="sub">₹ Cr</th>
-          <th class="sub">Committed (₹'000s)</th><th class="sub">Remaining (₹'000s)</th>
-          <th class="sub">Jun Total (₹'000s)</th><th class="sub">% Done</th>
+          <th class="sub" style="min-width:90px">APR Actual<br>(₹'000s)</th>
+          <th class="sub" style="min-width:90px">MAY Actual<br>(₹'000s)</th>
+          <th class="sub" style="min-width:100px">JUN Till Date<br>Expense (₹'000s)</th>
+          <th class="sub" style="min-width:90px">JUN<br>Remaining</th>
+          <th class="sub" style="min-width:90px">JUN Total<br>(₹'000s)</th>
+          <th class="sub">% Done</th>
         </tr>
       </thead>
       <tbody id="liab-tbody"></tbody>
@@ -487,6 +545,88 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
   </div>
 </div>
 
+
+<!-- TAB: UPLOAD (ADMIN ONLY) -->
+<div class="tab-content" id="tab-upload">
+  <div class="upload-wrap">
+
+    <div class="upload-banner">
+      <span class="ub-icon">📤</span>
+      <div>
+        <h2>Data Upload Centre</h2>
+        <p>Upload latest Budget Available and Month-wise Actuals files. Portal auto-recalculates all tables on Apply.</p>
+      </div>
+      <div class="upload-lock">🔐 ADMIN ACCESS ONLY</div>
+    </div>
+
+    <!-- Current Data Summary -->
+    <div class="cur-data-box">
+      <h4>📊 Currently Loaded Data Snapshot</h4>
+      <div class="cdb-grid" id="curDataGrid">
+        <!-- filled by JS -->
+      </div>
+    </div>
+
+    <!-- Upload Cards -->
+    <div class="upload-cards" style="margin-top:16px">
+
+      <!-- Budget Available -->
+      <div class="upload-card">
+        <h3>📄 Budget Available File</h3>
+        <p>Upload the latest <strong>BudgetReport — BUDGET AVAILABLE</strong> XLS/XLSX.<br>
+          Contains BG_ISL, RG and Actuals Till Date for each PU code.</p>
+        <div class="drop-zone" id="dz-budget" ondragover="dzDrag(event,'budget')" ondragleave="dzLeave('budget')" ondrop="dzDrop(event,'budget')">
+          <input type="file" id="inp-budget" accept=".xls,.xlsx" onchange="handleFile(event,'budget')">
+          <span class="dz-icon" id="dz-budget-icon">📂</span>
+          <div class="dz-text">Click or Drag & Drop</div>
+          <div class="dz-sub">Supports .xls and .xlsx</div>
+          <div class="dz-status" id="dz-budget-status"></div>
+        </div>
+        <div style="margin-top:10px;font-size:9px;color:#8AAAC8">
+          Expected columns: PUCODE, BG_ISL, RG, ACTUALS TILL DATE
+        </div>
+      </div>
+
+      <!-- Month Wise -->
+      <div class="upload-card">
+        <h3>📅 Month-wise Actuals File</h3>
+        <p>Upload the latest <strong>BudgetReport — MONTH WISE</strong> XLS/XLSX.<br>
+          Contains month-by-month actuals (APR–MAR) for each PU code.</p>
+        <div class="drop-zone" id="dz-month" ondragover="dzDrag(event,'month')" ondragleave="dzLeave('month')" ondrop="dzDrop(event,'month')">
+          <input type="file" id="inp-month" accept=".xls,.xlsx" onchange="handleFile(event,'month')">
+          <span class="dz-icon" id="dz-month-icon">📂</span>
+          <div class="dz-text">Click or Drag & Drop</div>
+          <div class="dz-sub">Supports .xls and .xlsx</div>
+          <div class="dz-status" id="dz-month-status"></div>
+        </div>
+        <div style="margin-top:10px;font-size:9px;color:#8AAAC8">
+          Expected columns: PUCODE, APR, MAY, JUN, JUL … MAR
+        </div>
+      </div>
+    </div>
+
+    <!-- Apply Button -->
+    <button class="apply-btn" id="applyBtn" onclick="applyUploads()" disabled>
+      ✅ Apply Uploaded Data & Refresh All Tables
+    </button>
+
+    <!-- Upload Log -->
+    <div class="upload-log" style="margin-top:16px">
+      <h3>📋 Upload History & Auto-sense Log</h3>
+      <table class="log-table">
+        <thead><tr>
+          <th>File Type</th><th>Filename</th><th>Uploaded At</th>
+          <th>FY Month Detected</th><th>PUs Parsed</th><th>Status</th>
+        </tr></thead>
+        <tbody id="uploadLogTbody">
+          <tr><td colspan="6" style="color:#8AAAC8;text-align:center;padding:16px">No uploads yet — using pre-loaded data</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
 <div style="text-align:center;padding:10px;font-size:9px;color:var(--muted);border-top:1px solid var(--border)">
   Revenue Liability Portal &nbsp;•&nbsp; Moradabad Division / Northern Railway &nbsp;•&nbsp; FY 2026-27 &nbsp;•&nbsp; For Official Use Only
 </div>
@@ -494,9 +634,9 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
 <script>
 // ── LOGIN SYSTEM ─────────────────────────────────────────────
 const USERS = {
-  'MB':  'MB',
-  'itcentre':  'itcentre',
-  'admin':   'admin@2627',
+  'MB':      'MB',
+  'ITCENTRE':'itcentre',
+  'ADMIN':   'admin@2627',
 };
 
 function doLogin() {
@@ -515,13 +655,20 @@ function doLogin() {
     return;
   }
   document.getElementById('loginOverlay').classList.add('hidden');
-  // Store session (tab-scoped only)
   sessionStorage.setItem('rlp_auth', user);
+  // Show upload tab only for ADMIN
+  if (user === 'ADMIN') {
+    document.getElementById('uploadTab').style.display = '';
+  }
 }
 
 // Auto-login if session exists (tab refresh)
-if (sessionStorage.getItem('rlp_auth')) {
+const _savedUser = sessionStorage.getItem('rlp_auth');
+if (_savedUser) {
   document.getElementById('loginOverlay').classList.add('hidden');
+  if (_savedUser === 'ADMIN') {
+    document.getElementById('uploadTab').style.display = '';
+  }
 }
 
 // ═══════════════════════════════════════════════════════
@@ -533,7 +680,7 @@ const PU_META = [
   {code:'02',desc:'DA',puType:'Staff PU',liab:'Committed',isNeg:false},
   {code:'03',desc:'PLB',puType:'Staff PU',liab:'Committed',isNeg:false},
   {code:'04',desc:'HRA',puType:'Staff PU',liab:'Committed',isNeg:false},
-  {code:'07',desc:'Transport Allowance/TPT',puType:'Staff PU',liab:'Committed',isNeg:false},
+  {code:'07',desc:'Transport Allowance /TPT',puType:'Staff PU',liab:'Committed',isNeg:false},
   {code:'08',desc:'NPS Contribution',puType:'Staff PU',liab:'Committed',isNeg:false},
   {code:'09',desc:'WCL',puType:'Staff PU',liab:'Committed',isNeg:false},
   {code:'10',desc:'Kilometrage Allowance (KMA)',puType:'Staff PU',liab:'Planned',isNeg:false},
@@ -541,40 +688,54 @@ const PU_META = [
   {code:'12',desc:'NDA',puType:'Staff PU',liab:'Planned',isNeg:false},
   {code:'13',desc:'Other Allowance',puType:'Staff PU',liab:'Planned',isNeg:false},
   {code:'14',desc:'FEES & HON.',puType:'Staff PU',liab:'Planned',isNeg:false},
-  {code:'15',desc:'Travelling Allowance/TA',puType:'Staff PU',liab:'Planned',isNeg:false},
-  {code:'16',desc:'Travelling Expenses/CTG',puType:'Staff PU',liab:'Planned',isNeg:false},
-  {code:'17',desc:'Air Travel (lieu of passes)',puType:'Staff PU',liab:'Planned',isNeg:false},
+  {code:'15',desc:'Travalling Allowance/TA',puType:'Staff PU',liab:'Planned',isNeg:false},
+  {code:'16',desc:'Travelling expenses./CTG',puType:'Staff PU',liab:'Planned',isNeg:false},
+  {code:'17',desc:'Air Travel Expense sanctioned in lieu of privilege passes.',puType:'Staff PU',liab:'Planned',isNeg:false},
   {code:'18',desc:'Office Expenses',puType:'Non Staff PU',liab:'Planned',isNeg:false},
   {code:'19',desc:'Phone',puType:'Non Staff PU',liab:'Planned',isNeg:false},
   {code:'20',desc:'Leave Salary',puType:'Staff PU',liab:'Committed',isNeg:false},
   {code:'21',desc:'Advertising Expenses',puType:'Non Staff PU',liab:'Planned',isNeg:false},
-  {code:'22',desc:'Util (excl. elec.)',puType:'Non Staff PU',liab:'Planned',isNeg:false},
+  {code:'22',desc:'Util(excl. elec.)',puType:'Non Staff PU',liab:'Planned',isNeg:false},
   {code:'23',desc:'Rental Office Equip',puType:'Non Staff PU',liab:'Planned',isNeg:false},
   {code:'24',desc:'Printing and Stnry',puType:'Non Staff PU',liab:'Planned',isNeg:false},
   {code:'25',desc:'Children Edu. Allow',puType:'Staff PU',liab:'Committed',isNeg:false},
   {code:'26',desc:'Medical Expenses',puType:'Staff PU',liab:'Planned',isNeg:false},
-  {code:'27',desc:'Materials from stock',puType:'Contractual PU',liab:'Planned',isNeg:false},
-  {code:'28',desc:'Materials-Dir. purchase',puType:'Contractual PU',liab:'Planned',isNeg:false},
+  {code:'27',desc:'Materials from stock',puType:'Contractual PU/Non Staff PU',liab:'Planned',isNeg:false},
+  {code:'28',desc:'Materials-Dir. purchase',puType:'Contractual PU/Non Staff PU',liab:'Planned',isNeg:false},
   {code:'29',desc:'Remu. Re-engaged Staff',puType:'Staff PU',liab:'Planned',isNeg:false},
-  {code:'30',desc:'Cost Of Elec./Traction Energy',puType:'Contractual PU',liab:'Committed',isNeg:false},
-  {code:'31',desc:'Direct Purchase (OF)',puType:'Non Staff PU',liab:'Planned',isNeg:false},
-  {code:'32',desc:'Contractual Payments (CP)',puType:'Contractual PU',liab:'Planned',isNeg:false},
-  {code:'33',desc:'Transfer Debits/Credits-TRDC',puType:'Non Staff PU',liab:'Planned',isNeg:false},
+  {code:'30',desc:'Cost Of Elec. Energy/Traction Energy Procurement',puType:'Contractual PU/Non Staff PU',liab:'Committed Liability',isNeg:false},
+  {code:'31',desc:'Direct Purchase',puType:'Stores-Other/Non Staff PU',liab:'Planned',isNeg:false},
+  {code:'32',desc:'Contractual payments',puType:'Contractual PU/Non Staff PU',liab:'Planned',isNeg:false},
+  {code:'33',desc:'Transfer of debits/credits from other units',puType:'Non Staff PU',liab:'Planned',isNeg:false},
+  {code:'34',desc:'Intra-railway adjustment of wages on POH and other repairs',puType:'Staff PU',liab:'Planned',isNeg:false},
+  {code:'35',desc:'Material POH',puType:'Non Staff PU',liab:'Planned',isNeg:false},
   {code:'36',desc:'Excise Duty',puType:'Non Staff PU',liab:'Planned',isNeg:false},
+  {code:'37',desc:'Customs Duty',puType:'Non Staff PU',liab:'Planned',isNeg:false},
   {code:'38',desc:'Sales Tax',puType:'Non Staff PU',liab:'Planned',isNeg:false},
   {code:'39',desc:'ATD',puType:'Staff PU',liab:'Planned',isNeg:false},
+  {code:'40',desc:'ATF',puType:'Staff PU',liab:'Planned',isNeg:false},
+  {code:'41',desc:'VAT',puType:'Non Staff PU',liab:'Planned',isNeg:false},
   {code:'42',desc:'ARR SALARY',puType:'Staff PU',liab:'Planned',isNeg:false},
   {code:'43',desc:'ARR DA',puType:'Staff PU',liab:'Planned',isNeg:false},
   {code:'44',desc:'ARR OTH ALW',puType:'Staff PU',liab:'Planned',isNeg:false},
-  {code:'49',desc:'O/S M/P Track & Signal Mnt',puType:'Non Staff PU',liab:'Planned',isNeg:false},
+  {code:'45',desc:'Pmt Of Service Tax',puType:'Non Staff PU',liab:'Planned',isNeg:false},
+  {code:'46',desc:'Counter-vailing duty',puType:'Non Staff PU',liab:'Planned',isNeg:false},
+  {code:'47',desc:'Addl custom duty',puType:'Non Staff PU',liab:'Planned',isNeg:false},
+  {code:'48',desc:'Custom Duty paid',puType:'Non Staff PU',liab:'Planned',isNeg:false},
+  {code:'49',desc:'O/S OF MAN POWER FOR TRACK MNT',puType:'Non Staff PU',liab:'Planned',isNeg:false},
+  {code:'51',desc:'COMPCONSUM',puType:'Non Staff PU',liab:'Planned',isNeg:false},
   {code:'53',desc:'All India LTC',puType:'Staff PU',liab:'Planned',isNeg:false},
+  {code:'54',desc:'Int on delayed NPS',puType:'Staff PU',liab:'Planned',isNeg:false},
   {code:'60',desc:'Fuel from Stock-Home',puType:'Non Staff PU',liab:'Committed',isNeg:false},
+  {code:'61',desc:'Trf Dr/Cr of loco performance',puType:'Non Staff PU',liab:'Planned',isNeg:false},
+  {code:'63',desc:'Adj of labour cost on POH/WMS',puType:'Staff PU',liab:'Planned',isNeg:false},
+  {code:'64',desc:'Int Rly Adj debits materials',puType:'Non Staff PU',liab:'Planned',isNeg:false},
   {code:'72',desc:'Central GST (CGST)',puType:'Non Staff PU',liab:'Planned',isNeg:false},
   {code:'73',desc:'State GST (SGST)',puType:'Non Staff PU',liab:'Planned',isNeg:false},
   {code:'74',desc:'Union Territory GST (UTGST)',puType:'Non Staff PU',liab:'Planned',isNeg:false},
   {code:'75',desc:'Integrated GST (IGST)',puType:'Non Staff PU',liab:'Planned',isNeg:false},
-  {code:'99',desc:'Other Expenses/Misc (PU-99)',puType:'Non Staff PU',liab:'Planned',isNeg:false},
-  // RECOVERY — separate
+  {code:'99',desc:'Other Expenses/Misc',puType:'Non Staff PU',liab:'Planned',isNeg:false},
+  // Recovery — shown in dedicated Recoveries tab only
   {code:'98',desc:'Credit or Recoveries',puType:'Staff PU',liab:'Recovery',isNeg:true},
 ];
 
@@ -685,6 +846,8 @@ const FY_MONTH_LABELS = ['APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC','
 // ═══════════════════════════════════════════════
 // CURRENT MONTH DETECTION (auto from date)
 // ═══════════════════════════════════════════════
+let _uploadedMonthIdx = null; // set when month file is uploaded
+
 function getCurrentFYMonth() {
   const d = new Date();
   const m = d.getMonth(); // 0-Jan..11-Dec
@@ -696,12 +859,17 @@ function getCurrentFYMonth() {
 // Months COMPLETED before current month (actuals known)
 // Months from current month onward = remaining (current = partial committed)
 function getMonthStatus() {
-  const cur = getCurrentFYMonth();
-  // Months with known actuals = FY months before current
-  const pastMonths = FY_MONTHS.slice(0, cur.idx);       // e.g. [apr, may]
-  const curMonthKey = cur.key;                            // e.g. jun
-  // Remaining months AFTER current for distribution = FY months after current
-  const futureMonths = FY_MONTHS.slice(cur.idx + 1);     // jul..mar = 9 months
+  // If month file was uploaded, use that detected month; else use system date
+  let cur;
+  if (_uploadedMonthIdx !== null) {
+    const idx = _uploadedMonthIdx;
+    cur = {idx, key:FY_MONTHS[idx], label:FY_MONTH_LABELS[idx], year:idx<=8?2026:2027};
+  } else {
+    cur = getCurrentFYMonth();
+  }
+  const pastMonths   = FY_MONTHS.slice(0, cur.idx);
+  const curMonthKey  = cur.key;
+  const futureMonths = FY_MONTHS.slice(cur.idx + 1);  // jul..mar = 9 months
   return {cur, pastMonths, curMonthKey, futureMonths};
 }
 
@@ -720,43 +888,65 @@ function getBudget(code) {
 
 function compute(code) {
   const {pastMonths, curMonthKey, futureMonths} = getMonthStatus();
-  const md = MONTH[code] || {};
+  const md     = MONTH[code] || {};
   const budget = getBudget(code);
+  const isNeg  = (PU_META.find(p=>p.code===code)||{}).isNeg || false;
 
-  // Sum actuals for past completed months
-  const pastActuals = pastMonths.reduce((s,m) => s + (md[m]||0), 0);
+  // ── VERIFIED FORMULA ──────────────────────────────────────
+  // Budget = APR + MAY + JUN_committed + JUN_remaining + JUL×proj + ... + MAR×proj
+  // where JUN_remaining = JUL_proj = ... = MAR_proj  (equal monthly distribution)
+  // remaining_balance = budget - (APR + MAY + JUN_committed)
+  // proj_per_month    = remaining_balance / (1 + futureMonths.length)
+  //                   = remaining_balance / 10   (for JUN as current month)
+  // JUN_remaining     = proj_per_month
+  // CHECK: APR+MAY+JUN_c + (1+9)×proj_per_month = budget ✅
+  // ─────────────────────────────────────────────────────────
 
-  // Current month: committed (what's recorded so far)
+  // Past months actuals (APR, MAY for June scenario)
+  const pastActuals  = pastMonths.reduce((s,m) => s + (md[m]||0), 0);
+
+  // Current month committed spend (entries so far this month)
   const curCommitted = md[curMonthKey] || 0;
 
-  // Current month remaining budget = (budget/12) - committed, floor 0
-  const monthlyAlloc = budget / 12;
-  const curRemaining = Math.max(0, monthlyAlloc - curCommitted);
+  // Balance after removing all committed spend
+  const spentSoFar      = pastActuals + curCommitted;
+  const remainingBalance = budget - spentSoFar;
 
-  // Current month total liability = committed + remaining
+  // Equal distribution: remaining balance ÷ (current month remainder + future months)
+  const totalRemainingMonths = 1 + futureMonths.length;  // current remainder + future
+  const projPerMonth = totalRemainingMonths > 0 ? remainingBalance / totalRemainingMonths : 0;
+
+  // Current month remaining = same as projected per month (equal share)
+  const curRemaining  = Math.max(0, projPerMonth);
+
+  // Current month total = committed + remaining (= committed + proj_per_month)
   const curMonthTotal = curCommitted + curRemaining;
 
-  // % of current month done
-  const curDonePct = monthlyAlloc > 0 ? Math.min(100, (curCommitted / monthlyAlloc) * 100) : 0;
+  // % of current month's projected share that is already committed
+  const curDonePct = curMonthTotal > 0 ? Math.min(100, (curCommitted / curMonthTotal) * 100) : 0;
 
-  // Total committed so far = past actuals + current committed
-  const totalCommitted = pastActuals + curCommitted;
+  // Total committed for display = past actuals + current committed
+  const totalCommitted = spentSoFar;
 
-  // Balance budget = budget - total committed
-  const balanceBudget = budget - totalCommitted;
+  // Balance for display = budget - past - current committed (= remaining balance)
+  const balanceBudget  = remainingBalance;
 
-  // Remaining months count = future months after current
-  const remMonthCount = futureMonths.length; // 9 for june (jul-mar)
-
-  // Projected per remaining month = (balanceBudget - curRemaining) / remMonthCount
-  // i.e. after accounting for rest of current month, split rest over future months
-  const afterCurBalance = balanceBudget - curRemaining;
-  const projPerMonth = remMonthCount > 0 ? afterCurBalance / remMonthCount : 0;
-
-  const utilisedPct = budget !== 0 ? (totalCommitted / Math.abs(budget)) * 100 : 0;
+  // % utilised based on total budget
+  let utilisedPct, utilisedFlag;
+  if (budget === 0) {
+    utilisedPct  = 0;
+    utilisedFlag = totalCommitted === 0 ? 'none' : 'no-budget';
+  } else if (budget < 0) {
+    utilisedPct  = (totalCommitted / budget) * 100;
+    utilisedFlag = 'normal';
+  } else {
+    utilisedPct  = (totalCommitted / budget) * 100;
+    utilisedFlag = utilisedPct > 100 ? 'over' : 'normal';
+  }
 
   return {budget, pastActuals, curCommitted, curRemaining, curMonthTotal, curDonePct,
-          totalCommitted, balanceBudget, projPerMonth, utilisedPct, remMonthCount};
+          totalCommitted, balanceBudget, projPerMonth, utilisedPct, utilisedFlag,
+          remMonthCount: futureMonths.length};
 }
 
 // ═══════════════════════════════════════════════
@@ -779,7 +969,7 @@ function miniProg(val, color) {
   const v = Math.min(100, Math.max(0, val));
   return `<div class="mp"><div class="mb"><div class="mf" style="width:${v}%;background:${color}"></div></div><span class="mpct ${val>90?'over':''}" style="color:${color}">${val.toFixed(1)}%</span></div>`;
 }
-function utilColor(p) { return p < 30 ? '#1A7A4A' : p < 60 ? '#C07000' : '#E85D04'; }
+function utilColor(p) { if(p===null||p===undefined||isNaN(p)) return '#CC0000'; p=Math.abs(p); return p < 30 ? '#1A7A4A' : p < 60 ? '#C07000' : p < 85 ? '#E85D04' : '#CC0000'; }
 function getRowClass(pu) {
   if (pu.isNeg) return 'neg-row';
   if (pu.puType==='Staff PU' && pu.liab==='Committed') return 'cs-row';
@@ -800,12 +990,11 @@ function liabBadge(l) {
 // ═══════════════════════════════════════════════
 // FILTER HELPERS
 // ═══════════════════════════════════════════════
-function getFiltered(includeNeg) {
+function getFiltered() {
   const tf = document.getElementById('typeFilter').value;
   const lf = document.getElementById('liabFilter').value;
   return PU_META.filter(pu => {
-    if (pu.isNeg) return includeNeg;
-    if (!includeNeg && pu.isNeg) return false;
+    if (pu.isNeg) return false; // PU-98 shown only in Recoveries tab
     if (tf !== 'all' && !pu.puType.includes(tf)) return false;
     if (lf !== 'all' && pu.liab !== lf) return false;
     return true;
@@ -822,16 +1011,13 @@ function renderCards() {
     const c = compute(pu.code);
     totB += c.budget; totC += c.totalCommitted; totBal += c.balanceBudget;
   });
-  const recB = getBudget('98'), recC = compute('98').totalCommitted;
   const {cur, futureMonths} = getMonthStatus();
-  const netBudget = totB + recB;
+  const netBudget = totB; // Net = Gross (PU-98 excluded from main)
   const util = pct(totC, totB);
   document.getElementById('summaryCards').innerHTML = `
     <div class="card g"><div class="cl">Gross Budget (BG_ISL)</div>
       <div class="cv">${fmtCr(totB)}</div><div class="cs2">${Math.round(totB).toLocaleString('en-IN')} ₹'000s</div></div>
-    <div class="card r"><div class="cl">Recoveries Budget (PU-98)</div>
-      <div class="cv" style="color:#CC0000">${fmtCr(recB)}</div><div class="cs2">${Math.round(recB).toLocaleString('en-IN')} ₹'000s</div></div>
-    <div class="card gold"><div class="cl">Net Budget (Gross + Rec.)</div>
+    <div class="card gold"><div class="cl">Net Budget (excl. Recoveries)</div>
       <div class="cv">${fmtCr(netBudget)}</div><div class="cs2">${Math.round(netBudget).toLocaleString('en-IN')} ₹'000s</div></div>
     <div class="card a"><div class="cl">Total Committed (Till ${cur.label})</div>
       <div class="cv">${fmtCr(totC)}</div><div class="cs2">${util}% of gross budget</div></div>
@@ -879,19 +1065,23 @@ function renderJuneBars() {
 // LIABILITY TABLE
 // ═══════════════════════════════════════════════
 function renderLiability() {
-  const pus = getFiltered(false);
+  const pus = getFiltered();
   const {cur} = getMonthStatus();
   let rows='', tB=0,tC=0,tBal=0,tApr=0,tMay=0,tJunC=0,tJunR=0,tJunT=0;
   pus.forEach(pu => {
     const c = compute(pu.code);
     const md = MONTH[pu.code]||{};
     const apr = md.apr||0, may = md.may||0;
-    const col = utilColor(c.utilisedPct);
+    const col = utilColor(c.utilisedPct||0);
     const balCls = c.balanceBudget < 0 ? 'neg' : c.balanceBudget < c.budget*0.1 ? 'low' : 'ok';
     let statusHtml = '';
-    if (c.utilisedPct > 90) statusHtml = '<span style="color:var(--accent2);font-weight:700">⚠ Near Limit</span>';
-    else if (c.utilisedPct > 60) statusHtml = '<span style="color:#C07000">🔶 Watch</span>';
-    else if (pu.liab==='Committed') statusHtml = '<span style="color:var(--green)">✔ On Track</span>';
+    const _pct = c.utilisedPct || 0;
+    if (c.utilisedFlag==='no-budget') statusHtml='<span style="color:#CC0000;font-weight:700">🚨 No Budget</span>';
+    else if (c.utilisedFlag==='over') statusHtml=`<span style="color:#CC0000;font-weight:700">🔴 Over ${Math.abs(_pct).toFixed(0)}%</span>`;
+    else if (c.utilisedFlag==='none') statusHtml='<span style="color:#aaa">— Nil</span>';
+    else if (_pct > 85) statusHtml = '<span style="color:#CC0000;font-weight:700">⚠ Near Limit</span>';
+    else if (_pct > 60) statusHtml = '<span style="color:#C07000">🔶 Watch</span>';
+    else if (pu.liab==='Committed'||pu.liab==='Committed Liability') statusHtml = '<span style="color:var(--green)">✔ On Track</span>';
     else statusHtml = '<span style="color:var(--muted)">— Planned</span>';
 
     rows += `<tr class="${getRowClass(pu)}" data-pu="${pu.code}" style="cursor:pointer">
@@ -900,9 +1090,8 @@ function renderLiability() {
       <td>${puBadge(pu.puType)}</td>
       <td>${liabBadge(pu.liab)}</td>
       <td class="n">${fmtT(c.budget)}</td>
-      <td class="n">${fmtCr(c.budget)}</td>
-      <td class="n">${fmtT(apr)}</td><td class="n">${fmtCr(apr)}</td>
-      <td class="n">${fmtT(may)}</td><td class="n">${fmtCr(may)}</td>
+      <td class="n">${fmtT(apr)}</td>
+      <td class="n">${fmtT(may)}</td>
       <td class="n">${fmtT(c.curCommitted)}</td>
       <td class="n" style="color:var(--muted)">${fmtT(c.curRemaining)}</td>
       <td class="n" style="font-weight:600">${fmtT(c.curMonthTotal)}</td>
@@ -919,9 +1108,9 @@ function renderLiability() {
   const tUtil = pct(tC,tB); const tc2 = utilColor(tUtil);
   rows += `<tr class="tot">
     <td colspan="4" style="text-align:left">GRAND TOTAL (excl. Recoveries)</td>
-    <td class="n">${fmtT(tB)}</td><td class="n">${fmtCr(tB)}</td>
-    <td class="n">${fmtT(tApr)}</td><td class="n">${fmtCr(tApr)}</td>
-    <td class="n">${fmtT(tMay)}</td><td class="n">${fmtCr(tMay)}</td>
+    <td class="n">${fmtT(tB)}</td>
+    <td class="n">${fmtT(tApr)}</td>
+    <td class="n">${fmtT(tMay)}</td>
     <td class="n">${fmtT(tJunC)}</td><td class="n">${fmtT(tJunR)}</td>
     <td class="n">${fmtT(tJunT)}</td><td>–</td>
     <td class="n">${fmtT(tC)}</td><td class="n rem ${tBal<0?'neg':'ok'}">${fmtT(tBal)}</td>
@@ -1087,15 +1276,15 @@ function renderPUMaster() {
 // TABS
 // ═══════════════════════════════════════════════
 function switchTab(name) {
+  const ids = ['liability','monthwise','recovery','pumaster','upload'];
   document.querySelectorAll('.tab').forEach((t,i) => {
-    const ids = ['liability','monthwise','recovery','pumaster'];
     t.classList.toggle('active', ids[i]===name);
   });
   document.querySelectorAll('.tab-content').forEach(tc => {
     tc.classList.toggle('active', tc.id==='tab-'+name);
   });
-  // Hide any open popup when switching tabs
   if(_pp){ _pp.style.opacity='0'; _pp.style.transform='translateY(6px)'; }
+  if(name==='upload') renderCurDataGrid();
 }
 
 // ═══════════════════════════════════════════════
@@ -1602,6 +1791,240 @@ function hidePUPopup(){ _ppTimer=setTimeout(()=>{_pp.style.opacity='0';_pp.style
 function attachPUPopup(){
   // Using event delegation on document — works after every re-render, no re-binding needed
   // (listeners are only added once)
+}
+
+// ══════════════════════════════════════════════════════════════════
+// UPLOAD TAB — File parsing, auto-sense, apply
+// ══════════════════════════════════════════════════════════════════
+
+let _pendingBudget = null;  // parsed budget data waiting to apply
+let _pendingMonth  = null;  // parsed month data waiting to apply
+let _uploadHistory = [];    // log entries
+
+// Drag-and-drop helpers
+function dzDrag(e,type){ e.preventDefault(); document.getElementById('dz-'+type).classList.add('drag-over'); }
+function dzLeave(type){ document.getElementById('dz-'+type).classList.remove('drag-over'); }
+function dzDrop(e,type){
+  e.preventDefault(); dzLeave(type);
+  const file = e.dataTransfer.files[0];
+  if(file) parseUpload(file, type);
+}
+
+function handleFile(e, type) {
+  const file = e.target.files[0];
+  if(file) parseUpload(file, type);
+}
+
+function setDZState(type, state, msg) {
+  const dz   = document.getElementById('dz-'+type);
+  const icon = document.getElementById('dz-'+type+'-icon');
+  const stat = document.getElementById('dz-'+type+'-status');
+  dz.classList.remove('done','error','drag-over');
+  if(state==='done'){ dz.classList.add('done'); icon.textContent='✅'; stat.className='dz-status ok'; }
+  else if(state==='error'){ dz.classList.add('error'); icon.textContent='❌'; stat.className='dz-status err'; }
+  else { icon.textContent='⏳'; stat.className='dz-status'; }
+  stat.textContent = msg||'';
+  // Enable apply button if at least one pending
+  document.getElementById('applyBtn').disabled = !(_pendingBudget || _pendingMonth);
+}
+
+function parseUpload(file, type) {
+  setDZState(type, 'loading', 'Reading file…');
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const wb   = XLSX.read(new Uint8Array(e.target.result), {type:'array'});
+      const ws   = wb.Sheets[wb.SheetNames[0]];
+      const rows = XLSX.utils.sheet_to_json(ws, {header:1, defval:0});
+
+      if (type === 'budget') {
+        // ── Find header row with BG_ISL ──────────────────────
+        let hdrRow = -1;
+        for(let i=0;i<rows.length;i++){
+          if(rows[i].some(cv=>String(cv||'').toUpperCase().includes('BG_ISL'))){hdrRow=i;break;}
+        }
+        if(hdrRow<0) throw new Error('Cannot find BG_ISL column header in this file');
+        const hdr    = rows[hdrRow].map(cv=>String(cv||'').toUpperCase());
+        const bgCol  = hdr.findIndex(h=>h.includes('BG_ISL'));
+        const rgCol  = hdr.findIndex(h=>h.includes('RG')&&!h.includes('BG'));
+        const atCol  = hdr.findIndex(h=>h.includes('TILL'));
+        const puCol  = 1; // PUCODE always col B
+        let parsed={}, puCount=0;
+        for(let i=hdrRow+1;i<rows.length;i++){
+          const row=rows[i];
+          const puLabel=String(row[puCol]||'').trim();
+          if(!puLabel||puLabel.toUpperCase()==='TOTAL'||puLabel.toUpperCase()==='PUCODE') continue;
+          const m=puLabel.match(/PU\s*-\s*(\d+)/i);
+          if(!m) continue;
+          const code=m[1].padStart(2,'0');
+          parsed[code]={
+            bg_isl: Number(row[bgCol])||0,
+            rg:     rgCol>0?(Number(row[rgCol])||0):0,
+            actuals_till: atCol>0?(Number(row[atCol])||0):0
+          };
+          puCount++;
+        }
+        if(puCount===0) throw new Error('No PU data found — check file format');
+        _pendingBudget = {data:parsed, filename:file.name, puCount, at:new Date()};
+        setDZState(type,'done',`✅ Parsed ${puCount} PU codes from "${file.name}"`);
+        addLog('Budget Available', file.name, puCount, null);
+
+      } else {
+        // ── Find header row with APR ──────────────────────────
+        let hdrRow=-1;
+        for(let i=0;i<rows.length;i++){
+          if(rows[i].some(cv=>String(cv||'').toUpperCase().trim()==='APR')){hdrRow=i;break;}
+        }
+        if(hdrRow<0) throw new Error('Cannot find APR column header in this file');
+        const hdr=rows[hdrRow].map(cv=>String(cv||'').toUpperCase().trim());
+        const FY_M=['APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC','JAN','FEB','MAR'];
+        const mCols={};
+        FY_M.forEach((ml,idx)=>{
+          const ci=hdr.findIndex(h=>h===ml||h.startsWith(ml));
+          if(ci>=0) mCols[FY_MONTHS[idx]]=ci;
+        });
+        if(Object.keys(mCols).length<3) throw new Error('Cannot find month columns (APR/MAY/JUN…)');
+
+        // Auto-sense current month from data: last month with non-zero actuals
+        let detectedMonthIdx = 0;
+        let parsed={}, puCount=0;
+        const puCol=1;
+        for(let i=hdrRow+1;i<rows.length;i++){
+          const row=rows[i];
+          const puLabel=String(row[puCol]||'').trim();
+          if(!puLabel||puLabel.toUpperCase()==='TOTAL'||puLabel.toUpperCase()==='PUCODE') continue;
+          const m=puLabel.match(/PU\s*-\s*(\d+)/i);
+          if(!m) continue;
+          const code=m[1].padStart(2,'0');
+          const vals={};
+          FY_MONTHS.forEach((mk,idx)=>{
+            vals[mk]= mCols[mk]!==undefined ? (Number(row[mCols[mk]])||0) : 0;
+          });
+          parsed[code]=vals;
+          puCount++;
+          // Detect: latest month that has any non-zero value
+          FY_MONTHS.forEach((mk,idx)=>{
+            if(vals[mk]!==0 && idx>=detectedMonthIdx) detectedMonthIdx=idx;
+          });
+        }
+        if(puCount===0) throw new Error('No PU data found — check file format');
+
+        const detectedMonthKey   = FY_MONTHS[detectedMonthIdx];
+        const detectedMonthLabel = FY_MONTH_LABELS[detectedMonthIdx];
+        const detectedYear       = detectedMonthIdx<=8?2026:2027;
+
+        _pendingMonth = {
+          data:parsed, filename:file.name, puCount,
+          detectedMonthIdx, detectedMonthKey, detectedMonthLabel, detectedYear,
+          at:new Date()
+        };
+        setDZState(type,'done',
+          `✅ Parsed ${puCount} PUs — Latest month with data: ${detectedMonthLabel} ${detectedYear}`);
+        addLog('Month Wise', file.name, puCount, `${detectedMonthLabel} ${detectedYear}`);
+      }
+    } catch(err) {
+      setDZState(type,'error','❌ '+err.message);
+      console.error(err);
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function addLog(fileType, filename, puCount, monthDetected) {
+  _uploadHistory.unshift({
+    fileType, filename, puCount, monthDetected,
+    at: new Date().toLocaleString('en-IN')
+  });
+  renderUploadLog();
+}
+
+function renderUploadLog() {
+  const tbody = document.getElementById('uploadLogTbody');
+  if(!tbody) return;
+  if(!_uploadHistory.length){
+    tbody.innerHTML='<tr><td colspan="6" style="color:#8AAAC8;text-align:center;padding:16px">No uploads yet — using pre-loaded data</td></tr>';
+    return;
+  }
+  tbody.innerHTML = _uploadHistory.map(e=>`
+    <tr>
+      <td><strong>${e.fileType}</strong></td>
+      <td style="font-family:monospace;font-size:9px">${e.filename}</td>
+      <td>${e.at}</td>
+      <td>${e.monthDetected||'<span style="color:#aaa">N/A</span>'}</td>
+      <td>${e.puCount} PUs</td>
+      <td><span class="log-dot ok"></span><strong style="color:#1A7A4A">Applied</strong></td>
+    </tr>`).join('');
+}
+
+function applyUploads() {
+  let monthChanged = false;
+
+  // ── Apply budget data ──────────────────────────────────────
+  if(_pendingBudget) {
+    Object.entries(_pendingBudget.data).forEach(([code,vals])=>{
+      if(!BUDGET[code]) BUDGET[code]={bg_isl:0,rg:0,actuals_till:0};
+      BUDGET[code].bg_isl       = vals.bg_isl;
+      BUDGET[code].rg           = vals.rg;
+      BUDGET[code].actuals_till = vals.actuals_till;
+    });
+    _pendingBudget=null;
+  }
+
+  // ── Apply month data + override current month detection ────
+  if(_pendingMonth) {
+    Object.entries(_pendingMonth.data).forEach(([code,vals])=>{
+      MONTH[code]=vals;
+    });
+    // KEY: override the detected current FY month index
+    _uploadedMonthIdx = _pendingMonth.detectedMonthIdx;
+    monthChanged = true;
+    _pendingMonth=null;
+  }
+
+  // ── Re-render everything ───────────────────────────────────
+  renderAll();
+  renderCurDataGrid();
+  renderUploadLog();
+
+  // Flash the apply button to confirm
+  const btn = document.getElementById('applyBtn');
+  btn.textContent = '✅ Applied! Tables Updated.';
+  btn.style.background='#1A7A4A';
+  btn.disabled=true;
+  setTimeout(()=>{
+    btn.textContent='✅ Apply Uploaded Data & Refresh All Tables';
+    btn.style.background='';
+    btn.disabled=true; // reset — need new upload to enable again
+  },3000);
+
+  if(monthChanged){
+    // Show confirmation banner at top
+    const banner=document.createElement('div');
+    banner.style.cssText='position:fixed;top:70px;right:20px;z-index:9998;background:#1A7A4A;color:#fff;padding:10px 18px;border-radius:8px;font-size:11px;font-weight:700;box-shadow:0 4px 16px rgba(0,0,0,.2)';
+    banner.textContent='✅ Data applied — current month auto-updated from uploaded file';
+    document.body.appendChild(banner);
+    setTimeout(()=>banner.remove(),4000);
+  }
+}
+
+function renderCurDataGrid() {
+  const {cur,futureMonths} = getMonthStatus();
+  const pus = PU_META.filter(p=>!p.isNeg);
+  let totB=0,totC=0;
+  pus.forEach(p=>{const cv=compute(p.code);totB+=cv.budget;totC+=cv.totalCommitted;});
+  const grid=document.getElementById('curDataGrid');
+  if(!grid) return;
+  const dataSource = _uploadedMonthIdx !== null
+    ? `Uploaded file (${FY_MONTH_LABELS[_uploadedMonthIdx]} ${_uploadedMonthIdx<=8?2026:2027})`
+    : 'Pre-loaded (JUN 2026)';
+  grid.innerHTML=`
+    <div class="cdb-item"><div class="cdb-lbl">Data Source</div><div class="cdb-val" style="font-size:10px">${dataSource}</div></div>
+    <div class="cdb-item"><div class="cdb-lbl">Current Month</div><div class="cdb-val" style="color:#1A4E9A">${cur.label} ${cur.year}</div></div>
+    <div class="cdb-item"><div class="cdb-lbl">Gross Budget</div><div class="cdb-val">${(totB*1000/10000000).toFixed(0)} Cr</div></div>
+    <div class="cdb-item"><div class="cdb-lbl">Committed Till Date</div><div class="cdb-val" style="color:#1A7A4A">${(totC*1000/10000000).toFixed(0)} Cr</div></div>
+    <div class="cdb-item"><div class="cdb-lbl">Remaining Months</div><div class="cdb-val">${futureMonths.length}</div></div>
+    <div class="cdb-item"><div class="cdb-lbl">Budget Mode</div><div class="cdb-val" style="font-size:10px">${isRGActive()?'✅ RG Active':'BG_ISL'}</div></div>
+  `;
 }
 
 function renderAll() {
