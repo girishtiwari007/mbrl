@@ -21,6 +21,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--surface);color:var
 
 /* HEADER */
 .hdr{background:linear-gradient(90deg,var(--navy) 0%,var(--steel) 100%);color:#fff;padding:0 20px;display:flex;align-items:center;gap:14px;height:60px;border-bottom:3px solid var(--gold)}
+.ht{flex:1;text-align:center}
 .emblem{width:40px;height:40px;flex-shrink:0}
 .ht h1{font-size:14px;font-weight:700;letter-spacing:.4px}
 .ht p{font-size:10px;color:#A8BDD4;margin-top:1px}
@@ -28,35 +29,25 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--surface);color:var
 .fy-badge{background:var(--gold);color:var(--navy);font-weight:700;font-size:11px;padding:3px 11px;border-radius:20px}
 .as-on{font-size:10px;color:#A8BDD4}
 
-/* TOOLBAR */
-.tbar{background:var(--navy-mid);padding:7px 20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;border-bottom:1px solid #1E3A5A}
-.tbar label.lbl{color:#A8BDD4;font-size:10px;white-space:nowrap}
-input[type=file]{display:none}
-.fbtn{background:#1A4E8A;color:#fff;border:1px solid #2E6DB0;padding:5px 11px;border-radius:var(--r);cursor:pointer;font-size:10px;display:inline-flex;align-items:center;gap:5px;transition:background .2s}
-.fbtn:hover{background:#2562A4}
-.fbtn.ok{background:#1A6A3A;border-color:#2A9A5A}
-.fstatus{font-size:10px;color:#8AAAC8;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.tbar-r{margin-left:auto;display:flex;align-items:center;gap:8px}
-.dl-btn{background:var(--gold);color:var(--navy);border:none;padding:5px 13px;border-radius:var(--r);cursor:pointer;font-size:10px;font-weight:700;display:inline-flex;align-items:center;gap:5px}
-.dl-btn:hover{background:#E8C040}
-.rg-note{background:#2A1A00;border:1px solid var(--accent);color:var(--accent);font-size:9px;padding:2px 8px;border-radius:var(--r)}
-select.fsel{background:var(--navy);color:#D0DFF0;border:1px solid #2E4A6A;padding:4px 8px;border-radius:var(--r);font-size:10px;cursor:pointer}
 
-/* STALE BANNER */
-.stale-banner{display:none;margin:0;background:linear-gradient(90deg,#7A2000,#C03000);color:#fff;padding:9px 20px;align-items:center;gap:12px;flex-wrap:wrap;border-bottom:2px solid #FF6020}
-.stale-banner.show{display:flex}
-.stale-icon{font-size:18px;flex-shrink:0}
-.stale-msg{flex:1;font-size:11px;line-height:1.5}
-.stale-msg strong{font-size:12px;display:block;margin-bottom:2px}
-.stale-dismiss{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:4px 12px;border-radius:var(--r);cursor:pointer;font-size:10px;white-space:nowrap}
-.stale-dismiss:hover{background:rgba(255,255,255,.25)}
-/* LAST UPDATED STRIP */
-.last-upd{background:#0D1E35;padding:4px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;border-bottom:1px solid #1A3050}
-.upd-item{font-size:9px;color:#6A8AAA;display:flex;align-items:center;gap:5px}
-.upd-item span.val{color:#A8C8E8;font-weight:600}
-.upd-item span.ok-dot{width:7px;height:7px;border-radius:50%;background:#1A7A4A;display:inline-block}
-.upd-item span.warn-dot{width:7px;height:7px;border-radius:50%;background:#F4A932;display:inline-block}
-.upd-item span.stale-dot{width:7px;height:7px;border-radius:50%;background:#E85D04;display:inline-block}
+/* FILTER BAR */
+.fbar{background:var(--navy-mid);padding:6px 20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;border-bottom:1px solid #1E3A5A}
+.fbar-lbl{color:#A8BDD4;font-size:10px}
+select.fsel{background:var(--navy);color:#D0DFF0;border:1px solid #2E4A6A;padding:4px 8px;border-radius:var(--r);font-size:10px;cursor:pointer}
+.rg-note{background:#2A1A00;border:1px solid var(--accent);color:var(--accent);font-size:9px;padding:2px 8px;border-radius:var(--r)}
+.dl-btn{background:var(--gold);color:var(--navy);border:none;padding:5px 13px;border-radius:var(--r);cursor:pointer;font-size:10px;font-weight:700;display:inline-flex;align-items:center;gap:5px;margin-left:auto}
+.dl-btn:hover{background:#E8C040}
+.live-clock{font-size:10px;color:#7ABCF0;font-weight:600;font-variant-numeric:tabular-nums}
+/* DUAL SCROLL */
+.scroll-top{overflow-x:auto;overflow-y:hidden;height:10px;border-bottom:1px solid var(--border)}
+.scroll-top-inner{height:1px}
+
+/* ROW HOVER & POPUP */
+tr[data-pu]{cursor:pointer;transition:filter .12s}
+tr[data-pu]:hover td{background:rgba(28,58,94,.08)!important}
+tr[data-pu].tot:hover td{background:inherit!important}
+#puPopup{transition:opacity .15s ease,transform .15s ease}
+
 /* CARDS */
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;padding:14px 20px 8px}
 .card{background:var(--white);border-radius:var(--r);padding:12px 14px;box-shadow:var(--sh);border-top:3px solid var(--steel)}
@@ -196,34 +187,26 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
   </div>
 </div>
 
-<!-- TOOLBAR -->
-<div class="tbar">
-  <span class="lbl">📂 Upload:</span>
-  <label class="fbtn" id="lbl-budget">
-    📄 Budget Available (.xls)
-    <input type="file" id="inp-budget" accept=".xls,.xlsx">
-  </label>
-  <label class="fbtn" id="lbl-month">
-    📅 Month Wise Actuals (.xls)
-    <input type="file" id="inp-month" accept=".xls,.xlsx">
-  </label>
-  <span class="fstatus" id="fstatus">Pre-loaded: BudgetReport 25-Jun-2026</span>
-  <div class="tbar-r">
-    <span class="rg-note" id="rgNote">⚠ RG not active — using BG_ISL</span>
-    <select class="fsel" id="typeFilter" onchange="renderAll()">
-      <option value="all">All PU Types</option>
-      <option value="Staff">Staff PU</option>
-      <option value="Non Staff">Non Staff PU</option>
-      <option value="Contractual">Contractual PU</option>
-    </select>
-    <select class="fsel" id="liabFilter" onchange="renderAll()">
-      <option value="all">All Liabilities</option>
-      <option value="Committed">Committed</option>
-      <option value="Planned">Planned</option>
-    </select>
-    <button class="dl-btn" onclick="downloadExcel()">⬇ Download Excel</button>
-  </div>
+
+<!-- FILTER BAR -->
+<div class="fbar">
+  <span class="fbar-lbl">Filter:</span>
+  <select class="fsel" id="typeFilter" onchange="renderAll()">
+    <option value="all">All PU Types</option>
+    <option value="Staff">Staff PU</option>
+    <option value="Non Staff">Non Staff PU</option>
+    <option value="Contractual">Contractual PU</option>
+  </select>
+  <select class="fsel" id="liabFilter" onchange="renderAll()">
+    <option value="all">All Liabilities</option>
+    <option value="Committed">Committed</option>
+    <option value="Planned">Planned</option>
+  </select>
+  <span class="rg-note" id="rgNote">⚠ RG not active — using BG_ISL</span>
+  <span class="live-clock" id="liveClock"></span>
+  <button class="dl-btn" onclick="downloadExcel()">⬇ Download Excel</button>
 </div>
+
 
 <!-- CARDS -->
 <div class="cards" id="summaryCards"></div>
@@ -727,36 +710,27 @@ function renderCards() {
 function renderJuneBars() {
   const {cur} = getMonthStatus();
   document.getElementById('curMonLabel').textContent = `${cur.label} ${cur.year}`;
-  document.querySelector('#curMonHdr').textContent = `${cur.label} ${cur.year} (Current)`;
-  document.querySelector('#mw-curmon-hdr').textContent = `${cur.label}\nCommitted`;
-  document.querySelector('#mw-curmon-rem').textContent = `${cur.label}\nRemaining`;
-  document.querySelector('#mw-curmon-tot').textContent = `${cur.label}\nTotal`;
-  document.querySelector('#rec-jun-hdr').textContent = `${cur.label} Committed`;
-  document.getElementById('asOnLabel').textContent = `As on: 25-Jun-2026`;
+  const el = document.getElementById('curMonHdr');
+  if (el) el.textContent = `${cur.label} ${cur.year} (Current)`;
 
-  // Top PUs by budget + overall
-  const topCodes = ['01','02','30','32','60','27','25'];
   let html = '';
+  const showPUs = PU_META
+    .filter(p => !p.isNeg)
+    .map(p => ({p, c:compute(p.code)}))
+    .filter(({c}) => c.budget !== 0 || c.totalCommitted !== 0)
+    .sort((a,b) => Math.abs(b.c.budget) - Math.abs(a.c.budget))
+    .slice(0, 14);
 
-  // Overall first
-  const allPus = PU_META.filter(p=>!p.isNeg);
-  let totB=0, totC=0;
-  allPus.forEach(pu => { const c=compute(pu.code); totB+=c.budget; totC+=c.totalCommitted; });
-  const ovPct = pct(totC, totB);
-  const ovCol = utilColor(ovPct);
-  html += `<div class="prog-item"><div class="prog-lbl" style="font-weight:700;color:var(--ink)">OVERALL — All PUs</div>
-    <div class="prog-wrap"><div class="prog-fill" style="width:${Math.min(100,ovPct)}%;background:${ovCol}"></div></div>
-    <div class="prog-pct" style="color:${ovCol}">${ovPct.toFixed(1)}%</div></div>`;
-
-  topCodes.forEach(code => {
-    const pu = PU_META.find(p=>p.code===code); if(!pu) return;
-    const c = compute(code);
-    const p = c.curDonePct;
-    const col = utilColor(p);
-    html += `<div class="prog-item">
-      <div class="prog-lbl">PU-${code}: ${pu.desc.substring(0,22)}</div>
-      <div class="prog-wrap"><div class="prog-fill" style="width:${Math.min(100,p)}%;background:${col}"></div></div>
-      <div class="prog-pct" style="color:${col}">${p.toFixed(0)}%</div></div>`;
+  showPUs.forEach(({p: pu, c}) => {
+    const pctVal = c.utilisedPct !== null ? Math.abs(c.utilisedPct) : 0;
+    const col    = c.utilisedFlag==='over'||c.utilisedFlag==='no-budget' ? '#CC0000'
+                 : pctVal>85 ? '#E85D04' : pctVal>60 ? '#C07000' : '#1A7A4A';
+    const flag   = c.utilisedFlag==='over' ? ' 🔴' : c.utilisedFlag==='no-budget' ? ' 🚨' : '';
+    const lbl    = c.utilisedFlag==='no-budget' ? 'No Budget' : pctVal.toFixed(1)+'%';
+    html += `<div class="prog-item" data-pu="${pu.code}" style="cursor:pointer">
+      <div class="prog-lbl">PU-${pu.code}: ${pu.desc.substring(0,22)}${flag}</div>
+      <div class="prog-wrap"><div class="prog-fill" style="width:${Math.min(100,pctVal)}%;background:${col}"></div></div>
+      <div class="prog-pct" style="color:${col}">${lbl}</div></div>`;
   });
   document.getElementById('juneBars').innerHTML = html;
 }
@@ -780,7 +754,7 @@ function renderLiability() {
     else if (pu.liab==='Committed') statusHtml = '<span style="color:var(--green)">✔ On Track</span>';
     else statusHtml = '<span style="color:var(--muted)">— Planned</span>';
 
-    rows += `<tr class="${getRowClass(pu)}">
+    rows += `<tr class="${getRowClass(pu)}" data-pu="${pu.code}" style="cursor:pointer">
       <td class="puc">${pu.code}</td>
       <td class="desc" title="${pu.desc}">${pu.desc}</td>
       <td>${puBadge(pu.puType)}</td>
@@ -848,7 +822,7 @@ function renderMonthwise() {
     for(let i=0;i<padNeeded;i++) futureCells += '<td class="n" style="color:#aaa">–</td>';
 
     const balCls = c.balanceBudget<0?'neg':c.balanceBudget<c.budget*0.1?'low':'ok';
-    rows += `<tr class="${getRowClass(pu)}">
+    rows += `<tr class="${getRowClass(pu)}" data-pu="${pu.code}" style="cursor:pointer">
       <td class="puc">${pu.code}</td>
       <td class="desc" title="${pu.desc}" style="font-weight:700">${pu.desc}</td>
       <td class="n">${fmtT(apr)}</td>
@@ -921,7 +895,7 @@ function renderRecovery() {
   // Main liability row
   const balCls = c.balanceBudget>0?'ok':c.balanceBudget<0?'neg':'';
   document.getElementById('rec-tbody').innerHTML = `
-    <tr class="neg-row">
+    <tr class="neg-row" data-pu="98" style="cursor:pointer">
       <td class="puc">98</td>
       <td class="desc">Credit or Recoveries</td>
       <td class="n neg-val">${fmtT(c.budget)}</td>
@@ -941,7 +915,7 @@ function renderRecovery() {
   let cells = allMonths.map(m => `<td class="n neg-val">${md[m]?fmtT(md[m]):'<span style="color:#aaa">–</span>'}</td>`).join('');
   const total = allMonths.reduce((s,m)=>s+(md[m]||0),0);
   document.getElementById('rec-mw-tbody').innerHTML = `
-    <tr class="neg-row">
+    <tr class="neg-row" data-pu="98" style="cursor:pointer">
       <td class="puc">98</td>
       <td class="desc">Credit or Recoveries</td>
       ${cells}
@@ -956,7 +930,7 @@ function renderPUMaster() {
   let rows = '';
   PU_META.forEach(pu => {
     const b = BUDGET[pu.code]||{};
-    rows += `<tr class="${getRowClass(pu)}">
+    rows += `<tr class="${getRowClass(pu)}" data-pu="${pu.code}" style="cursor:pointer">
       <td class="puc">${pu.code}</td>
       <td class="desc" style="font-weight:700">${pu.desc}</td>
       <td>${puBadge(pu.puType)}</td>
@@ -980,138 +954,159 @@ function switchTab(name) {
   document.querySelectorAll('.tab-content').forEach(tc => {
     tc.classList.toggle('active', tc.id==='tab-'+name);
   });
+  // Hide any open popup when switching tabs
+  if(_pp){ _pp.style.opacity='0'; _pp.style.transform='translateY(6px)'; }
 }
 
 // ═══════════════════════════════════════════════
 // EXCEL DOWNLOAD using SheetJS CDN
 // ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════
+// EXCEL DOWNLOAD
+// ═══════════════════════════════════════════════
 function downloadExcel() {
-  // XLSX always available (embedded)
   const wb = XLSX.utils.book_new();
-
-  // Sheet 1: Liability
-  const liabData = [
-    ['PU Code','Description','PU Type','Liability','Budget (₹000s)','Budget (₹ Cr)','APR Actual (₹000s)','APR (₹ Cr)','MAY Actual (₹000s)','MAY (₹ Cr)','JUN Committed (₹000s)','JUN Remaining (₹000s)','JUN Total (₹000s)','JUN % Done','Total Committed (₹000s)','Balance Budget (₹000s)','Proj/Month (₹000s)','% Utilised']
-  ];
+  const liabData = [['PU','Description','PU Type','Liability','Budget(₹000s)','Budget(₹Cr)','APR Actual','MAY Actual','JUN Committed','JUN Remaining','JUN Total','JUN%Done','Total Committed','Balance Budget','Proj/Month','%Utilised','Status']];
   PU_META.filter(p=>!p.isNeg).forEach(pu => {
     const c=compute(pu.code); const md=MONTH[pu.code]||{};
+    const pctStr = c.utilisedFlag==='no-budget'?'No Budget':c.utilisedFlag==='none'?'Nil':c.utilisedPct!=null?c.utilisedPct.toFixed(1)+'%':'–';
     liabData.push([pu.code,pu.desc,pu.puType,pu.liab,c.budget,(c.budget*1000/10000000).toFixed(2),
-      md.apr||0,((md.apr||0)*1000/10000000).toFixed(2),md.may||0,((md.may||0)*1000/10000000).toFixed(2),
-      c.curCommitted,c.curRemaining,c.curMonthTotal,c.curDonePct.toFixed(1)+'%',
-      c.totalCommitted,c.balanceBudget,c.projPerMonth.toFixed(0),c.utilisedPct.toFixed(1)+'%']);
+      md.apr||0,md.may||0,c.curCommitted,c.curRemaining,c.curMonthTotal,c.curDonePct.toFixed(1)+'%',
+      c.totalCommitted,c.balanceBudget,Math.round(c.projPerMonth),pctStr,
+      c.utilisedFlag==='over'?'OVER BUDGET':c.utilisedFlag==='no-budget'?'NO BUDGET':'OK']);
   });
   XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(liabData), 'Liability');
-
-  // Sheet 2: Month Wise
-  const mwData = [['PU','Description','APR','MAY','JUN Committed','JUN Remaining','JUN Total','JUL','AUG','SEP','OCT','NOV','DEC','JAN','FEB','MAR','Budget','Total Committed','Balance','% Used']];
+  const mwData=[['PU','Description','APR','MAY','JUN Committed','JUN Remaining','JUN Total','JUL','AUG','SEP','OCT','NOV','DEC','JAN','FEB','MAR','Budget','Committed','Balance','%Used']];
   PU_META.filter(p=>!p.isNeg).forEach(pu => {
     const c=compute(pu.code); const md=MONTH[pu.code]||{};
-    const proj=c.projPerMonth;
-    mwData.push([pu.code,pu.desc,md.apr||0,md.may||0,c.curCommitted,c.curRemaining,c.curMonthTotal,
-      proj,proj,proj,proj,proj,proj,proj,proj,proj,
-      c.budget,c.totalCommitted,c.balanceBudget,c.utilisedPct.toFixed(1)+'%']);
+    const proj=Math.round(c.projPerMonth);
+    mwData.push([pu.code,pu.desc,md.apr||0,md.may||0,c.curCommitted,c.curRemaining,c.curMonthTotal,proj,proj,proj,proj,proj,proj,proj,proj,proj,c.budget,c.totalCommitted,c.balanceBudget,c.utilisedPct!=null?c.utilisedPct.toFixed(1)+'%':'N/A']);
   });
   XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(mwData), 'Month Wise');
-
-  // Sheet 3: Recoveries
-  const recData = [['PU','Description','Budget (₹000s)','Budget (₹ Cr)','APR','MAY','JUN Committed','JUN Remaining','Total Committed','Balance','Proj/Month','% Used']];
   const c98=compute('98'); const md98=MONTH['98']||{};
-  recData.push(['98','Credit or Recoveries',c98.budget,(c98.budget*1000/10000000).toFixed(2),
-    md98.apr||0,md98.may||0,c98.curCommitted,c98.curRemaining,c98.totalCommitted,c98.balanceBudget,c98.projPerMonth.toFixed(0),c98.utilisedPct.toFixed(1)+'%']);
-  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(recData), 'Recoveries');
-
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([
+    ['PU','Description','Budget(₹000s)','Budget(₹Cr)','APR','MAY','JUN Committed','JUN Remaining','Total Committed','Balance','Proj/Month','%Used'],
+    ['98','Credit or Recoveries',c98.budget,(c98.budget*1000/10000000).toFixed(2),md98.apr||0,md98.may||0,c98.curCommitted,c98.curRemaining,c98.totalCommitted,c98.balanceBudget,Math.round(c98.projPerMonth),c98.utilisedPct!=null?c98.utilisedPct.toFixed(1)+'%':'–']
+  ]), 'Recoveries');
   XLSX.writeFile(wb, `Revenue_Liability_MBD_${new Date().toISOString().slice(0,10)}.xlsx`);
 }
 
-// ═══════════════════════════════════════════════
-// FILE UPLOAD — Auto-detect current month & recalc
-// ═══════════════════════════════════════════════
-function handleUpload(inp, type) {
-  inp.addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    document.getElementById('fstatus').textContent = `Loading: ${file.name}...`;
-    const lbl = type==='budget' ? document.getElementById('lbl-budget') : document.getElementById('lbl-month');
 
-    parseFile(file, type, lbl);
+// Live clock
+(function tick(){
+  const el=document.getElementById('liveClock');
+  if(el) el.textContent=new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  setTimeout(tick,1000);
+})();
+
+// Dual scroll sync
+function addDualScroll(){
+  document.querySelectorAll('.twrap').forEach(wrap=>{
+    if(wrap.dataset.ds) return; wrap.dataset.ds='1';
+    const top=document.createElement('div'); top.className='scroll-top';
+    const inner=document.createElement('div'); top.appendChild(inner); inner.style.height='1px';
+    wrap.parentNode.insertBefore(top,wrap);
+    function syncW(){ const t=wrap.querySelector('table'); if(t) inner.style.width=t.scrollWidth+'px'; }
+    syncW(); top.addEventListener('scroll',()=>wrap.scrollLeft=top.scrollLeft);
+    wrap.addEventListener('scroll',()=>top.scrollLeft=wrap.scrollLeft);
+    new ResizeObserver(syncW).observe(wrap);
   });
 }
 
-function parseFile(file, type, lbl) {
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    try {
-      const data = new Uint8Array(e.target.result);
-      const wb = XLSX.read(data, {type:'array'});
-      const ws = wb.Sheets[wb.SheetNames[0]];
-      const rows = XLSX.utils.sheet_to_json(ws, {header:1, defval:0});
+// PU Popup
+const _pp=document.createElement('div');
+_pp.id='puPopup';
+_pp.style.cssText='position:fixed;z-index:9999;pointer-events:none;background:#fff;border:1px solid #C0D4F0;border-radius:8px;padding:0;box-shadow:0 8px 32px rgba(10,22,40,.20),0 2px 8px rgba(10,22,40,.10);min-width:270px;max-width:320px;opacity:0;transform:translateY(6px);transition:opacity .15s,transform .15s;font-size:11px;color:#0A1628;overflow:hidden';
+document.body.appendChild(_pp);
+let _ppTimer=null;
 
-      if (type === 'budget') {
-        // Find header row (contains BG_ISL)
-        let hdrRow = -1;
-        for(let i=0;i<rows.length;i++) {
-          if (rows[i].some(c => String(c||'').includes('BG_ISL'))) { hdrRow=i; break; }
-        }
-        if (hdrRow < 0) { alert('Could not find BG_ISL header in budget file.'); return; }
-        // Column map
-        const hdr = rows[hdrRow].map(c => String(c||''));
-        const bgCol = hdr.findIndex(h=>h.includes('BG_ISL'));
-        const rgCol = hdr.findIndex(h=>h.includes('RG'));
-        const atCol = hdr.findIndex(h=>h.includes('TILL DATE'));
-        const puCol = 1;
-        for(let i=hdrRow+1;i<rows.length;i++) {
-          const row = rows[i];
-          const puLabel = String(row[puCol]||'').trim();
-          if (!puLabel || puLabel==='TOTAL') continue;
-          // Extract code: "PU - 01 - Sal/Wag" → "01"
-          const m = puLabel.match(/PU\s*-\s*(\d+)/);
-          if (!m) continue;
-          const code = m[1].padStart(2,'0');
-          if (!BUDGET[code]) BUDGET[code]={bg_isl:0,rg:0,actuals_till:0};
-          BUDGET[code].bg_isl = Number(row[bgCol])||0;
-          if (rgCol>0) BUDGET[code].rg = Number(row[rgCol])||0;
-          if (atCol>0) BUDGET[code].actuals_till = Number(row[atCol])||0;
-        }
-        lbl.classList.add('ok');
-        document.getElementById('fstatus').textContent = `✅ Budget loaded: ${file.name}`;
-      } else {
-        // Month wise: detect current month from column headers automatically
-        let hdrRow = -1;
-        for(let i=0;i<rows.length;i++) {
-          if (rows[i].some(c => String(c||'').toUpperCase().includes('APR'))) { hdrRow=i; break; }
-        }
-        if (hdrRow < 0) { alert('Could not find month headers in file.'); return; }
-        const hdr = rows[hdrRow].map(c => String(c||'').toUpperCase());
-        // Map month keys to column indices
-        const mCols = {};
-        FY_MONTH_LABELS.forEach((ml,idx) => {
-          const ci = hdr.findIndex(h=>h.includes(ml));
-          if (ci>=0) mCols[FY_MONTHS[idx]] = ci;
-        });
-        const puCol = 1;
-        for(let i=hdrRow+1;i<rows.length;i++) {
-          const row = rows[i];
-          const puLabel = String(row[puCol]||'').trim();
-          if (!puLabel || puLabel==='TOTAL' || puLabel==='PUCODE') continue;
-          const m2 = puLabel.match(/PU\s*-\s*(\d+)/);
-          if (!m2) continue;
-          const code = m2[1].padStart(2,'0');
-          if (!MONTH[code]) MONTH[code]={apr:0,may:0,jun:0,jul:0,aug:0,sep:0,oct:0,nov:0,dec:0,jan:0,feb:0,mar:0};
-          Object.entries(mCols).forEach(([mk, ci]) => {
-            MONTH[code][mk] = Number(row[ci])||0;
-          });
-        }
-        lbl.classList.add('ok');
-        document.getElementById('fstatus').textContent = `✅ Month actuals loaded: ${file.name}`;
-      }
-      renderAll();
-    } catch(err) {
-      document.getElementById('fstatus').textContent = `❌ Parse error: ${err.message}`;
-      console.error(err);
-    }
-  };
-  reader.readAsArrayBuffer(file);
+function showPUPopup(e,code){
+  clearTimeout(_ppTimer);
+  const pu=PU_META.find(p=>p.code===code); if(!pu) return;
+  const cv=compute(code); const md=MONTH[code]||{};
+  const {futureMonths}=getMonthStatus();
+  const pctVal=cv.utilisedPct!=null?Math.abs(cv.utilisedPct):0;
+  const pctStr=cv.utilisedFlag==='no-budget'?'No Budget':cv.utilisedFlag==='none'?'Nil':pctVal.toFixed(1)+'%';
+  const col=cv.utilisedFlag==='over'||cv.utilisedFlag==='no-budget'?'#CC0000':pctVal>85?'#E85D04':pctVal>60?'#C07000':'#1A7A4A';
+  const r=22,circ=2*Math.PI*r,dash=(Math.min(100,pctVal)/100)*circ;
+  const vals=[md.apr||0,md.may||0,cv.curCommitted];
+  const maxV=Math.max(...vals,cv.projPerMonth,1);
+  const bars=['APR','MAY','JUN'].map((m,i)=>`
+    <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px">
+      <div style="font-size:8px;color:#607080;width:36px">${m}</div>
+      <div style="flex:1;background:#EDF1F7;border-radius:2px;height:7px;overflow:hidden">
+        <div style="width:${Math.min(100,vals[i]/maxV*100)}%;height:100%;background:${i===2?'#F4A932':'#1C3A5E'};border-radius:2px"></div>
+      </div>
+      <div style="font-size:8px;width:55px;text-align:right;font-family:monospace">${vals[i]?vals[i].toLocaleString('en-IN'):'-'}</div>
+    </div>`).join('');
+  const projBar=`<div style="display:flex;align-items:center;gap:6px">
+    <div style="font-size:8px;color:#607080;width:36px">Proj</div>
+    <div style="flex:1;background:#EDF1F7;border-radius:2px;height:7px;overflow:hidden">
+      <div style="width:${Math.min(100,cv.projPerMonth/maxV*100)}%;height:100%;background:#0FBCB0;border-radius:2px"></div>
+    </div>
+    <div style="font-size:8px;width:55px;text-align:right;font-family:monospace">${cv.projPerMonth>0?Math.round(cv.projPerMonth).toLocaleString('en-IN'):'-'}</div>
+  </div>`;
+  const typeCol = pu.puType.includes('Staff PU')&&!pu.puType.includes('Non')?'#1A7A4A':pu.puType.includes('Contractual')?'#C07000':'#1C3A5E';
+  _pp.innerHTML=`
+    <div style="background:${typeCol};padding:8px 14px 7px;display:flex;align-items:center;gap:8px">
+      <div style="font-size:15px;font-weight:700;color:#fff;min-width:36px">PU-${pu.code}</div>
+      <div><div style="font-size:11px;font-weight:700;color:#fff">${pu.desc}</div><div style="font-size:8px;color:rgba(255,255,255,.75);margin-top:1px">${pu.puType} · ${pu.liab}</div></div>
+    </div>
+    <div style="padding:12px 14px">
+    <div style="display:flex;gap:10px;align-items:center;margin-bottom:10px">
+      <div style="position:relative;width:56px;height:56px;flex-shrink:0">
+        <svg width="56" height="56" viewBox="0 0 56 56">
+          <circle cx="28" cy="28" r="${r}" fill="none" stroke="#E0EAF4" stroke-width="6"/>
+          <circle cx="28" cy="28" r="${r}" fill="none" stroke="${col}" stroke-width="6"
+            stroke-dasharray="${dash.toFixed(1)} ${circ.toFixed(1)}"
+            stroke-dashoffset="${(circ/4).toFixed(1)}" style="transition:stroke-dasharray .4s"/>
+        </svg>
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:${col}">${pctStr}</div>
+      </div>
+      <div style="flex:1;font-size:9px">
+        <div style="margin-bottom:3px">Budget: <strong>${cv.budget?(cv.budget*1000/10000000).toFixed(2)+' Cr':'–'}</strong></div>
+        <div style="margin-bottom:3px">Committed: <strong>${(cv.totalCommitted*1000/10000000).toFixed(2)} Cr</strong></div>
+        <div style="margin-bottom:3px">Balance: <strong style="color:${cv.balanceBudget<0?'#CC0000':'#1A7A4A'}">${(cv.balanceBudget*1000/10000000).toFixed(2)} Cr</strong></div>
+        <div>Proj/Mo: <strong>${cv.projPerMonth>0?(cv.projPerMonth*1000/10000000).toFixed(2)+' Cr':'–'}</strong></div>
+      </div>
+    </div>
+    <div style="border-top:1px solid #E0EAF4;padding-top:8px">
+      <div style="font-size:8px;color:#607080;text-transform:uppercase;letter-spacing:.3px;margin-bottom:5px">Monthly Spend (₹'000s)</div>
+      ${bars}${projBar}
+    </div>
+    </div>
+    <div style="background:#F5F8FC;border-top:1px solid #E0EAF4;padding:4px 14px;font-size:8px;color:#8AAAC8;text-align:center">Hover for details &nbsp;·&nbsp; Figures in ₹ '000s</div>
+    </div>`;
+  const vw=window.innerWidth,vh=window.innerHeight;
+  let x=e.clientX+14, y=e.clientY+8;
+  if(x+320>vw) x=e.clientX-320;
+  if(y+320>vh) y=e.clientY-320;
+  _pp.style.left=x+'px'; _pp.style.top=y+'px';
+  _pp.style.opacity='1'; _pp.style.transform='translateY(0)';
 }
+function hidePUPopup(){ _ppTimer=setTimeout(()=>{_pp.style.opacity='0';_pp.style.transform='translateY(6px)'},180); }
+function attachPUPopup(){
+  // Using event delegation on document — works after every re-render, no re-binding needed
+  // (listeners are only added once)
+}
+
+// ── Event delegation: one listener on document covers all tables ──────────
+document.addEventListener('mouseover', function(e){
+  const tr = e.target.closest('tr[data-pu]');
+  if (!tr) return;
+  showPUPopup(e, tr.dataset.pu);
+});
+document.addEventListener('mouseout', function(e){
+  const tr = e.target.closest('tr[data-pu]');
+  if (!tr) return;
+  // Only hide if moving outside the row entirely
+  if (!tr.contains(e.relatedTarget)) hidePUPopup();
+});
+document.addEventListener('click', function(e){
+  const tr = e.target.closest('tr[data-pu]');
+  if (!tr) return;
+  showPUPopup(e, tr.dataset.pu);
+});
 
 function renderAll() {
   renderCards();
@@ -1120,12 +1115,11 @@ function renderAll() {
   renderMonthwise();
   renderRecovery();
   renderPUMaster();
+  document.getElementById('rgNote').textContent=isRGActive()?'✅ RG Active':'⚠ RG not active — using BG_ISL';
+  setTimeout(()=>{addDualScroll();attachPUPopup();},80);
 }
 
 // SheetJS embedded inline above
-
-handleUpload(document.getElementById('inp-budget'), 'budget');
-handleUpload(document.getElementById('inp-month'), 'month');
 
 // INIT
 renderAll();
