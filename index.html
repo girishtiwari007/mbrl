@@ -103,7 +103,7 @@ tbody tr:hover{filter:brightness(.97)}
 td{padding:6px 9px;font-size:12px;}
 td.n{text-align:right;font-variant-numeric:tabular-nums}
 td.puc{font-weight:700;color:var(--steel)}
-td.desc{max-width:180px;overflow:hidden;text-overflow:ellipsis;font-weight:600}
+td.desc { white-space:normal; word-break:break-word; min-width:140px; max-width:none; line-height:1.45; font-weight:600; font-size:12px; }
 
 /* Badges */
 .badge{font-size:8px;font-weight:700;padding:2px 5px;border-radius:9px;display:inline-block;white-space:nowrap}
@@ -141,7 +141,7 @@ td { white-space:normal; word-break:break-word; }
 /* Numbers and codes stay on one line */
 td.n, td.puc, .badge, .mp { white-space:nowrap; }
 /* Description column wraps nicely */
-td.desc { white-space:normal; word-break:break-word; min-width:120px; max-width:200px; line-height:1.4; }
+td.desc { white-space:normal; word-break:break-word; min-width:140px; max-width:none; line-height:1.45; font-weight:600; font-size:12px; }
 /* thead stays compact */
 thead th { white-space:normal; word-break:break-word; line-height:1.3; min-width:60px; vertical-align:bottom; }
 thead th.la { min-width:80px; }
@@ -150,11 +150,11 @@ thead th.la { min-width:80px; }
 /* On wide screens table fills width */
 @media (min-width:1200px) {
   .twrap table { width:100%; }
-  td.desc { max-width:220px; }
+  td.desc { white-space:normal; word-break:break-word; min-width:140px; max-width:none; line-height:1.45; font-weight:600; font-size:12px; }
 }
 /* Medium screens */
 @media (max-width:1200px) and (min-width:768px) {
-  td.desc { max-width:150px; }
+  td.desc { white-space:normal; word-break:break-word; min-width:140px; max-width:none; line-height:1.45; font-weight:600; font-size:12px; }
   thead th { font-size:7px; padding:5px 6px; }
   td { padding:5px 6px; font-size:11px; }
 }
@@ -165,7 +165,7 @@ thead th.la { min-width:80px; }
   .tabs, .jun-sec, .note-box, .fbar { margin-left:8px; margin-right:8px; }
   thead th { font-size:7px; padding:4px 5px; }
   td { padding:4px 5px; font-size:10px; }
-  td.desc { max-width:110px; font-size:10px; }
+  td.desc { white-space:normal; word-break:break-word; min-width:140px; max-width:none; line-height:1.45; font-weight:600; font-size:12px; }
   .hdr { height:auto; padding:10px 14px; flex-wrap:wrap; }
   .ht h1 { font-size:11px; }
   .hdr-r { flex-wrap:wrap; gap:6px; }
@@ -399,7 +399,6 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
 <div class="tabs">
   <div class="tab active" onclick="switchTab('liability')">📊 Revenue Liability</div>
   <div class="tab" onclick="switchTab('monthwise')">📅 Month-wise Actuals</div>
-  <div class="tab" onclick="switchTab('recovery')">🔴 Recoveries / Credits</div>
   <div class="tab" onclick="switchTab('pumaster')">📋 PU Master</div>
   <div class="tab" id="uploadTab" onclick="switchTab('upload')" style="display:none">📤 Data Upload</div>
 </div>
@@ -425,7 +424,7 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
           <th rowspan="2">Budget<br>(₹'000s)</th>
           <th class="sub" colspan="1">APR 2026</th>
           <th class="sub" colspan="1">MAY 2026</th>
-          <th class="sub" colspan="4" id="curMonHdr">JUN 2026 (Current)</th>
+          <th class="sub" colspan="4" id="curMonHdr" style="background:rgba(244,169,50,.15)">JUN 2026 — Till Date Exp + Remaining</th>
           <th rowspan="2">Total Committed<br>(₹'000s)</th>
           <th rowspan="2">Balance Budget<br>(₹'000s)</th>
           <th rowspan="2">Proj./Month<br>Jul–Mar (₹'000s)</th>
@@ -435,7 +434,7 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
         <tr>
           <th class="sub" style="min-width:90px">APR Actual<br>(₹'000s)</th>
           <th class="sub" style="min-width:90px">MAY Actual<br>(₹'000s)</th>
-          <th class="sub" style="min-width:100px">JUN Till Date<br>Expense (₹'000s)</th>
+          <th class="sub" style="min-width:100px">JUN till date exp<br>(₹'000s)</th>
           <th class="sub" style="min-width:90px">JUN<br>Remaining</th>
           <th class="sub" style="min-width:90px">JUN Total<br>(₹'000s)</th>
           <th class="sub">% Done</th>
@@ -462,7 +461,7 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
           <th class="la" style="min-width:40px">PU</th>
           <th class="la" style="min-width:160px">Description</th>
           <th>APR<br>Actual</th><th>MAY<br>Actual</th>
-          <th id="mw-curmon-hdr" style="background:#7A5A00;color:#FFF9E0">JUN<br>Committed</th>
+          <th id="mw-curmon-hdr" style="background:#7A5A00;color:#FFF9E0">JUN till<br>date exp</th>
           <th id="mw-curmon-rem" style="background:#7A5A00;color:#FFF9E0">JUN<br>Remaining</th>
           <th id="mw-curmon-tot" style="background:#7A5A00;color:#FFF9E0">JUN<br>Total</th>
           <th style="background:#1A3A6A;color:#DDEEFF">JUL<br>Projected</th>
@@ -485,50 +484,6 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
   </div>
 </div>
 
-<!-- TAB: RECOVERY -->
-<div class="tab-content" id="tab-recovery">
-  <div class="rec-banner">
-    <div>
-      <h2>🔴 Credits & Recoveries — PU-98</h2>
-      <p>Negative budget entries representing recoveries, credits, and deductions from gross expenditure</p>
-    </div>
-  </div>
-  <div class="rec-cards" id="rec-cards"></div>
-  <div class="twrap" style="margin-top:0">
-    <div class="thead-bar">
-      <span class="ttitle">PU-98: Credit or Recoveries — Monthly Detail</span>
-      <div class="legend">
-        <div class="leg-item"><div class="leg-box neg"></div>Negative / Recovery Entry</div>
-      </div>
-    </div>
-    <table>
-      <thead>
-        <tr>
-          <th class="la">PU</th><th class="la">Description</th>
-          <th>Budget (₹'000s)</th><th>Budget (₹ Cr)</th>
-          <th>APR Actual</th><th>MAY Actual</th>
-          <th id="rec-jun-hdr">JUN Committed</th><th>JUN Remaining</th>
-          <th>Total Committed</th><th>Balance</th><th>Proj/Month</th><th>% Used</th>
-        </tr>
-      </thead>
-      <tbody id="rec-tbody"></tbody>
-    </table>
-  </div>
-  <div class="twrap" style="margin-top:10px">
-    <div class="thead-bar"><span class="ttitle">PU-98: Month-wise Actuals</span></div>
-    <table>
-      <thead>
-        <tr>
-          <th class="la">PU</th><th class="la">Description</th>
-          <th>APR</th><th>MAY</th><th>JUN</th>
-          <th>JUL</th><th>AUG</th><th>SEP</th><th>OCT</th><th>NOV</th><th>DEC</th><th>JAN</th><th>FEB</th><th>MAR</th>
-          <th>TOTAL</th>
-        </tr>
-      </thead>
-      <tbody id="rec-mw-tbody"></tbody>
-    </table>
-  </div>
-</div>
 
 <!-- TAB: PU MASTER -->
 <div class="tab-content" id="tab-pumaster">
@@ -632,6 +587,19 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
 </div>
 
 <script>
+// ── POPUP ELEMENT
+let _pp = null;
+let _ppTimer = null;
+function initPopup() {
+  if (_pp) return; // already initialised
+  _pp = document.createElement('div');
+  _pp.id='puPopup';
+  _pp.style.cssText='position:fixed;z-index:9999;pointer-events:none;background:#fff;border:1px solid #C0D4F0;border-radius:8px;padding:0;box-shadow:0 8px 32px rgba(10,22,40,.20),0 2px 8px rgba(10,22,40,.10);min-width:270px;max-width:320px;opacity:0;transform:translateY(6px);transition:opacity .15s,transform .15s;font-size:11px;color:#0A1628;overflow:hidden';
+  document.body.appendChild(_pp);
+  _pp.addEventListener('mouseenter', function(){ clearTimeout(_ppTimer); });
+  _pp.addEventListener('mouseleave', hidePUPopup);
+}
+
 // ── LOGIN SYSTEM ─────────────────────────────────────────────
 const USERS = {
   'MB':      'MB',
@@ -656,10 +624,11 @@ function doLogin() {
   }
   document.getElementById('loginOverlay').classList.add('hidden');
   sessionStorage.setItem('rlp_auth', user);
-  // Show upload tab only for ADMIN
   if (user === 'ADMIN') {
     document.getElementById('uploadTab').style.display = '';
   }
+  renderAll(); // Re-render after login to ensure tables are populated
+  setTimeout(()=>{addDualScroll();attachPUPopup();},100);
 }
 
 // Auto-login if session exists (tab refresh)
@@ -669,6 +638,7 @@ if (_savedUser) {
   if (_savedUser === 'ADMIN') {
     document.getElementById('uploadTab').style.display = '';
   }
+  // renderAll called at INIT below — no need to call again here
 }
 
 // ═══════════════════════════════════════════════════════
@@ -700,12 +670,12 @@ const PU_META = [
   {code:'24',desc:'Printing and Stnry',puType:'Non Staff PU',liab:'Planned',isNeg:false},
   {code:'25',desc:'Children Edu. Allow',puType:'Staff PU',liab:'Committed',isNeg:false},
   {code:'26',desc:'Medical Expenses',puType:'Staff PU',liab:'Planned',isNeg:false},
-  {code:'27',desc:'Materials from stock',puType:'Contractual PU/Non Staff PU',liab:'Planned',isNeg:false},
-  {code:'28',desc:'Materials-Dir. purchase',puType:'Contractual PU/Non Staff PU',liab:'Planned',isNeg:false},
+  {code:'27',desc:'Materials from stock',puType:'Non Staff PU',liab:'Planned',isNeg:false},
+  {code:'28',desc:'Materials-Dir. purchase',puType:'Non Staff PU',liab:'Planned',isNeg:false},
   {code:'29',desc:'Remu. Re-engaged Staff',puType:'Staff PU',liab:'Planned',isNeg:false},
-  {code:'30',desc:'Cost Of Elec. Energy/Traction Energy Procurement',puType:'Contractual PU/Non Staff PU',liab:'Committed Liability',isNeg:false},
-  {code:'31',desc:'Direct Purchase',puType:'Stores-Other/Non Staff PU',liab:'Planned',isNeg:false},
-  {code:'32',desc:'Contractual payments',puType:'Contractual PU/Non Staff PU',liab:'Planned',isNeg:false},
+  {code:'30',desc:'Cost Of Elec. Energy/Traction Energy Procurement',puType:'Non Staff PU',liab:'Committed',isNeg:false},
+  {code:'31',desc:'Direct Purchase',puType:'Non Staff PU',liab:'Planned',isNeg:false},
+  {code:'32',desc:'Contractual payments',puType:'Non Staff PU',liab:'Planned',isNeg:false},
   {code:'33',desc:'Transfer of debits/credits from other units',puType:'Non Staff PU',liab:'Planned',isNeg:false},
   {code:'34',desc:'Intra-railway adjustment of wages on POH and other repairs',puType:'Staff PU',liab:'Planned',isNeg:false},
   {code:'35',desc:'Material POH',puType:'Non Staff PU',liab:'Planned',isNeg:false},
@@ -735,7 +705,7 @@ const PU_META = [
   {code:'74',desc:'Union Territory GST (UTGST)',puType:'Non Staff PU',liab:'Planned',isNeg:false},
   {code:'75',desc:'Integrated GST (IGST)',puType:'Non Staff PU',liab:'Planned',isNeg:false},
   {code:'99',desc:'Other Expenses/Misc',puType:'Non Staff PU',liab:'Planned',isNeg:false},
-  // Recovery — shown in dedicated Recoveries tab only
+  // PU-98: Recoveries — kept in data for Recovery tab reference only
   {code:'98',desc:'Credit or Recoveries',puType:'Staff PU',liab:'Recovery',isNeg:true},
 ];
 
@@ -892,46 +862,46 @@ function compute(code) {
   const budget = getBudget(code);
   const isNeg  = (PU_META.find(p=>p.code===code)||{}).isNeg || false;
 
-  // ── VERIFIED FORMULA ──────────────────────────────────────
-  // Budget = APR + MAY + JUN_committed + JUN_remaining + JUL×proj + ... + MAR×proj
-  // where JUN_remaining = JUL_proj = ... = MAR_proj  (equal monthly distribution)
-  // remaining_balance = budget - (APR + MAY + JUN_committed)
-  // proj_per_month    = remaining_balance / (1 + futureMonths.length)
-  //                   = remaining_balance / 10   (for JUN as current month)
-  // JUN_remaining     = proj_per_month
-  // CHECK: APR+MAY+JUN_c + (1+9)×proj_per_month = budget ✅
-  // ─────────────────────────────────────────────────────────
+  // ══════════════════════════════════════════════════════════
+  // VERIFIED FORMULA — Budget balances exactly across 12 months
+  // ──────────────────────────────────────────────────────────
+  // Budget = APR_actual + MAY_actual + JUN_total + JUL_proj×9
+  // where:
+  //   JUN_total      = proj_per_month  (one equal share of remaining)
+  //   JUN_remaining  = proj_per_month − JUN_committed
+  //   proj_per_month = (Budget − pastActuals) ÷ (1 + futureMonths.length)
+  //
+  // CHECK: APR + MAY + proj×10 = Budget ✅
+  // ══════════════════════════════════════════════════════════
 
-  // Past months actuals (APR, MAY for June scenario)
+  // Past months actuals (completed months before current)
   const pastActuals  = pastMonths.reduce((s,m) => s + (md[m]||0), 0);
 
-  // Current month committed spend (entries so far this month)
+  // Current month committed/expenses done so far
   const curCommitted = md[curMonthKey] || 0;
 
-  // Balance after removing all committed spend
-  const spentSoFar      = pastActuals + curCommitted;
-  const remainingBalance = budget - spentSoFar;
+  // proj_per_month = remaining after past actuals ÷ 10 equal months
+  // (current month remainder counts as 1 full projected month)
+  const totalRemainingMonths = 1 + futureMonths.length;  // e.g. 10 for JUN
+  const projPerMonth = totalRemainingMonths > 0
+    ? (budget - pastActuals) / totalRemainingMonths
+    : 0;
 
-  // Equal distribution: remaining balance ÷ (current month remainder + future months)
-  const totalRemainingMonths = 1 + futureMonths.length;  // current remainder + future
-  const projPerMonth = totalRemainingMonths > 0 ? remainingBalance / totalRemainingMonths : 0;
+  // JUN_remaining = proj_per_month − committed (what's left of this month's share)
+  // JUN_total     = proj_per_month  (always equal to one projected month)
+  const curRemaining  = Math.max(0, projPerMonth - curCommitted);
+  const curMonthTotal = projPerMonth;  // = committed + remaining = proj_per_month ✅
 
-  // Current month remaining = same as projected per month (equal share)
-  const curRemaining  = Math.max(0, projPerMonth);
+  // % of this month's allocation already committed
+  const curDonePct = projPerMonth > 0
+    ? Math.min(100, (curCommitted / projPerMonth) * 100)
+    : 0;
 
-  // Current month total = committed + remaining (= committed + proj_per_month)
-  const curMonthTotal = curCommitted + curRemaining;
+  // Balance shown = budget − all committed spend (past + current month)
+  const totalCommitted = pastActuals + curCommitted;
+  const balanceBudget  = budget - totalCommitted;
 
-  // % of current month's projected share that is already committed
-  const curDonePct = curMonthTotal > 0 ? Math.min(100, (curCommitted / curMonthTotal) * 100) : 0;
-
-  // Total committed for display = past actuals + current committed
-  const totalCommitted = spentSoFar;
-
-  // Balance for display = budget - past - current committed (= remaining balance)
-  const balanceBudget  = remainingBalance;
-
-  // % utilised based on total budget
+  // % utilised = committed so far vs total budget
   let utilisedPct, utilisedFlag;
   if (budget === 0) {
     utilisedPct  = 0;
@@ -944,9 +914,9 @@ function compute(code) {
     utilisedFlag = utilisedPct > 100 ? 'over' : 'normal';
   }
 
-  return {budget, pastActuals, curCommitted, curRemaining, curMonthTotal, curDonePct,
-          totalCommitted, balanceBudget, projPerMonth, utilisedPct, utilisedFlag,
-          remMonthCount: futureMonths.length};
+  return {budget, pastActuals, curCommitted, curRemaining, curMonthTotal,
+          curDonePct, totalCommitted, balanceBudget, projPerMonth,
+          utilisedPct, utilisedFlag, remMonthCount: futureMonths.length};
 }
 
 // ═══════════════════════════════════════════════
@@ -1037,7 +1007,7 @@ function renderJuneBars() {
   const {cur} = getMonthStatus();
   document.getElementById('curMonLabel').textContent = `${cur.label} ${cur.year}`;
   const el = document.getElementById('curMonHdr');
-  if (el) el.textContent = `${cur.label} ${cur.year} (Current)`;
+  if (el) el.textContent = `${cur.label} ${cur.year} — till date exp`;
 
   let html = '';
   const showPUs = PU_META
@@ -1276,7 +1246,7 @@ function renderPUMaster() {
 // TABS
 // ═══════════════════════════════════════════════
 function switchTab(name) {
-  const ids = ['liability','monthwise','recovery','pumaster','upload'];
+  const ids = ['liability','monthwise','pumaster','upload'];
   document.querySelectorAll('.tab').forEach((t,i) => {
     t.classList.toggle('active', ids[i]===name);
   });
@@ -1366,7 +1336,7 @@ function downloadExcel() {
     'Budget (₹\'000s)','Budget (₹ Cr)',
     'APR Actual (₹\'000s)','APR (₹ Cr)',
     'MAY Actual (₹\'000s)','MAY (₹ Cr)',
-    cur.label+' Committed',''+cur.label+' Remaining',''+cur.label+' Total',''+cur.label+' % Done',
+    cur.label+' till date exp',''+cur.label+' Remaining',''+cur.label+' Total',''+cur.label+' % Done',
     'Total Committed (₹\'000s)','Balance Budget (₹\'000s)','Proj/Month (₹\'000s)',
     '% Utilised','Status'];
   const liabRows=[];
@@ -1407,7 +1377,7 @@ function downloadExcel() {
   // ── Sheet 2: MONTH WISE ───────────────────────────────────
   const mwHdrs=['PU','Description',
     'APR Actual','MAY Actual',
-    cur.label+' Committed',cur.label+' Remaining',cur.label+' Total',
+    cur.label+' till date exp',cur.label+' Remaining',cur.label+' Total',
     'JUL Proj','AUG Proj','SEP Proj','OCT Proj','NOV Proj','DEC Proj','JAN Proj','FEB Proj','MAR Proj',
     'Budget (₹\'000s)','Total Committed','Balance','% Used'];
   const mwRows=[];
@@ -1436,7 +1406,7 @@ function downloadExcel() {
   // ── Sheet 3: RECOVERIES ───────────────────────────────────
   const r98=compute('98'); const m98=MONTH['98']||{};
   const recHdrs=['PU','Description','Budget (₹\'000s)','Budget (₹ Cr)',
-    'APR Actual','MAY Actual',cur.label+' Committed',cur.label+' Remaining',
+    'APR Actual','MAY Actual',cur.label+' till date exp',cur.label+' Remaining',
     'Total Committed','Balance','Proj/Month','% Used'];
   const recRows=[[
     '98','Credit or Recoveries',r98.budget,parseFloat((r98.budget*1000/10000000).toFixed(2)),
@@ -1674,20 +1644,24 @@ function openPUDetail(code) {
 
 // ── Event delegation: one listener on document covers all tables ──────────
 document.addEventListener('mouseover', function(e){
+  // Don't re-trigger if mouse moves within the popup itself
+  if (e.target.closest('#puPopup')) return;
   const tr = e.target.closest('tr[data-pu]');
   if (!tr) return;
+  clearTimeout(_ppTimer);
   showPUPopup(e, tr.dataset.pu);
 });
 document.addEventListener('mouseout', function(e){
+  if (e.target.closest('#puPopup')) return;
   const tr = e.target.closest('tr[data-pu]');
   if (!tr) return;
-  // Only hide if moving outside the row entirely
-  if (!tr.contains(e.relatedTarget)) hidePUPopup();
+  if (!tr.contains(e.relatedTarget) && !_pp.contains(e.relatedTarget)) hidePUPopup();
 });
 document.addEventListener('click', function(e){
+  // Don't close popup if clicking inside it
+  if (e.target.closest('#puPopup')) return;
   const tr = e.target.closest('tr[data-pu]');
-  if (!tr) return;
-  showPUPopup(e, tr.dataset.pu);
+  if (tr) { clearTimeout(_ppTimer); showPUPopup(e, tr.dataset.pu); }
 });
 
 // Live clock
@@ -1711,15 +1685,10 @@ function addDualScroll(){
   });
 }
 
-// PU Popup
-const _pp=document.createElement('div');
-_pp.id='puPopup';
-_pp.style.cssText='position:fixed;z-index:9999;pointer-events:none;background:#fff;border:1px solid #C0D4F0;border-radius:8px;padding:0;box-shadow:0 8px 32px rgba(10,22,40,.20),0 2px 8px rgba(10,22,40,.10);min-width:270px;max-width:320px;opacity:0;transform:translateY(6px);transition:opacity .15s,transform .15s;font-size:11px;color:#0A1628;overflow:hidden';
-document.body.appendChild(_pp);
-let _ppTimer=null;
 
 let currentPopupCode=null;
 function showPUPopup(e,code){
+  initPopup(); // ensure _pp exists
   currentPopupCode=code;
   clearTimeout(_ppTimer);
   const pu=PU_META.find(p=>p.code===code); if(!pu) return;
@@ -1785,10 +1754,11 @@ function showPUPopup(e,code){
   if(x+320>vw) x=e.clientX-320;
   if(y+320>vh) y=e.clientY-320;
   _pp.style.left=x+'px'; _pp.style.top=y+'px';
-  _pp.style.opacity='1'; _pp.style.transform='translateY(0)';
+  _pp.style.opacity='1'; _pp.style.transform='translateY(0)'; _pp.style.pointerEvents='auto';
 }
-function hidePUPopup(){ _ppTimer=setTimeout(()=>{_pp.style.opacity='0';_pp.style.transform='translateY(6px)'},180); }
+function hidePUPopup(){ _ppTimer=setTimeout(()=>{_pp.style.opacity='0';_pp.style.transform='translateY(6px)';_pp.style.pointerEvents='none';},200); }
 function attachPUPopup(){
+  initPopup();
   // Using event delegation on document — works after every re-render, no re-binding needed
   // (listeners are only added once)
 }
@@ -2028,11 +1998,11 @@ function renderCurDataGrid() {
 }
 
 function renderAll() {
+  initPopup();
   renderCards();
   renderJuneBars();
   renderLiability();
   renderMonthwise();
-  renderRecovery();
   renderPUMaster();
   document.getElementById('rgNote').textContent=isRGActive()?'✅ RG Active':'⚠ RG not active — using BG_ISL';
   const {cur:_cur}=getMonthStatus();
