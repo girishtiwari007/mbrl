@@ -267,6 +267,28 @@ thead th.la { min-width:80px; }
 .cdb-val{font-size:13px;font-weight:700;color:#0A1628;margin-top:2px}
 .admin-only-msg{display:none}
 
+
+/* ── TREND ANALYSIS TAB ─────────────────────────────── */
+.tchart-wrap{background:#fff;border-radius:8px;border:1px solid #E0EAF4;padding:14px 16px;box-shadow:0 2px 8px rgba(10,22,40,.06)}
+.tchart-title{font-size:11px;font-weight:700;color:#1C3A5E;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #EEF2F8}
+.trend-kpi{background:#0A1628;border-radius:7px;padding:12px 14px;text-align:center}
+.trend-kpi .tk-lbl{font-size:9px;color:#A8C0D8;font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+.trend-kpi .tk-val{font-size:17px;font-weight:700;color:#C9A84C;margin:3px 0 1px}
+.trend-kpi .tk-sub{font-size:9px;color:#607080}
+.trend-ctrl-bar{background:#0A1628;border-radius:8px;padding:12px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.trend-sel{background:#1C3A5E;color:#D0DFF0;border:1px solid #2E4A6A;padding:5px 10px;border-radius:4px;font-size:10px;min-width:110px;outline:none}
+.trend-sel:focus{border-color:#C9A84C}
+#trendHeatmap{overflow-x:auto}
+#trendHeatmap table{border-collapse:collapse;font-size:9px;min-width:100%}
+#trendHeatmap th{background:#1C3A5E;color:#B8D0F0;padding:5px 8px;font-size:9px;font-weight:600;text-align:center;white-space:nowrap}
+#trendHeatmap td{padding:4px 7px;text-align:center;font-family:monospace;font-size:9px;border:1px solid #E8EEF8;white-space:nowrap}
+#trendTable thead tr{background:#1A3A6A}
+#trendTable thead th{padding:7px 9px;color:#B8D0F0;font-size:9px;font-weight:600;text-align:right;white-space:nowrap}
+#trendTable thead th:first-child,#trendTable thead th:nth-child(2){text-align:left}
+#trendTable tbody tr:nth-child(even){background:#F5F8FC}
+#trendTable tbody tr:hover{background:#EEF4FF}
+#trendTable tbody td{padding:5px 9px;border-bottom:1px solid #EEF2F8;font-size:10px;text-align:right;font-family:monospace}
+#trendTable tbody td:first-child,#trendTable tbody td:nth-child(2){text-align:left;font-family:inherit;font-weight:600}
 </style>
 <script>/* SheetJS v0.18.5 - embedded for offline/GitHub Pages use */
 /*! xlsx.js (C) 2013-present SheetJS -- http://sheetjs.com */
@@ -401,6 +423,7 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
   <div class="tab active" onclick="switchTab('liability')">📊 Revenue Liability</div>
   <div class="tab" onclick="switchTab('monthwise')">📅 Month-wise Actuals</div>
   <div class="tab" onclick="switchTab('pumaster')">📋 PU Master</div>
+  <div class="tab" onclick="switchTab('trend')">📈 Trend Analysis</div>
   <div class="tab" id="uploadTab" onclick="switchTab('upload')" style="display:none">📤 Data Upload</div>
 </div>
 
@@ -505,81 +528,148 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
 <!-- TAB: UPLOAD (ADMIN ONLY) -->
 <div class="tab-content" id="tab-upload">
   <div class="upload-wrap">
-
     <div class="upload-banner">
       <span class="ub-icon">📤</span>
-      <div>
-        <h2>Data Upload Centre</h2>
-        <p>Upload latest Budget Available and Month-wise Actuals files. Portal auto-recalculates all tables on Apply.</p>
+      <div><h2>Data Upload Centre</h2>
+        <p>Upload files for <strong>Current Year 2026-27</strong> and/or <strong>Previous Year 2025-26</strong>. Portal auto-senses months, updates all tables and Trend Analysis.</p>
       </div>
       <div class="upload-lock">🔐 ADMIN ACCESS ONLY</div>
     </div>
+    <div class="cur-data-box"><h4>📊 Currently Loaded Data Snapshot</h4><div class="cdb-grid" id="curDataGrid"></div></div>
 
-    <!-- Current Data Summary -->
-    <div class="cur-data-box">
-      <h4>📊 Currently Loaded Data Snapshot</h4>
-      <div class="cdb-grid" id="curDataGrid">
-        <!-- filled by JS -->
-      </div>
+    <div style="margin:18px 0 8px;padding-bottom:6px;border-bottom:2px solid #C9A84C;display:flex;align-items:center;gap:8px">
+      <span style="background:#1C3A5E;color:#C9A84C;font-size:10px;font-weight:700;padding:3px 12px;border-radius:12px">📅 FY 2026-27 — CURRENT YEAR</span>
     </div>
-
-    <!-- Upload Cards -->
-    <div class="upload-cards" style="margin-top:16px">
-
-      <!-- Budget Available -->
+    <div class="upload-cards" style="margin-top:10px">
       <div class="upload-card">
-        <h3>📄 Budget Available File</h3>
-        <p>Upload the latest <strong>BudgetReport — BUDGET AVAILABLE</strong> XLS/XLSX.<br>
-          Contains BG_ISL, RG and Actuals Till Date for each PU code.</p>
-        <div class="drop-zone" id="dz-budget" ondragover="dzDrag(event,'budget')" ondragleave="dzLeave('budget')" ondrop="dzDrop(event,'budget')">
-          <input type="file" id="inp-budget" accept=".xls,.xlsx" onchange="handleFile(event,'budget')">
-          <span class="dz-icon" id="dz-budget-icon">📂</span>
-          <div class="dz-text">Click or Drag & Drop</div>
-          <div class="dz-sub">Supports .xls and .xlsx</div>
-          <div class="dz-status" id="dz-budget-status"></div>
-        </div>
-        <div style="margin-top:10px;font-size:9px;color:#8AAAC8">
-          Expected columns: PUCODE, BG_ISL, RG, ACTUALS TILL DATE
+        <h3>📄 Budget Available — CY 2026-27</h3>
+        <p>Upload <strong>BudgetReport — BUDGET AVAILABLE</strong> for FY 2026-27.<br>Auto-senses: BG_ISL · RG · Actuals Till Date per PU.</p>
+        <div class="drop-zone" id="dz-budget-cy" ondragover="dzDrag(event,'budget-cy')" ondragleave="dzLeave('budget-cy')" ondrop="dzDrop(event,'budget-cy')">
+          <input type="file" id="inp-budget-cy" accept=".xls,.xlsx" onchange="handleFileEx(event,'budget','cy')">
+          <span class="dz-icon" id="dz-budget-cy-icon">📂</span>
+          <div class="dz-text">Click or Drag &amp; Drop</div>
+          <div class="dz-sub">.xls or .xlsx</div>
+          <div class="dz-status" id="dz-budget-cy-status"></div>
         </div>
       </div>
-
-      <!-- Month Wise -->
       <div class="upload-card">
-        <h3>📅 Month-wise Actuals File</h3>
-        <p>Upload the latest <strong>BudgetReport — MONTH WISE</strong> XLS/XLSX.<br>
-          Contains month-by-month actuals (APR–MAR) for each PU code.</p>
-        <div class="drop-zone" id="dz-month" ondragover="dzDrag(event,'month')" ondragleave="dzLeave('month')" ondrop="dzDrop(event,'month')">
-          <input type="file" id="inp-month" accept=".xls,.xlsx" onchange="handleFile(event,'month')">
-          <span class="dz-icon" id="dz-month-icon">📂</span>
-          <div class="dz-text">Click or Drag & Drop</div>
-          <div class="dz-sub">Supports .xls and .xlsx</div>
-          <div class="dz-status" id="dz-month-status"></div>
-        </div>
-        <div style="margin-top:10px;font-size:9px;color:#8AAAC8">
-          Expected columns: PUCODE, APR, MAY, JUN, JUL … MAR
+        <h3>📅 Month-wise Actuals — CY 2026-27</h3>
+        <p>Upload <strong>BudgetReport — MONTH WISE</strong> for FY 2026-27.<br>Auto-senses latest month (APR–MAR) and refreshes trend.</p>
+        <div class="drop-zone" id="dz-month-cy" ondragover="dzDrag(event,'month-cy')" ondragleave="dzLeave('month-cy')" ondrop="dzDrop(event,'month-cy')">
+          <input type="file" id="inp-month-cy" accept=".xls,.xlsx" onchange="handleFileEx(event,'month','cy')">
+          <span class="dz-icon" id="dz-month-cy-icon">📂</span>
+          <div class="dz-text">Click or Drag &amp; Drop</div>
+          <div class="dz-sub">.xls or .xlsx</div>
+          <div class="dz-status" id="dz-month-cy-status"></div>
         </div>
       </div>
     </div>
 
-    <!-- Apply Button -->
-    <button class="apply-btn" id="applyBtn" onclick="applyUploads()" disabled>
-      ✅ Apply Uploaded Data & Refresh All Tables
-    </button>
+    <div style="margin:20px 0 8px;padding-bottom:6px;border-bottom:2px solid #607080;display:flex;align-items:center;gap:8px">
+      <span style="background:#394A5E;color:#A8C0D8;font-size:10px;font-weight:700;padding:3px 12px;border-radius:12px">📅 FY 2025-26 — PREVIOUS YEAR (for Trend Comparison)</span>
+      <span style="font-size:9px;color:#1A7A4A;font-weight:700">✅ Pre-loaded from static file</span>
+    </div>
+    <div class="upload-cards" style="margin-top:10px">
+      <div class="upload-card" style="border-top:3px solid #607080">
+        <h3>📄 Budget Available — PY 2025-26</h3>
+        <p>Re-upload previous year budget if needed.<br>Currently pre-loaded from 27-Jun-2026 file.</p>
+        <div class="drop-zone" id="dz-budget-py" ondragover="dzDrag(event,'budget-py')" ondragleave="dzLeave('budget-py')" ondrop="dzDrop(event,'budget-py')">
+          <input type="file" id="inp-budget-py" accept=".xls,.xlsx" onchange="handleFileEx(event,'budget','py')">
+          <span class="dz-icon" id="dz-budget-py-icon">📂</span>
+          <div class="dz-text">Click or Drag &amp; Drop to refresh PY</div>
+          <div class="dz-sub">.xls or .xlsx</div>
+          <div class="dz-status" id="dz-budget-py-status"></div>
+        </div>
+      </div>
+      <div class="upload-card" style="border-top:3px solid #607080">
+        <h3>📅 Month-wise Actuals — PY 2025-26</h3>
+        <p>Re-upload previous year month-wise if needed.<br>Currently pre-loaded from 27-Jun-2026 file.</p>
+        <div class="drop-zone" id="dz-month-py" ondragover="dzDrag(event,'month-py')" ondragleave="dzLeave('month-py')" ondrop="dzDrop(event,'month-py')">
+          <input type="file" id="inp-month-py" accept=".xls,.xlsx" onchange="handleFileEx(event,'month','py')">
+          <span class="dz-icon" id="dz-month-py-icon">📂</span>
+          <div class="dz-text">Click or Drag &amp; Drop to refresh PY</div>
+          <div class="dz-sub">.xls or .xlsx</div>
+          <div class="dz-status" id="dz-month-py-status"></div>
+        </div>
+      </div>
+    </div>
 
-    <!-- Upload Log -->
+    <button class="apply-btn" id="applyBtn" onclick="applyUploads()">✅ Apply All Uploaded Data &amp; Refresh Portal</button>
+
     <div class="upload-log" style="margin-top:16px">
-      <h3>📋 Upload History & Auto-sense Log</h3>
+      <h3>📋 Upload Log</h3>
       <table class="log-table">
-        <thead><tr>
-          <th>File Type</th><th>Filename</th><th>Uploaded At</th>
-          <th>FY Month Detected</th><th>PUs Parsed</th><th>Status</th>
-        </tr></thead>
+        <thead><tr><th>File Type</th><th>Filename</th><th>Uploaded At</th><th>Month Detected</th><th>PUs Parsed</th><th>Status</th></tr></thead>
         <tbody id="uploadLogTbody">
-          <tr><td colspan="6" style="color:#8AAAC8;text-align:center;padding:16px">No uploads yet — using pre-loaded data</td></tr>
+          <tr><td colspan="6" style="color:#8AAAC8;text-align:center;padding:14px">No uploads this session — using pre-loaded data (29-Jun CY + 27-Jun PY)</td></tr>
         </tbody>
       </table>
     </div>
+  </div>
+</div>
+<div class="tab-content" id="tab-trend">
+  <div style="padding:14px 18px">
+    <div class="trend-ctrl-bar">
+      <span style="color:#C9A84C;font-weight:700;font-size:12px;white-space:nowrap">📈 TREND ANALYSIS</span>
+      <select id="trendPUSelect" class="trend-sel" onchange="renderTrend()" style="min-width:190px">
+        <option value="ALL">All PUs (Aggregate)</option>
+      </select>
+      <select id="trendChartType" class="trend-sel" onchange="renderTrend()">
+        <option value="monthly">Monthly Actuals</option>
+        <option value="cumulative">Cumulative Spend</option>
+        <option value="yoy">Year-on-Year %</option>
+        <option value="pubar">Top PUs — Budget vs Actuals</option>
+        <option value="utilbar">Utilisation Ranking</option>
+      </select>
+      <select id="trendTopN" class="trend-sel" onchange="renderTrend()">
+        <option value="10">Top 10 PUs</option>
+        <option value="15">Top 15 PUs</option>
+        <option value="999">All PUs</option>
+      </select>
+      <label style="color:#A8C0D8;font-size:10px;display:flex;align-items:center;gap:5px;white-space:nowrap">
+        <input type="checkbox" id="trendShowPY" checked onchange="renderTrend()" style="accent-color:#C9A84C"> PY 2025-26
+      </label>
+      <span id="trendDataNote" style="color:#A8C0D8;font-size:9px;margin-left:auto;white-space:nowrap"></span>
+    </div>
 
+    <div id="trendKPIStrip" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px"></div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <div class="tchart-wrap" style="grid-column:1/-1">
+        <div class="tchart-title" id="mainChartTitle">Monthly Actuals Trend</div>
+        <canvas id="trendMainChart" height="80"></canvas>
+      </div>
+      <div class="tchart-wrap">
+        <div class="tchart-title">Budget Utilisation — Top PUs</div>
+        <canvas id="trendUtilChart" height="200"></canvas>
+      </div>
+      <div class="tchart-wrap">
+        <div class="tchart-title">Staff vs Non-Staff Expenditure</div>
+        <canvas id="trendTypeChart" height="200"></canvas>
+      </div>
+      <div class="tchart-wrap" style="grid-column:1/-1">
+        <div class="tchart-title">Top 15 PUs — Budget vs Actuals Till Date</div>
+        <canvas id="trendTopPUChart" height="80"></canvas>
+      </div>
+      <div class="tchart-wrap">
+        <div class="tchart-title">Month-wise Heatmap (₹ Cr)</div>
+        <div id="trendHeatmap"></div>
+      </div>
+      <div class="tchart-wrap">
+        <div class="tchart-title">Focus PUs — YoY Monthly Comparison</div>
+        <canvas id="trendFocusChart" height="200"></canvas>
+      </div>
+    </div>
+
+    <div style="margin-top:14px;background:#fff;border-radius:8px;border:1px solid #E0EAF4;overflow:hidden">
+      <div style="background:#0A1628;color:#C9A84C;padding:10px 16px;font-size:11px;font-weight:700">📊 Full PU-wise Analytics Table</div>
+      <div style="overflow-x:auto">
+        <table id="trendTable" style="width:100%;border-collapse:collapse">
+          <thead id="trendTHead"></thead>
+          <tbody id="trendTBody"></tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -695,6 +785,7 @@ const PU_META = [
   {code:'48',desc:'Custom Duty paid',puType:'Non Staff PU',liab:'Planned',isNeg:false},
   {code:'49',desc:'O/S OF MAN POWER FOR TRACK MNT',puType:'Non Staff PU',liab:'Planned',isNeg:false},
   {code:'51',desc:'COMPCONSUM',puType:'Non Staff PU',liab:'Planned',isNeg:false},
+  {code:'52',desc:'Laptop',puType:'Non Staff PU',liab:'Planned',isNeg:false},
   {code:'53',desc:'All India LTC',puType:'Staff PU',liab:'Planned',isNeg:false},
   {code:'54',desc:'Int on delayed NPS',puType:'Staff PU',liab:'Planned',isNeg:false},
   {code:'60',desc:'Fuel from Stock-Home',puType:'Non Staff PU',liab:'Committed',isNeg:false},
@@ -712,52 +803,52 @@ const PU_META = [
 
 // Budget data from BudgetReport (BG_ISL col, RG col) — ₹'000s
 let BUDGET = {
-  '01':{bg_isl:6687224,rg:0,actuals_till:1223103},
-  '02':{bg_isl:4222095,rg:0,actuals_till:808187},
-  '03':{bg_isl:278404,rg:0,actuals_till:82},
-  '04':{bg_isl:806537,rg:0,actuals_till:134047},
-  '07':{bg_isl:501913,rg:0,actuals_till:87139},
-  '08':{bg_isl:1129255,rg:0,actuals_till:213631},
-  '09':{bg_isl:0,rg:0,actuals_till:0},
-  '10':{bg_isl:782535,rg:0,actuals_till:134984},
-  '11':{bg_isl:75833,rg:0,actuals_till:30917},
-  '12':{bg_isl:203826,rg:0,actuals_till:47915},
-  '13':{bg_isl:548796,rg:0,actuals_till:77472},
-  '14':{bg_isl:3759,rg:0,actuals_till:302},
-  '15':{bg_isl:16675,rg:0,actuals_till:4067},
-  '16':{bg_isl:275804,rg:0,actuals_till:86659},
+  '01':{bg_isl:6706409,rg:0,actuals_till:1223103},
+  '02':{bg_isl:4100453,rg:0,actuals_till:808187},
+  '03':{bg_isl:285089,rg:0,actuals_till:82},
+  '04':{bg_isl:776198,rg:0,actuals_till:134047},
+  '07':{bg_isl:496609,rg:0,actuals_till:87139},
+  '08':{bg_isl:1285187,rg:0,actuals_till:213631},
+  '10':{bg_isl:680197,rg:0,actuals_till:134984},
+  '11':{bg_isl:77300,rg:0,actuals_till:30917},
+  '12':{bg_isl:209913,rg:0,actuals_till:47915},
+  '13':{bg_isl:527832,rg:0,actuals_till:77472},
+  '14':{bg_isl:3566,rg:0,actuals_till:302},
+  '15':{bg_isl:16048,rg:0,actuals_till:4067},
+  '16':{bg_isl:308081,rg:0,actuals_till:86659},
   '17':{bg_isl:2110,rg:0,actuals_till:0},
-  '18':{bg_isl:8287,rg:0,actuals_till:0},
-  '19':{bg_isl:612,rg:0,actuals_till:0},
-  '20':{bg_isl:16192,rg:0,actuals_till:5647},
-  '21':{bg_isl:2981,rg:0,actuals_till:521},
+  '18':{bg_isl:8252,rg:0,actuals_till:0},
+  '19':{bg_isl:655,rg:0,actuals_till:0},
+  '20':{bg_isl:18623,rg:0,actuals_till:5647},
+  '21':{bg_isl:0,rg:0,actuals_till:521},
   '22':{bg_isl:0,rg:0,actuals_till:0},
   '23':{bg_isl:42,rg:0,actuals_till:0},
-  '24':{bg_isl:15,rg:0,actuals_till:0},
-  '25':{bg_isl:296702,rg:0,actuals_till:232623},
-  '26':{bg_isl:384392,rg:0,actuals_till:85675},
-  '27':{bg_isl:989070,rg:0,actuals_till:347973},
-  '28':{bg_isl:164897,rg:0,actuals_till:39752},
+  '24':{bg_isl:215,rg:0,actuals_till:0},
+  '25':{bg_isl:379418,rg:0,actuals_till:232623},
+  '26':{bg_isl:342864,rg:0,actuals_till:85675},
+  '27':{bg_isl:1068752,rg:0,actuals_till:347973},
+  '28':{bg_isl:149947,rg:0,actuals_till:39752},
   '29':{bg_isl:0,rg:0,actuals_till:124},
-  '30':{bg_isl:3672343,rg:0,actuals_till:803534},
-  '31':{bg_isl:91248,rg:0,actuals_till:15405},
-  '32':{bg_isl:3418236,rg:0,actuals_till:927044},
-  '33':{bg_isl:2601864,rg:0,actuals_till:351700},
-  '36':{bg_isl:147922,rg:0,actuals_till:5500},
-  '38':{bg_isl:95095,rg:0,actuals_till:14165},
-  '39':{bg_isl:65,rg:0,actuals_till:0},
-  '42':{bg_isl:18302,rg:0,actuals_till:2361},
-  '43':{bg_isl:8198,rg:0,actuals_till:1155},
-  '44':{bg_isl:10341,rg:0,actuals_till:2459},
-  '49':{bg_isl:869,rg:0,actuals_till:2893},
-  '53':{bg_isl:162,rg:0,actuals_till:1070},
-  '60':{bg_isl:4615303,rg:0,actuals_till:1175862},
-  '72':{bg_isl:20510,rg:0,actuals_till:24133},
-  '73':{bg_isl:20350,rg:0,actuals_till:24133},
-  '74':{bg_isl:11,rg:0,actuals_till:0},
-  '75':{bg_isl:14248,rg:0,actuals_till:23479},
-  '98':{bg_isl:-1242885,rg:0,actuals_till:-284717},
-  '99':{bg_isl:1374069,rg:0,actuals_till:1775579},
+  '30':{bg_isl:4138724,rg:0,actuals_till:803534},
+  '31':{bg_isl:95273,rg:0,actuals_till:15405},
+  '32':{bg_isl:3254310,rg:0,actuals_till:927044},
+  '33':{bg_isl:2625440,rg:0,actuals_till:351700},
+  '36':{bg_isl:155548,rg:0,actuals_till:5500},
+  '38':{bg_isl:95829,rg:0,actuals_till:14165},
+  '39':{bg_isl:5,rg:0,actuals_till:0},
+  '42':{bg_isl:25882,rg:0,actuals_till:2361},
+  '43':{bg_isl:12005,rg:0,actuals_till:1155},
+  '44':{bg_isl:11589,rg:0,actuals_till:2459},
+  '49':{bg_isl:544,rg:0,actuals_till:2893},
+  '52':{bg_isl:0,rg:0,actuals_till:0},
+  '53':{bg_isl:614,rg:0,actuals_till:1070},
+  '60':{bg_isl:4703356,rg:0,actuals_till:1175862},
+  '72':{bg_isl:32329,rg:0,actuals_till:24133},
+  '73':{bg_isl:31932,rg:0,actuals_till:24133},
+  '74':{bg_isl:4,rg:0,actuals_till:0},
+  '75':{bg_isl:26098,rg:0,actuals_till:23479},
+  '98':{bg_isl:-1652821,rg:0,actuals_till:-284717},
+  '99':{bg_isl:1797111,rg:0,actuals_till:1775579},
 };
 
 // Month-wise actuals from MONTH WISE report — ₹'000s
@@ -768,7 +859,6 @@ let MONTH = {
   '04':{apr:66797,may:67250,jun:1,jul:0,aug:0,sep:0,oct:0,nov:0,dec:0,jan:0,feb:0,mar:0},
   '07':{apr:44217,may:42920,jun:2,jul:0,aug:0,sep:0,oct:0,nov:0,dec:0,jan:0,feb:0,mar:0},
   '08':{apr:108760,may:104872,jun:0,jul:0,aug:0,sep:0,oct:0,nov:0,dec:0,jan:0,feb:0,mar:0},
-  '09':{apr:0,may:0,jun:0,jul:0,aug:0,sep:0,oct:0,nov:0,dec:0,jan:0,feb:0,mar:0},
   '10':{apr:63531,may:71427,jun:26,jul:0,aug:0,sep:0,oct:0,nov:0,dec:0,jan:0,feb:0,mar:0},
   '11':{apr:13824,may:17030,jun:62,jul:0,aug:0,sep:0,oct:0,nov:0,dec:0,jan:0,feb:0,mar:0},
   '12':{apr:25290,may:22611,jun:13,jul:0,aug:0,sep:0,oct:0,nov:0,dec:0,jan:0,feb:0,mar:0},
@@ -776,14 +866,8 @@ let MONTH = {
   '14':{apr:154,may:149,jun:0,jul:0,aug:0,sep:0,oct:0,nov:0,dec:0,jan:0,feb:0,mar:0},
   '15':{apr:2096,may:1652,jun:320,jul:0,aug:0,sep:0,oct:0,nov:0,dec:0,jan:0,feb:0,mar:0},
   '16':{apr:44933,may:41693,jun:33,jul:0,aug:0,sep:0,oct:0,nov:0,dec:0,jan:0,feb:0,mar:0},
-  '17':{apr:0,may:0,jun:0,jul:0,aug:0,sep:0,oct:0,nov:0,dec:0,jan:0,feb:0,mar:0},
-  '18':{apr:0,may:0,jun:0,jul:0,aug:0,sep:0,oct:0,nov:0,dec:0,jan:0,feb:0,mar:0},
-  '19':{apr:0,may:0,jun:0,jul:0,aug:0,sep:0,oct:0,nov:0,dec:0,jan:0,feb:0,mar:0},
   '20':{apr:2666,may:2950,jun:32,jul:0,aug:0,sep:0,oct:0,nov:0,dec:0,jan:0,feb:0,mar:0},
   '21':{apr:521,may:0,jun:0,jul:0,aug:0,sep:0,oct:0,nov:0,dec:0,jan:0,feb:0,mar:0},
-  '22':{apr:0,may:0,jun:0,jul:0,aug:0,sep:0,oct:0,nov:0,dec:0,jan:0,feb:0,mar:0},
-  '23':{apr:0,may:0,jun:0,jul:0,aug:0,sep:0,oct:0,nov:0,dec:0,jan:0,feb:0,mar:0},
-  '24':{apr:0,may:0,jun:0,jul:0,aug:0,sep:0,oct:0,nov:0,dec:0,jan:0,feb:0,mar:0},
   '25':{apr:103975,may:128614,jun:34,jul:0,aug:0,sep:0,oct:0,nov:0,dec:0,jan:0,feb:0,mar:0},
   '26':{apr:30352,may:33757,jun:21566,jul:0,aug:0,sep:0,oct:0,nov:0,dec:0,jan:0,feb:0,mar:0},
   '27':{apr:195370,may:152529,jun:75,jul:0,aug:0,sep:0,oct:0,nov:0,dec:0,jan:0,feb:0,mar:0},
@@ -795,7 +879,6 @@ let MONTH = {
   '33':{apr:145104,may:206596,jun:0,jul:0,aug:0,sep:0,oct:0,nov:0,dec:0,jan:0,feb:0,mar:0},
   '36':{apr:0,may:5500,jun:0,jul:0,aug:0,sep:0,oct:0,nov:0,dec:0,jan:0,feb:0,mar:0},
   '38':{apr:0,may:14165,jun:0,jul:0,aug:0,sep:0,oct:0,nov:0,dec:0,jan:0,feb:0,mar:0},
-  '39':{apr:0,may:0,jun:0,jul:0,aug:0,sep:0,oct:0,nov:0,dec:0,jan:0,feb:0,mar:0},
   '42':{apr:1292,may:1069,jun:0,jul:0,aug:0,sep:0,oct:0,nov:0,dec:0,jan:0,feb:0,mar:0},
   '43':{apr:655,may:500,jun:0,jul:0,aug:0,sep:0,oct:0,nov:0,dec:0,jan:0,feb:0,mar:0},
   '44':{apr:766,may:1692,jun:0,jul:0,aug:0,sep:0,oct:0,nov:0,dec:0,jan:0,feb:0,mar:0},
@@ -804,15 +887,104 @@ let MONTH = {
   '60':{apr:450171,may:725691,jun:0,jul:0,aug:0,sep:0,oct:0,nov:0,dec:0,jan:0,feb:0,mar:0},
   '72':{apr:15207,may:5140,jun:3785,jul:0,aug:0,sep:0,oct:0,nov:0,dec:0,jan:0,feb:0,mar:0},
   '73':{apr:15207,may:5140,jun:3785,jul:0,aug:0,sep:0,oct:0,nov:0,dec:0,jan:0,feb:0,mar:0},
-  '74':{apr:0,may:0,jun:0,jul:0,aug:0,sep:0,oct:0,nov:0,dec:0,jan:0,feb:0,mar:0},
   '75':{apr:14110,may:6386,jun:2983,jul:0,aug:0,sep:0,oct:0,nov:0,dec:0,jan:0,feb:0,mar:0},
   '98':{apr:-112823,may:-80293,jun:-91601,jul:0,aug:0,sep:0,oct:0,nov:0,dec:0,jan:0,feb:0,mar:0},
-  '99':{apr:0,may:0,jun:0,jul:0,aug:0,sep:0,oct:0,nov:0,dec:0,jan:0,feb:0,mar:0},
+  '99':{apr:1498093,may:156216,jun:121270,jul:0,aug:0,sep:0,oct:0,nov:0,dec:0,jan:0,feb:0,mar:0},
 };
 
 // FY Month order APR→MAR and their keys
 const FY_MONTHS = ['apr','may','jun','jul','aug','sep','oct','nov','dec','jan','feb','mar'];
 const FY_MONTH_LABELS = ['APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC','JAN','FEB','MAR'];
+let BUDGET_PY = {
+  '01':{bg_isl:6105068,rg:7074279,actuals_till:7351227},
+  '02':{bg_isl:4264737,rg:4420234,actuals_till:4447867},
+  '03':{bg_isl:265382,rg:289831,actuals_till:302570},
+  '04':{bg_isl:653214,rg:824912,actuals_till:802371},
+  '07':{bg_isl:468531,rg:506019,actuals_till:509847},
+  '08':{bg_isl:1302824,rg:1100183,actuals_till:1224831},
+  '10':{bg_isl:764822,rg:765522,actuals_till:764170},
+  '11':{bg_isl:92488,rg:96309,actuals_till:106223},
+  '12':{bg_isl:244859,rg:280806,actuals_till:294342},
+  '13':{bg_isl:537984,rg:551574,actuals_till:519753},
+  '14':{bg_isl:4980,rg:4686,actuals_till:1362},
+  '15':{bg_isl:17727,rg:19866,actuals_till:20172},
+  '16':{bg_isl:488655,rg:523466,actuals_till:523753},
+  '17':{bg_isl:4000,rg:2260,actuals_till:0},
+  '18':{bg_isl:317,rg:8037,actuals_till:0},
+  '19':{bg_isl:93,rg:606,actuals_till:3},
+  '20':{bg_isl:22003,rg:14388,actuals_till:24948},
+  '21':{bg_isl:2222,rg:2848,actuals_till:0},
+  '22':{bg_isl:0,rg:0,actuals_till:0},
+  '23':{bg_isl:40,rg:40,actuals_till:0},
+  '24':{bg_isl:12,rg:12,actuals_till:0},
+  '25':{bg_isl:302671,rg:364718,actuals_till:374596},
+  '26':{bg_isl:292424,rg:321438,actuals_till:330091},
+  '27':{bg_isl:1468901,rg:1445603,actuals_till:1291487},
+  '28':{bg_isl:229945,rg:223635,actuals_till:164507},
+  '29':{bg_isl:0,rg:0,actuals_till:7},
+  '30':{bg_isl:3575499,rg:3659596,actuals_till:4115874},
+  '31':{bg_isl:154669,rg:154625,actuals_till:125852},
+  '32':{bg_isl:3983827,rg:3775796,actuals_till:3623757},
+  '33':{bg_isl:3610570,rg:3391480,actuals_till:2825950},
+  '36':{bg_isl:213822,rg:203822,actuals_till:170083},
+  '38':{bg_isl:161025,rg:161025,actuals_till:126223},
+  '39':{bg_isl:45,rg:80,actuals_till:73},
+  '42':{bg_isl:11169,rg:12543,actuals_till:23222},
+  '43':{bg_isl:3217,rg:8631,actuals_till:9496},
+  '44':{bg_isl:14699,rg:22378,actuals_till:14674},
+  '49':{bg_isl:0,rg:789,actuals_till:2667},
+  '52':{bg_isl:0,rg:0,actuals_till:0},
+  '53':{bg_isl:0,rg:200,actuals_till:868},
+  '60':{bg_isl:6009641,rg:4909641,actuals_till:5106357},
+  '72':{bg_isl:16303,rg:15454,actuals_till:38276},
+  '73':{bg_isl:16302,rg:15459,actuals_till:38275},
+  '74':{bg_isl:3,rg:8,actuals_till:0},
+  '75':{bg_isl:12590,rg:15534,actuals_till:39869},
+  '98':{bg_isl:-1047871,rg:-1194360,actuals_till:-1067890},
+  '99':{bg_isl:1080105,rg:1157401,actuals_till:1267317},
+};
+let MONTH_PY = {
+  '01':{apr:604866,may:612838,jun:610922,jul:596020,aug:613620,sep:609232,oct:613951,nov:611378,dec:609372,jan:643849,feb:613920,mar:611260},
+  '02':{apr:386483,may:351968,jun:351843,jul:345585,aug:353716,sep:351765,oct:429724,nov:371117,dec:370340,jan:390920,feb:372540,mar:371867},
+  '03':{apr:116,may:43,jun:40,jul:19,aug:8,sep:288005,oct:13098,nov:589,dec:331,jan:283,feb:20,mar:18},
+  '04':{apr:65550,may:67123,jun:67311,jul:64388,aug:68042,sep:66789,oct:67406,nov:67163,dec:66991,jan:67088,feb:67113,mar:67405},
+  '07':{apr:42927,may:42077,jun:42130,jul:40707,aug:41872,sep:41744,oct:45191,nov:42664,dec:42595,jan:42552,feb:42556,mar:42831},
+  '08':{apr:101634,may:98743,jun:98649,jul:100381,aug:100615,sep:100678,oct:108666,nov:102295,dec:102146,jan:103616,feb:103746,mar:103662},
+  '10':{apr:65201,may:62468,jun:63727,jul:69826,aug:67101,sep:65802,oct:62441,nov:63078,dec:63004,jan:62053,feb:61681,mar:57789},
+  '11':{apr:14450,may:14251,jun:21020,jul:12654,aug:5142,sep:12170,oct:14037,nov:11870,dec:475,jan:0,feb:154,mar:0},
+  '12':{apr:23430,may:22077,jun:24644,jul:23582,aug:23948,sep:24367,oct:22584,nov:24286,dec:25921,jan:27145,feb:27980,mar:24378},
+  '13':{apr:40609,may:36049,jun:37853,jul:139167,aug:29031,sep:33987,oct:31670,nov:40507,dec:30332,jan:34820,feb:33732,mar:31997},
+  '14':{apr:157,may:66,jun:24,jul:74,aug:57,sep:182,oct:152,nov:169,dec:76,jan:141,feb:171,mar:92},
+  '15':{apr:3376,may:3482,jun:2003,jul:1416,aug:1884,sep:1637,oct:1003,nov:1196,dec:750,jan:1978,feb:1067,mar:379},
+  '16':{apr:35889,may:38792,jun:46820,jul:43957,aug:43703,sep:50325,oct:35632,nov:50827,dec:44747,jan:48953,feb:42401,mar:41706},
+  '19':{apr:0,may:0,jun:0,jul:0,aug:0,sep:0,oct:0,nov:0,dec:0,jan:0,feb:2,mar:0},
+  '20':{apr:1135,may:2567,jun:3222,jul:-1754,aug:1955,sep:3048,oct:2583,nov:2138,dec:2993,jan:2488,feb:2905,mar:1669},
+  '25':{apr:63179,may:102175,jun:161201,jul:28162,aug:8520,sep:4232,oct:1390,nov:2900,dec:1701,jan:424,feb:574,mar:138},
+  '26':{apr:48180,may:29363,jun:18729,jul:45973,aug:18520,sep:26690,oct:22462,nov:26740,dec:27966,jan:17667,feb:42660,mar:5140},
+  '27':{apr:30050,may:124203,jun:123848,jul:98731,aug:139466,sep:135349,oct:189024,nov:44816,dec:120923,jan:99013,feb:98905,mar:87159},
+  '28':{apr:14565,may:15431,jun:22518,jul:13528,aug:39595,sep:13598,oct:7384,nov:11583,dec:9014,jan:8029,feb:7818,mar:1443},
+  '29':{apr:1,may:0,jun:2,jul:2,aug:0,sep:1,oct:0,nov:0,dec:0,jan:0,feb:2,mar:0},
+  '30':{apr:122227,may:360545,jun:435819,jul:291805,aug:463475,sep:306773,oct:324120,nov:395927,dec:300098,jan:292093,feb:396502,mar:426490},
+  '31':{apr:3652,may:6991,jun:8913,jul:5661,aug:4803,sep:6040,oct:4984,nov:63586,dec:3871,jan:7218,feb:1388,mar:8745},
+  '32':{apr:211169,may:115033,jun:629801,jul:628713,aug:128096,sep:122341,oct:657131,nov:133974,dec:169675,jan:701096,feb:114463,mar:12264},
+  '33':{apr:177176,may:268302,jun:272688,jul:262273,aug:251690,sep:211188,oct:180568,nov:221529,dec:230055,jan:237187,feb:255355,mar:257940},
+  '36':{apr:0,may:15636,jun:18272,jul:17611,aug:14998,sep:17079,oct:12825,nov:14673,dec:13343,jan:13398,feb:11329,mar:20918},
+  '38':{apr:0,may:11787,jun:13773,jul:12555,aug:10693,sep:12176,oct:9143,nov:10461,dec:9512,jan:9552,feb:8077,mar:18494},
+  '39':{apr:0,may:0,jun:3,jul:13,aug:14,sep:0,oct:0,nov:12,dec:13,jan:17,feb:0,mar:0},
+  '42':{apr:1910,may:2963,jun:1228,jul:1871,aug:1823,sep:2981,oct:3912,nov:976,dec:782,jan:2544,feb:1364,mar:868},
+  '43':{apr:674,may:1187,jun:555,jul:821,aug:717,sep:1273,oct:1524,nov:432,dec:296,jan:1023,feb:585,mar:410},
+  '44':{apr:6724,may:1969,jun:1476,jul:647,aug:484,sep:521,oct:1027,nov:431,dec:441,jan:345,feb:403,mar:205},
+  '49':{apr:0,may:0,jun:0,jul:0,aug:0,sep:2,oct:0,nov:0,dec:0,jan:1,feb:2665,mar:0},
+  '53':{apr:362,may:250,jun:0,jul:2,aug:112,sep:0,oct:0,nov:0,dec:0,jan:0,feb:142,mar:0},
+  '60':{apr:332976,may:493804,jun:496499,jul:470156,aug:430038,sep:376280,oct:319942,nov:399475,dec:415528,jan:442134,feb:437337,mar:492189},
+  '72':{apr:1068,may:996,jun:1057,jul:624,aug:2652,sep:4357,oct:4053,nov:4834,dec:5269,jan:8758,feb:4349,mar:259},
+  '73':{apr:1067,may:996,jun:1057,jul:624,aug:2652,sep:4357,oct:4053,nov:4834,dec:5269,jan:8758,feb:4349,mar:259},
+  '75':{apr:1475,may:1196,jun:1861,jul:1814,aug:2082,sep:3782,oct:7505,nov:3890,dec:5918,jan:6141,feb:3590,mar:615},
+  '98':{apr:-97549,may:-85671,jun:-101378,jul:-161832,aug:-86711,sep:-83463,oct:-73442,nov:-71836,dec:-48263,jan:-79866,feb:-109983,mar:-67894},
+  '99':{apr:1489498,may:122273,jun:227948,jul:288816,aug:124842,sep:111579,oct:191275,nov:101367,dec:76338,jan:238120,feb:135015,mar:-1839753},
+};
+let _pendingBudgetPY = null;
+let _pendingMonthPY  = null;
 
 // ═══════════════════════════════════════════════
 // CURRENT MONTH DETECTION (auto from date)
@@ -965,9 +1137,9 @@ function getFiltered() {
   const tf = document.getElementById('typeFilter').value;
   const lf = document.getElementById('liabFilter').value;
   return PU_META.filter(pu => {
-    if (pu.isNeg) return false;
+    if (pu.isNeg) return false; // PU-98 shown only in Recoveries tab
     if (tf !== 'all') {
-      if (tf === 'Staff' && pu.puType !== 'Staff PU') return false;
+      if (tf === 'Staff'     && pu.puType !== 'Staff PU')     return false;
       if (tf === 'Non Staff' && pu.puType !== 'Non Staff PU') return false;
     }
     if (lf !== 'all' && pu.liab !== lf) return false;
@@ -1059,7 +1231,7 @@ function renderLiability() {
     else statusHtml = '<span style="color:var(--muted)">— Planned</span>';
 
     rows += `<tr class="${getRowClass(pu)}" data-pu="${pu.code}" style="cursor:pointer">
-      <td class="puc puc-link" title="📄 Open Full Details page for PU-${pu.code}" onclick="event.stopPropagation();openPUDetail('${pu.code}')">${pu.code} <span style='font-size:8px;opacity:.65'>🔍</span></td>
+      <td class="puc puc-link" title="📄 Open Full Details: PU-${pu.code}" onclick="event.stopPropagation();openPUDetail('${pu.code}')">${pu.code} 🔍</td>
       <td class="desc" title="${pu.desc}">${pu.desc}</td>
       <td>${puBadge(pu.puType)}</td>
       <td>${liabBadge(pu.liab)}</td>
@@ -1126,7 +1298,7 @@ function renderMonthwise() {
 
     const balCls = c.balanceBudget<0?'neg':c.balanceBudget<c.budget*0.1?'low':'ok';
     rows += `<tr class="${getRowClass(pu)}" data-pu="${pu.code}" style="cursor:pointer">
-      <td class="puc puc-link" title="📄 Open Full Details page for PU-${pu.code}" onclick="event.stopPropagation();openPUDetail('${pu.code}')">${pu.code} <span style='font-size:8px;opacity:.65'>🔍</span></td>
+      <td class="puc puc-link" title="📄 Open Full Details: PU-${pu.code}" onclick="event.stopPropagation();openPUDetail('${pu.code}')">${pu.code} 🔍</td>
       <td class="desc" title="${pu.desc}" style="font-weight:700">${pu.desc}</td>
       <td class="n">${fmtT(apr)}</td>
       <td class="n">${fmtT(may)}</td>
@@ -1198,8 +1370,8 @@ function renderRecovery() {
   // Main liability row
   const balCls = c.balanceBudget>0?'ok':c.balanceBudget<0?'neg':'';
   document.getElementById('rec-tbody').innerHTML = `
-    <tr class="neg-row" data-pu="98">
-      <td class="puc puc-link" title="📄 Open Full Details page for PU-98" onclick="event.stopPropagation();openPUDetail('98')">98 <span style='font-size:8px;opacity:.65'>🔍</span></td>
+    <tr class="neg-row" data-pu="98" style="cursor:pointer">
+      <td class="puc">98</td>
       <td class="desc">Credit or Recoveries</td>
       <td class="n neg-val">${fmtT(c.budget)}</td>
       <td class="n neg-val">${fmtCr(c.budget)}</td>
@@ -1218,8 +1390,8 @@ function renderRecovery() {
   let cells = allMonths.map(m => `<td class="n neg-val">${md[m]?fmtT(md[m]):'<span style="color:#aaa">–</span>'}</td>`).join('');
   const total = allMonths.reduce((s,m)=>s+(md[m]||0),0);
   document.getElementById('rec-mw-tbody').innerHTML = `
-    <tr class="neg-row" data-pu="98">
-      <td class="puc puc-link" title="📄 Open Full Details page for PU-98" onclick="event.stopPropagation();openPUDetail('98')">98 <span style='font-size:8px;opacity:.65'>🔍</span></td>
+    <tr class="neg-row" data-pu="98" style="cursor:pointer">
+      <td class="puc">98</td>
       <td class="desc">Credit or Recoveries</td>
       ${cells}
       <td class="n neg-val" style="font-weight:700">${fmtT(total)}</td>
@@ -1235,7 +1407,7 @@ function renderPUMaster() {
   pus.forEach(pu => {
     const b = BUDGET[pu.code]||{};
     rows += `<tr class="${getRowClass(pu)}" data-pu="${pu.code}" style="cursor:pointer">
-      <td class="puc puc-link" title="📄 Open Full Details page for PU-${pu.code}" onclick="event.stopPropagation();openPUDetail('${pu.code}')">${pu.code} <span style='font-size:8px;opacity:.65'>🔍</span></td>
+      <td class="puc puc-link" title="📄 Open Full Details: PU-${pu.code}" onclick="event.stopPropagation();openPUDetail('${pu.code}')">${pu.code} 🔍</td>
       <td class="desc" style="font-weight:700">${pu.desc}</td>
       <td>${puBadge(pu.puType)}</td>
       <td>${liabBadge(pu.liab)}</td>
@@ -1251,7 +1423,8 @@ function renderPUMaster() {
 // TABS
 // ═══════════════════════════════════════════════
 function switchTab(name) {
-  const ids = ['liability','monthwise','pumaster','upload'];
+  if(name==='trend'){setTimeout(renderTrend,80);}
+  const ids = ['liability','monthwise','pumaster','trend','upload'];
   document.querySelectorAll('.tab').forEach((t,i) => {
     t.classList.toggle('active', ids[i]===name);
   });
@@ -1663,9 +1836,10 @@ document.addEventListener('mouseout', function(e){
   if (!tr.contains(e.relatedTarget) && !_pp.contains(e.relatedTarget)) hidePUPopup();
 });
 document.addEventListener('click', function(e){
+  // Don't close popup if clicking inside it
   if (e.target.closest('#puPopup')) return;
   const tr = e.target.closest('tr[data-pu]');
-  if (tr) { hidePUPopup(); }
+  if (tr) { clearTimeout(_ppTimer); showPUPopup(e, tr.dataset.pu); }
 });
 
 // Live clock
@@ -1776,23 +1950,26 @@ let _pendingMonth  = null;  // parsed month data waiting to apply
 let _uploadHistory = [];    // log entries
 
 // Drag-and-drop helpers
-function dzDrag(e,type){ e.preventDefault(); document.getElementById('dz-'+type).classList.add('drag-over'); }
-function dzLeave(type){ document.getElementById('dz-'+type).classList.remove('drag-over'); }
+function dzDrag(e,type){ e.preventDefault(); const el=document.getElementById('dz-'+type); if(el) el.classList.add('drag-over'); }
+function dzLeave(type){ const el=document.getElementById('dz-'+type); if(el) el.classList.remove('drag-over'); }
 function dzDrop(e,type){
   e.preventDefault(); dzLeave(type);
   const file = e.dataTransfer.files[0];
-  if(file) parseUpload(file, type);
+  const parts=type.split('-'), t=parts[0], yr=(parts[1]==='py')?'py':'cy';
+  if(file) parseUpload(file, t, yr);
 }
 
-function handleFile(e, type) {
+function handleFileEx(e, type, year) {
   const file = e.target.files[0];
-  if(file) parseUpload(file, type);
+  if(file) parseUpload(file, type, year||'cy');
 }
+function handleFile(e, type) { handleFileEx(e, type, 'cy'); }
 
 function setDZState(type, state, msg) {
   const dz   = document.getElementById('dz-'+type);
   const icon = document.getElementById('dz-'+type+'-icon');
   const stat = document.getElementById('dz-'+type+'-status');
+  if(!dz||!stat) return;
   dz.classList.remove('done','error','drag-over');
   if(state==='done'){ dz.classList.add('done'); icon.textContent='✅'; stat.className='dz-status ok'; }
   else if(state==='error'){ dz.classList.add('error'); icon.textContent='❌'; stat.className='dz-status err'; }
@@ -1802,8 +1979,10 @@ function setDZState(type, state, msg) {
   document.getElementById('applyBtn').disabled = !(_pendingBudget || _pendingMonth);
 }
 
-function parseUpload(file, type) {
-  setDZState(type, 'loading', 'Reading file…');
+function parseUpload(file, type, year) {
+  year = year || 'cy';
+  const dzId = type + '-' + year;
+  setDZState(dzId, 'loading', 'Reading file…');
   const reader = new FileReader();
   reader.onload = function(e) {
     try {
@@ -1811,134 +1990,66 @@ function parseUpload(file, type) {
       const ws   = wb.Sheets[wb.SheetNames[0]];
       const rows = XLSX.utils.sheet_to_json(ws, {header:1, defval:0});
 
-      // Normalise cell to trimmed uppercase, collapse whitespace
       function norm(v){ return String(v==null?'':v).replace(/\s+/g,' ').trim().toUpperCase(); }
-
-      // Extract PU code from any common format:
-      //   "PU-01", "PU - 1", "PU01", "01", "1", "30"
       function extractPU(v){
-        const s = norm(v);
-        if(!s || s==='PUCODE' || s==='TOTAL' || s==='GRAND TOTAL' || s==='SUB TOTAL') return null;
-        let m = s.match(/^PU\s*-?\s*(\d+)$/);
-        if(m) return m[1].padStart(2,'0');
-        m = s.match(/^(\d{1,2})$/);
-        if(m) return m[1].padStart(2,'0');
-        return null;
+        const s=norm(v); if(!s||s==='PUCODE'||s==='PU CODE'||s==='TOTAL'||s==='GRAND TOTAL') return null;
+        let m=s.match(/^PU\s*-?\s*(\d+)/); if(m) return m[1].padStart(2,'0');
+        m=s.match(/^(\d{1,2})$/); if(m) return m[1].padStart(2,'0'); return null;
       }
+      function findHdrRow(rows,testFn){ for(let i=0;i<Math.min(12,rows.length);i++){if(rows[i].some(c=>testFn(norm(c)))) return i;} return -1; }
 
-      // Auto-detect which column holds PU codes:
-      //   1. Header says PUCODE / PU CODE / PU NO / PU
-      //   2. Scan first 8 data rows for a cell matching PU pattern
-      //   3. Fall back to col B (index 1)
-      function findPUCol(hdr, dataRows){
-        let ci = hdr.findIndex(h=>h.includes('PUCODE')||h==='PU CODE'||h==='PU NO'||h==='PU');
-        if(ci>=0) return ci;
-        for(let r=0;r<Math.min(8,dataRows.length);r++){
-          for(let c=0;c<dataRows[r].length;c++){
-            if(extractPU(dataRows[r][c])!==null) return c;
-          }
+      if(type==='budget'){
+        const hr=findHdrRow(rows,n=>n.includes('BG_ISL')||n.includes('BG ISL'));
+        if(hr<0) throw new Error('Cannot find BG_ISL column header.');
+        const hdr=rows[hr].map(c=>norm(c));
+        const bgC=hdr.findIndex(h=>h.includes('BG_ISL')||h.includes('BG ISL'));
+        const rgC=hdr.findIndex(h=>h==='RG'||h.includes('REVISED GRANT'));
+        const atC=hdr.findIndex(h=>h.includes('TILL DATE')||(h.includes('ACTUALS')&&h.includes('TILL')));
+        const atC2=atC>=0?atC:hdr.reduce((best,h,i)=>(h.includes('ACTUALS')&&i>best)?i:best,-1);
+        const puC=hdr.findIndex(h=>h==='PUCODE'||h==='PU CODE'||h==='PU');
+        let parsed={},n=0;
+        for(let i=hr+1;i<rows.length;i++){
+          const row=rows[i],code=extractPU(row[puC>=0?puC:1]); if(!code) continue;
+          parsed[code]={bg_isl:bgC>=0?(Number(row[bgC])||0):0,rg:rgC>=0?(Number(row[rgC])||0):0,actuals_till:atC2>=0?(Number(row[atC2])||0):0};
+          n++;
         }
-        return 1; // default col B
-      }
-
-      if (type === 'budget') {
-        // Find header row containing BG_ISL (handles "BG_ISL", "BG ISL")
-        let hdrRow = -1;
-        for(let i=0;i<rows.length;i++){
-          if(rows[i].some(cv=>{ const n=norm(cv); return n.includes('BG_ISL')||n.includes('BG ISL'); })){
-            hdrRow=i; break;
-          }
-        }
-        if(hdrRow<0) throw new Error('Cannot find BG_ISL column header in this file');
-
-        const hdr   = rows[hdrRow].map(cv=>norm(cv));
-        const bgCol = hdr.findIndex(h=>h.includes('BG_ISL')||h.includes('BG ISL'));
-        const rgCol = hdr.findIndex(h=>/^RG$/.test(h)||h.includes('REVISED GRANT'));
-        const atCol = hdr.findIndex(h=>h.includes('TILL')||h.includes('ACTUAL'));
-        const puCol = findPUCol(hdr, rows.slice(hdrRow+1));
-
-        let parsed={}, puCount=0;
-        for(let i=hdrRow+1;i<rows.length;i++){
-          const row=rows[i];
-          const code=extractPU(row[puCol]);
-          if(!code) continue;
-          parsed[code]={
-            bg_isl:       bgCol>=0 ? (Number(row[bgCol])||0) : 0,
-            rg:           rgCol>=0 ? (Number(row[rgCol])||0) : 0,
-            actuals_till: atCol>=0 ? (Number(row[atCol])||0) : 0
-          };
-          puCount++;
-        }
-        if(puCount===0) throw new Error('No PU rows found — verify PUCODE & BG_ISL columns exist');
-        _pendingBudget = {data:parsed, filename:file.name, puCount, at:new Date()};
-        setDZState(type,'done',`✅ Parsed ${puCount} PU codes from "${file.name}"`);
-        addLog('Budget Available', file.name, puCount, null);
+        if(n===0) throw new Error('No PU rows found. Check PUCODE and BG_ISL columns.');
+        if(year==='cy'){ _pendingBudget={data:parsed,filename:file.name,puCount:n,at:new Date()}; }
+        else           { _pendingBudgetPY={data:parsed,filename:file.name,puCount:n,at:new Date()}; }
+        setDZState(dzId,'done','✅ Parsed '+n+' PUs — '+(year==='cy'?'CY 2026-27':'PY 2025-26'));
+        addLog((year==='cy'?'Budget CY 2026-27':'Budget PY 2025-26'),file.name,n,null);
 
       } else {
-        // Find header row — look for APR in any variant: "APR", "APR 2026", "APR-26", "APRIL"
-        const APR_RE = /^APR(IL)?[\s\-_]?(20)?\d{0,2}$/;
-        const ALL_M  = /^(APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC|JAN|FEB|MAR)/;
-        let hdrRow=-1;
-        // Pass 1: strict — find a cell matching APR pattern
-        for(let i=0;i<rows.length;i++){
-          if(rows[i].some(cv=>APR_RE.test(norm(cv)))){hdrRow=i;break;}
-        }
-        // Pass 2: loose — row has 3+ month-name cells
-        if(hdrRow<0){
-          for(let i=0;i<rows.length;i++){
-            if(rows[i].filter(cv=>ALL_M.test(norm(cv))).length>=3){hdrRow=i;break;}
-          }
-        }
-        if(hdrRow<0) throw new Error('Cannot find month header row — expected APR…MAR column headers');
-
-        const hdr = rows[hdrRow].map(cv=>norm(cv));
-        const FY_M=['APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC','JAN','FEB','MAR'];
+        const APR_RE=/^APR(IL)?[\s\-_]?\d{0,4}$/;
+        const ANY_M=/^(APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC|JAN|FEB|MAR)/;
+        let hr=findHdrRow(rows,n=>APR_RE.test(n));
+        if(hr<0) hr=findHdrRow(rows,n=>ANY_M.test(n));
+        if(hr<0) throw new Error('Cannot find APR–MAR month headers.');
+        const hdr=rows[hr].map(c=>norm(c));
         const mCols={};
-        FY_M.forEach((ml,idx)=>{
-          const ci = hdr.findIndex(h=>
-            h===ml ||
-            h.startsWith(ml+' ') || h.startsWith(ml+'-') || h.startsWith(ml+'_') ||
-            (ml==='APR' && (h==='APRIL'||h.startsWith('APRIL ')))
-          );
-          if(ci>=0) mCols[FY_MONTHS[idx]]=ci;
+        FY_MONTHS.forEach((mk,idx2)=>{
+          const ml=FY_MONTH_LABELS[idx2];
+          const ci=hdr.findIndex(h=>h===ml||h.startsWith(ml+' ')||h.startsWith(ml+'-')||(ml==='APR'&&h==='APRIL'));
+          if(ci>=0) mCols[mk]=ci;
         });
-        if(Object.keys(mCols).length<3)
-          throw new Error('Found header row but could not map ≥3 month columns — check APR…MAR headers');
-
-        const puCol = findPUCol(hdr, rows.slice(hdrRow+1));
-        let detectedMonthIdx=0, parsed={}, puCount=0;
-
-        for(let i=hdrRow+1;i<rows.length;i++){
-          const row=rows[i];
-          const code=extractPU(row[puCol]);
-          if(!code) continue;
-          const vals={};
-          FY_MONTHS.forEach((mk,idx)=>{
-            vals[mk]= mCols[mk]!==undefined ? (Number(row[mCols[mk]])||0) : 0;
-          });
-          parsed[code]=vals;
-          puCount++;
-          FY_MONTHS.forEach((mk,idx)=>{
-            if(vals[mk]!==0 && idx>=detectedMonthIdx) detectedMonthIdx=idx;
-          });
+        if(Object.keys(mCols).length<3) throw new Error('Could not map ≥3 month columns. Check headers.');
+        const puC=hdr.findIndex(h=>h==='PUCODE'||h==='PU CODE'||h==='PU');
+        let parsed={},n=0,latestIdx=0;
+        for(let i=hr+1;i<rows.length;i++){
+          const row=rows[i],code=extractPU(row[puC>=0?puC:1]); if(!code) continue;
+          const vals={}; FY_MONTHS.forEach((mk,i2)=>{vals[mk]=mCols[mk]!==undefined?(Number(row[mCols[mk]])||0):0;});
+          parsed[code]=vals; n++;
+          FY_MONTHS.forEach((mk,i2)=>{if(vals[mk]!==0&&i2>=latestIdx) latestIdx=i2;});
         }
-        if(puCount===0)
-          throw new Error('No PU rows found — verify PU code column has values like PU-01, 01 etc.');
-
-        const detectedMonthKey   = FY_MONTHS[detectedMonthIdx];
-        const detectedMonthLabel = FY_MONTH_LABELS[detectedMonthIdx];
-        const detectedYear       = detectedMonthIdx<=8?2026:2027;
-        _pendingMonth = {
-          data:parsed, filename:file.name, puCount,
-          detectedMonthIdx, detectedMonthKey, detectedMonthLabel, detectedYear,
-          at:new Date()
-        };
-        setDZState(type,'done',
-          `✅ Parsed ${puCount} PUs — Latest month with data: ${detectedMonthLabel} ${detectedYear}`);
-        addLog('Month Wise', file.name, puCount, `${detectedMonthLabel} ${detectedYear}`);
+        if(n===0) throw new Error('No PU rows found.');
+        const dml=FY_MONTH_LABELS[latestIdx];
+        if(year==='cy'){ _pendingMonth={data:parsed,filename:file.name,puCount:n,detectedMonthIdx:latestIdx,detectedMonthKey:FY_MONTHS[latestIdx],detectedMonthLabel:dml,detectedYear:latestIdx<=8?2026:2027,at:new Date()}; }
+        else           { _pendingMonthPY={data:parsed,filename:file.name,puCount:n,detectedMonthIdx:latestIdx,at:new Date()}; }
+        setDZState(dzId,'done','✅ Parsed '+n+' PUs — Latest: '+dml+' | '+(year==='cy'?'CY':'PY'));
+        addLog((year==='cy'?'Month Wise CY 2026-27':'Month Wise PY 2025-26'),file.name,n,dml);
       }
     } catch(err) {
-      setDZState(type,'error','❌ '+err.message);
+      setDZState(type+'-'+year,'error','❌ '+err.message);
       console.error(err);
     }
   };
@@ -1996,9 +2107,18 @@ function applyUploads() {
   }
 
   // ── Re-render everything ───────────────────────────────────
+  if(_pendingBudgetPY){
+    Object.entries(_pendingBudgetPY.data).forEach(([c,v])=>{ BUDGET_PY[c]={bg_isl:v.bg_isl,rg:v.rg,actuals_till:v.actuals_till}; });
+    _pendingBudgetPY=null;
+  }
+  if(_pendingMonthPY){
+    Object.entries(_pendingMonthPY.data).forEach(([c,v])=>{ MONTH_PY[c]=v; });
+    _pendingMonthPY=null;
+  }
   renderAll();
   renderCurDataGrid();
   renderUploadLog();
+  if(typeof renderTrend==='function') renderTrend();
 
   // Flash the apply button to confirm
   const btn = document.getElementById('applyBtn');
@@ -2041,6 +2161,153 @@ function renderCurDataGrid() {
   `;
 }
 
+
+let _tCharts={};
+function _dC(id){if(_tCharts[id]){_tCharts[id].destroy();delete _tCharts[id];}}
+function _mC(id,cfg){_dC(id);const ctx=document.getElementById(id);if(!ctx)return;_tCharts[id]=new Chart(ctx,cfg);return _tCharts[id];}
+
+const FOCUS_PUS=['27','28','30','32','60','99'];
+const FOCUS_DESC={'27':'Materials from stock','28':'Materials-Dir. purchase','30':'Cost Of Elec. Energy/Traction Energy Procurement','32':'Contractual payments','60':'Fuel/Power','99':'Other Expenses/Misc'};
+
+function renderTrend(){
+  if(!window.Chart)return;
+  const puSel  =(document.getElementById('trendPUSelect') ||{}).value||'ALL';
+  const cType  =(document.getElementById('trendChartType')||{}).value||'monthly';
+  const topNv  =(document.getElementById('trendTopN')     ||{}).value||'10';
+  const showPY =((document.getElementById('trendShowPY')  ||{}).checked!==false);
+  const topN   =topNv==='999'?999:parseInt(topNv);
+  const hasPY  =Object.keys(MONTH_PY).length>0||Object.keys(BUDGET_PY).length>0;
+  const MK=FY_MONTHS, ML=FY_MONTH_LABELS;
+  const CUR_IDX=2; // JUN is current month (APR=0,MAY=1,JUN=2)
+  const ML_S=['Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'];
+  const activePUs=PU_META.filter(p=>!p.isNeg);
+  const puList=puSel==='ALL'?activePUs:activePUs.filter(p=>p.code===puSel);
+
+  function fCr(v){return v?(Math.abs(v)*1000/10000000).toFixed(1)+' Cr':'—';}
+  function fN(v){return v?Math.round(v).toLocaleString('en-IN'):'—';}
+  function sumM(pus,ds){return MK.map((_,mi)=>pus.reduce((s,p2)=>s+(ds[p2.code]?ds[p2.code][MK[mi]]||0:0),0));}
+
+  // ── KPI Strip ────────────────────────────────────────────────
+  const strip=document.getElementById('trendKPIStrip');
+  if(strip){
+    const totB=puList.reduce((s,p2)=>s+(BUDGET[p2.code]?BUDGET[p2.code].bg_isl||0:0),0);
+    const totA=puList.reduce((s,p2)=>s+(BUDGET[p2.code]?BUDGET[p2.code].actuals_till||0:0),0);
+    const bal=totB-totA, util=totB?(totA/totB*100):0;
+    const pyA=hasPY&&showPY?puList.reduce((s,p2)=>s+(BUDGET_PY[p2.code]?BUDGET_PY[p2.code].actuals_till||0:0),0):null;
+    const yoy=pyA&&pyA!==0?((totA-pyA)/Math.abs(pyA)*100):null;
+    const activeMths=sumM(puList,MONTH).filter(v=>v>0).length;
+    strip.innerHTML=[
+      ['Budget BG_ISL',fCr(totB),puSel==='ALL'?'All PUs combined':'PU-'+puSel],
+      ['Actuals Till Date',fCr(totA),util.toFixed(1)+'% utilised'],
+      ['Balance',fCr(Math.abs(bal)),(bal<0?'⚠ Over Budget':'Remaining')],
+      ['Months Active',activeMths+'/12','APR 2026 → MAR 2027'],
+      yoy!==null?['YoY Change',(yoy>=0?'+':'')+yoy.toFixed(1)+'%','vs full year PY 2025-26']:
+                 ['PY Data','Pre-loaded ✅','27-Jun-2026 static file'],
+    ].map(([l,v,s])=>`<div class="trend-kpi"><div class="tk-lbl">${l}</div><div class="tk-val">${v}</div><div class="tk-sub">${s}</div></div>`).join('');
+  }
+  const note=document.getElementById('trendDataNote');
+  if(note) note.textContent='Data: 29-Jun-2026 (CY) | PY: 2025-26 full year';
+
+  // ── Main Chart ────────────────────────────────────────────────
+  const titleEl=document.getElementById('mainChartTitle');
+  const cyV=sumM(puList,MONTH), pyV=hasPY&&showPY?sumM(puList,MONTH_PY):null;
+  if(['monthly','cumulative','yoy'].includes(cType)){
+    let ds=[];
+    if(cType==='cumulative'){
+      let cc=0,cp=0;
+      const cumCY=cyV.map(v=>{cc+=v;return(cc*1000/10000000).toFixed(1);});
+      ds=[{label:'CY 2026-27 Cumulative (₹Cr)',data:cumCY,borderColor:'#1C6FD9',backgroundColor:'rgba(28,111,217,.12)',fill:true,tension:.35,pointRadius:4,type:'line'}];
+      if(pyV){const cumPY=pyV.map(v=>{cp+=v;return(cp*1000/10000000).toFixed(1);}); ds.push({label:'PY 2025-26 Cumulative (₹Cr)',data:cumPY,borderColor:'#C9A84C',fill:false,tension:.35,pointRadius:4,type:'line',borderDash:[5,3]});}
+      if(titleEl) titleEl.textContent='Cumulative Spend — APR → MAR';
+    } else if(cType==='yoy'){
+      if(!pyV||!hasPY){if(titleEl) titleEl.textContent='YoY — PY data pre-loaded'; return;}
+      const yoyD=cyV.map((v,i)=>pyV[i]?((v-pyV[i])/Math.abs(pyV[i])*100).toFixed(1):null);
+      ds=[{label:'YoY % Change',data:yoyD,backgroundColor:yoyD.map(v=>parseFloat(v)>=0?'rgba(26,122,74,.75)':'rgba(204,0,0,.75)'),borderRadius:4}];
+      if(titleEl) titleEl.textContent='Month-wise Year-on-Year % Change (CY vs PY)';
+    } else {
+      const barsClr=cyV.map((_,i)=>i<CUR_IDX?'rgba(28,111,217,.75)':i===CUR_IDX?'rgba(244,169,50,.85)':'rgba(28,111,217,.2)');
+      ds=[{label:'CY 2026-27 Actuals',data:cyV.map(v=>(v*1000/10000000).toFixed(1)),backgroundColor:barsClr,borderRadius:3}];
+      if(pyV) ds.push({label:'PY 2025-26',data:pyV.map(v=>(v*1000/10000000).toFixed(1)),type:'line',borderColor:'#C9A84C',backgroundColor:'transparent',borderWidth:2.5,tension:.3,pointRadius:4,borderDash:[4,2]});
+      if(titleEl) titleEl.textContent='Monthly Actuals — '+(puSel==='ALL'?'All PUs':'PU-'+puSel);
+    }
+    _mC('trendMainChart',{type:'bar',data:{labels:ML_S.map((m,i)=>m+(i<=8?'\'26':'\'27')),datasets:ds},options:{responsive:true,interaction:{mode:'index',intersect:false},plugins:{legend:{position:'top',labels:{boxWidth:12,font:{size:10}}}},scales:{x:{ticks:{font:{size:10}}},y:{title:{display:true,text:'₹ Crore'},ticks:{font:{size:10}}}}}});
+  } else {
+    const sorted=activePUs.filter(p2=>BUDGET[p2.code]&&BUDGET[p2.code].bg_isl>0).sort((a,b)=>(BUDGET[b.code].actuals_till||0)-(BUDGET[a.code].actuals_till||0)).slice(0,topN);
+    if(cType==='pubar'){
+      _mC('trendMainChart',{type:'bar',data:{labels:sorted.map(p2=>'PU-'+p2.code),datasets:[{label:'Budget',data:sorted.map(p2=>(BUDGET[p2.code].bg_isl/10000).toFixed(0)),backgroundColor:'rgba(26,74,138,.45)',borderRadius:3},{label:'Actuals',data:sorted.map(p2=>(BUDGET[p2.code].actuals_till/10000).toFixed(0)),backgroundColor:'rgba(26,122,74,.75)',borderRadius:3}]},options:{responsive:true,interaction:{mode:'index',intersect:false},plugins:{legend:{position:'top',labels:{boxWidth:12,font:{size:10}}}},scales:{x:{ticks:{font:{size:9},maxRotation:35}},y:{title:{display:true,text:'₹ Cr'},ticks:{font:{size:10}}}}}});
+      if(titleEl) titleEl.textContent='Top '+sorted.length+' PUs — Budget vs Actuals (₹ Cr)';
+    } else {
+      const utD=sorted.map(p2=>Math.min(150,Math.round((BUDGET[p2.code].actuals_till||0)/Math.max(BUDGET[p2.code].bg_isl||1,1)*100)));
+      _mC('trendMainChart',{type:'bar',data:{labels:sorted.map(p2=>'PU-'+p2.code),datasets:[{label:'Utilisation %',data:utD,backgroundColor:utD.map(u=>u>100?'rgba(204,0,0,.75)':u>85?'rgba(232,93,4,.75)':u>60?'rgba(192,112,0,.65)':'rgba(26,122,74,.75)'),borderRadius:3}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:9},maxRotation:35}},y:{max:155,title:{display:true,text:'%'},ticks:{callback:v=>v+'%',font:{size:10}}}}}});
+      if(titleEl) titleEl.textContent='Budget Utilisation Ranking (Top '+sorted.length+')';
+    }
+  }
+
+  // ── Utilisation bar ───────────────────────────────────────────
+  const topU=activePUs.filter(p2=>BUDGET[p2.code]&&BUDGET[p2.code].bg_isl>0).sort((a,b)=>{return (BUDGET[b.code].actuals_till||0)/Math.max(BUDGET[b.code].bg_isl||1,1)-(BUDGET[a.code].actuals_till||0)/Math.max(BUDGET[a.code].bg_isl||1,1);}).slice(0,10);
+  _mC('trendUtilChart',{type:'bar',data:{labels:topU.map(p2=>'PU-'+p2.code+': '+p2.desc.substring(0,14)),datasets:[{label:'Utilisation %',data:topU.map(p2=>Math.min(150,Math.round((BUDGET[p2.code].actuals_till||0)/Math.max(BUDGET[p2.code].bg_isl||1,1)*100))),backgroundColor:topU.map(p2=>{const u=(BUDGET[p2.code].actuals_till||0)/Math.max(BUDGET[p2.code].bg_isl||1,1)*100;return u>100?'rgba(204,0,0,.75)':u>85?'rgba(232,93,4,.75)':u>60?'rgba(192,112,0,.65)':'rgba(26,122,74,.75)';}),borderRadius:3}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.raw+'% utilised'}}},scales:{x:{max:155,title:{display:true,text:'%'},ticks:{callback:v=>v+'%',font:{size:9}}},y:{ticks:{font:{size:8}}}}}});
+
+  // ── Staff vs Non-Staff doughnut ───────────────────────────────
+  const sA=activePUs.filter(p2=>p2.puType==='Staff PU').reduce((s,p2)=>s+(BUDGET[p2.code]?BUDGET[p2.code].actuals_till||0:0),0);
+  const nA=activePUs.filter(p2=>p2.puType==='Non Staff PU').reduce((s,p2)=>s+(BUDGET[p2.code]?BUDGET[p2.code].actuals_till||0:0),0);
+  const sB=activePUs.filter(p2=>p2.puType==='Staff PU').reduce((s,p2)=>s+(BUDGET[p2.code]?BUDGET[p2.code].bg_isl||0:0),0);
+  const nB=activePUs.filter(p2=>p2.puType==='Non Staff PU').reduce((s,p2)=>s+(BUDGET[p2.code]?BUDGET[p2.code].bg_isl||0:0),0);
+  _mC('trendTypeChart',{type:'doughnut',data:{labels:['Staff — Actuals','Non-Staff — Actuals','Staff — Budget','Non-Staff — Budget'],datasets:[{data:[sA,nA,0,0],backgroundColor:['rgba(26,122,74,.85)','rgba(28,111,217,.85)','transparent','transparent'],borderWidth:2},{data:[0,0,sB,nB],backgroundColor:['transparent','transparent','rgba(26,122,74,.25)','rgba(28,111,217,.25)'],borderWidth:1}]},options:{responsive:true,cutout:'55%',plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:9}}},tooltip:{callbacks:{label:c=>(c.label||'')+': ₹'+(c.raw*1000/10000000).toFixed(1)+' Cr'}}}}});
+
+  // ── Top 15 Budget vs Actuals bar ──────────────────────────────
+  const top15=activePUs.filter(p2=>BUDGET[p2.code]&&(BUDGET[p2.code].actuals_till||0)>0).sort((a,b)=>(BUDGET[b.code].actuals_till||0)-(BUDGET[a.code].actuals_till||0)).slice(0,15);
+  _mC('trendTopPUChart',{type:'bar',data:{labels:top15.map(p2=>'PU-'+p2.code+': '+p2.desc.substring(0,14)),datasets:[{label:'Budget (₹Cr)',data:top15.map(p2=>((BUDGET[p2.code].bg_isl||0)/10000).toFixed(0)),backgroundColor:'rgba(26,74,138,.4)',borderRadius:2},{label:'Actuals (₹Cr)',data:top15.map(p2=>((BUDGET[p2.code].actuals_till||0)/10000).toFixed(0)),backgroundColor:'rgba(26,122,74,.75)',borderRadius:2}]},options:{responsive:true,interaction:{mode:'index',intersect:false},plugins:{legend:{position:'top',labels:{boxWidth:12,font:{size:10}}}},scales:{x:{ticks:{font:{size:8},maxRotation:35}},y:{title:{display:true,text:'₹ Cr'},ticks:{font:{size:10}}}}}});
+
+  // ── Heatmap ───────────────────────────────────────────────────
+  const hmDiv=document.getElementById('trendHeatmap');
+  if(hmDiv){
+    const hmPUs=activePUs.filter(p2=>MK.some(mk=>MONTH[p2.code]&&MONTH[p2.code][mk]>0)).slice(0,18);
+    const allV=[];hmPUs.forEach(p2=>MK.forEach(mk=>{if(MONTH[p2.code]&&MONTH[p2.code][mk]>0)allV.push(MONTH[p2.code][mk]);}));
+    const maxV=Math.max(...allV,1);
+    function hC(v){const r=Math.round(28+(v/maxV)*176),g=Math.round(111*(v/maxV)),b=Math.round(217-(v/maxV)*160);return 'rgb('+r+','+g+','+b+')';}
+    const hdr='<tr><th style="text-align:left;background:#0A1628;position:sticky;left:0;z-index:3">PU</th>'+ML.map((m,i)=>'<th>'+m+'<br><span style="font-size:7px">'+(i<=8?'26':'27')+'</span></th>').join('')+'</tr>';
+    const rows=hmPUs.map(pu=>'<tr><td style="text-align:left;font-weight:700;background:#F5F8FC;position:sticky;left:0;z-index:2;white-space:nowrap">PU-'+pu.code+'</td>'+MK.map((mk,i)=>{const v=MONTH[pu.code]?MONTH[pu.code][mk]||0:0;const cr2=(v*1000/10000000).toFixed(1);const bg=v>0?hC(v):'#F8FAFB';const fg=v>maxV*0.4?'#fff':'#0A1628';return '<td style="background:'+bg+';color:'+fg+'">'+(v>0?cr2:'—')+'</td>';}).join('')+'</tr>').join('');
+    hmDiv.innerHTML='<table><thead>'+hdr+'</thead><tbody>'+rows+'</tbody></table>';
+  }
+
+  // ── Focus PUs YoY chart ───────────────────────────────────────
+  const focusDs=[];
+  const cyColors=['#1C6FD9','#1A7A4A','#E85D04','#9B2226','#6A4C93','#C9A84C'];
+  FOCUS_PUS.forEach((code,fi)=>{
+    const cyVf=MK.map((_,mi)=>((MONTH[code]?MONTH[code][MK[mi]]||0:0)*1000/10000000).toFixed(1));
+    const pyVf=hasPY&&showPY?MK.map((_,mi)=>((MONTH_PY[code]?MONTH_PY[code][MK[mi]]||0:0)*1000/10000000).toFixed(1)):null;
+    focusDs.push({label:'PU-'+code+' CY',data:cyVf,borderColor:cyColors[fi],backgroundColor:'transparent',borderWidth:2.5,tension:.3,pointRadius:4});
+    if(pyVf) focusDs.push({label:'PU-'+code+' PY',data:pyVf,borderColor:cyColors[fi],backgroundColor:'transparent',borderWidth:1.5,tension:.3,pointRadius:2,borderDash:[4,3],opacity:.5});
+  });
+  _mC('trendFocusChart',{type:'line',data:{labels:ML_S.map((m,i)=>m+(i<=8?'\'26':'\'27')),datasets:focusDs},options:{responsive:true,interaction:{mode:'index',intersect:false},plugins:{legend:{position:'top',labels:{boxWidth:10,font:{size:8},filter:i=>!i.text.includes('PY')||showPY}}},scales:{x:{ticks:{font:{size:9}}},y:{title:{display:true,text:'₹ Cr'},ticks:{font:{size:9}}}}}});
+
+  // ── Analytics Table ───────────────────────────────────────────
+  const thead=document.getElementById('trendTHead'),tbody=document.getElementById('trendTBody');
+  if(thead&&tbody){
+    thead.innerHTML='<tr><th style="text-align:left">PU</th><th style="text-align:left">Description</th><th>Type</th><th>Budget</th><th>Actuals CY</th><th>Util%</th><th>PY Actuals</th><th>YoY</th>'+MK.map((mk,i)=>'<th>'+ML[i]+'</th>').join('')+'<th>Total</th></tr>';
+    tbody.innerHTML=activePUs.map(pu=>{
+      const b=BUDGET[pu.code]||{},mo=MONTH[pu.code]||{},bpy=BUDGET_PY[pu.code]||{};
+      const util=b.bg_isl?Math.round((b.actuals_till||0)/b.bg_isl*100):0;
+      const uC=util>100?'#CC0000':util>85?'#E85D04':util>60?'#C07000':'#1A7A4A';
+      const pyAct=bpy.actuals_till||0;
+      const yoy=pyAct?((b.actuals_till||0)-pyAct)/Math.abs(pyAct)*100:null;
+      const total=MK.reduce((s,mk)=>s+(mo[mk]||0),0);
+      const isFocus=FOCUS_PUS.includes(pu.code);
+      return '<tr style="'+(isFocus?'background:#FFFBF0;':'')+(isFocus?'font-weight:600':'')+'">'+
+        '<td style="font-weight:700;color:#1C3A5E;cursor:pointer" onclick="openPUDetail(\''+pu.code+'\')">PU-'+pu.code+(isFocus?' ⭐':'')+'</td>'+
+        '<td>'+pu.desc+'</td>'+
+        '<td style="font-size:9px">'+(pu.puType==='Staff PU'?'<span style="color:#1A7A4A">Staff</span>':'<span style="color:#1A4E9A">Non-Staff</span>')+'</td>'+
+        '<td>'+fN(b.bg_isl||0)+'</td>'+
+        '<td>'+fN(b.actuals_till||0)+'</td>'+
+        '<td style="color:'+uC+';font-weight:700">'+util+'%</td>'+
+        '<td>'+fN(pyAct)+'</td>'+
+        '<td style="color:'+(yoy===null?'#888':yoy>=0?'#CC0000':'#1A7A4A')+';font-weight:700">'+(yoy===null?'—':(yoy>=0?'+':'')+yoy.toFixed(1)+'%')+'</td>'+
+        MK.map((mk,i)=>{const v=mo[mk]||0;const isCur=i===CUR_IDX,isFut=i>CUR_IDX;return '<td style="'+(v>0&&isCur?'background:#FFF8E0;font-weight:700;':'')+(isFut?'color:#B0C0D8;':'')+'font-size:9px">'+(v>0?v.toLocaleString('en-IN'):'<span style="color:#ddd">—</span>')+'</td>';}).join('')+
+        '<td style="font-weight:700;font-size:10px">'+fN(total)+'</td>'+
+        '</tr>';
+    }).join('');
+  }
+}
 function renderAll() {
   initPopup();
   renderCards();
@@ -2061,6 +2328,15 @@ function renderAll() {
 
 // INIT
 renderAll();
+(function(){
+  const sel=document.getElementById('trendPUSelect'); if(!sel) return;
+  PU_META.filter(p=>!p.isNeg).forEach(pu=>{
+    const o=document.createElement('option'); o.value=pu.code;
+    o.textContent='PU-'+pu.code+' — '+pu.desc; sel.appendChild(o);
+  });
+})();
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </body>
 </html>
