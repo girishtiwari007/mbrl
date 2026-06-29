@@ -103,6 +103,8 @@ tbody tr:hover{filter:brightness(.97)}
 td{padding:6px 9px;font-size:12px;}
 td.n{text-align:right;font-variant-numeric:tabular-nums}
 td.puc{font-weight:700;color:var(--steel)}
+td.puc-link{cursor:pointer;text-decoration:underline dotted;text-underline-offset:2px;}
+td.puc-link:hover{color:#1A4A8A;text-decoration:underline;background:rgba(26,74,138,.06);}
 td.desc { white-space:normal; word-break:break-word; min-width:140px; max-width:none; line-height:1.45; font-weight:600; font-size:12px; }
 
 /* Badges */
@@ -354,7 +356,6 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
     <option value="all">All PU Types</option>
     <option value="Staff">Staff PU</option>
     <option value="Non Staff">Non Staff PU</option>
-    <option value="Contractual">Contractual PU</option>
   </select>
   <select class="fsel" id="liabFilter" onchange="renderAll()">
     <option value="all">All Liabilities</option>
@@ -964,8 +965,11 @@ function getFiltered() {
   const tf = document.getElementById('typeFilter').value;
   const lf = document.getElementById('liabFilter').value;
   return PU_META.filter(pu => {
-    if (pu.isNeg) return false; // PU-98 shown only in Recoveries tab
-    if (tf !== 'all' && !pu.puType.includes(tf)) return false;
+    if (pu.isNeg) return false;
+    if (tf !== 'all') {
+      if (tf === 'Staff' && pu.puType !== 'Staff PU') return false;
+      if (tf === 'Non Staff' && pu.puType !== 'Non Staff PU') return false;
+    }
     if (lf !== 'all' && pu.liab !== lf) return false;
     return true;
   });
@@ -1055,7 +1059,7 @@ function renderLiability() {
     else statusHtml = '<span style="color:var(--muted)">— Planned</span>';
 
     rows += `<tr class="${getRowClass(pu)}" data-pu="${pu.code}" style="cursor:pointer">
-      <td class="puc">${pu.code}</td>
+      <td class="puc puc-link" title="📄 Open Full Details page for PU-${pu.code}" onclick="event.stopPropagation();openPUDetail('${pu.code}')">${pu.code} <span style='font-size:8px;opacity:.65'>🔍</span></td>
       <td class="desc" title="${pu.desc}">${pu.desc}</td>
       <td>${puBadge(pu.puType)}</td>
       <td>${liabBadge(pu.liab)}</td>
@@ -1093,7 +1097,7 @@ function renderLiability() {
 // MONTH WISE TABLE
 // ═══════════════════════════════════════════════
 function renderMonthwise() {
-  const pus = PU_META.filter(p=>!p.isNeg);
+  const pus = getFiltered();
   const {pastMonths, curMonthKey, futureMonths, cur} = getMonthStatus();
   let rows='', tots={apr:0,may:0,junC:0,junR:0,junT:0,tB:0,tC:0,tBal:0};
   futureMonths.forEach(m => tots[m]=0);
@@ -1122,7 +1126,7 @@ function renderMonthwise() {
 
     const balCls = c.balanceBudget<0?'neg':c.balanceBudget<c.budget*0.1?'low':'ok';
     rows += `<tr class="${getRowClass(pu)}" data-pu="${pu.code}" style="cursor:pointer">
-      <td class="puc">${pu.code}</td>
+      <td class="puc puc-link" title="📄 Open Full Details page for PU-${pu.code}" onclick="event.stopPropagation();openPUDetail('${pu.code}')">${pu.code} <span style='font-size:8px;opacity:.65'>🔍</span></td>
       <td class="desc" title="${pu.desc}" style="font-weight:700">${pu.desc}</td>
       <td class="n">${fmtT(apr)}</td>
       <td class="n">${fmtT(may)}</td>
@@ -1194,8 +1198,8 @@ function renderRecovery() {
   // Main liability row
   const balCls = c.balanceBudget>0?'ok':c.balanceBudget<0?'neg':'';
   document.getElementById('rec-tbody').innerHTML = `
-    <tr class="neg-row" data-pu="98" style="cursor:pointer">
-      <td class="puc">98</td>
+    <tr class="neg-row" data-pu="98">
+      <td class="puc puc-link" title="📄 Open Full Details page for PU-98" onclick="event.stopPropagation();openPUDetail('98')">98 <span style='font-size:8px;opacity:.65'>🔍</span></td>
       <td class="desc">Credit or Recoveries</td>
       <td class="n neg-val">${fmtT(c.budget)}</td>
       <td class="n neg-val">${fmtCr(c.budget)}</td>
@@ -1214,8 +1218,8 @@ function renderRecovery() {
   let cells = allMonths.map(m => `<td class="n neg-val">${md[m]?fmtT(md[m]):'<span style="color:#aaa">–</span>'}</td>`).join('');
   const total = allMonths.reduce((s,m)=>s+(md[m]||0),0);
   document.getElementById('rec-mw-tbody').innerHTML = `
-    <tr class="neg-row" data-pu="98" style="cursor:pointer">
-      <td class="puc">98</td>
+    <tr class="neg-row" data-pu="98">
+      <td class="puc puc-link" title="📄 Open Full Details page for PU-98" onclick="event.stopPropagation();openPUDetail('98')">98 <span style='font-size:8px;opacity:.65'>🔍</span></td>
       <td class="desc">Credit or Recoveries</td>
       ${cells}
       <td class="n neg-val" style="font-weight:700">${fmtT(total)}</td>
@@ -1226,11 +1230,12 @@ function renderRecovery() {
 // PU MASTER TABLE
 // ═══════════════════════════════════════════════
 function renderPUMaster() {
+  const pus = getFiltered();
   let rows = '';
-  PU_META.forEach(pu => {
+  pus.forEach(pu => {
     const b = BUDGET[pu.code]||{};
     rows += `<tr class="${getRowClass(pu)}" data-pu="${pu.code}" style="cursor:pointer">
-      <td class="puc">${pu.code}</td>
+      <td class="puc puc-link" title="📄 Open Full Details page for PU-${pu.code}" onclick="event.stopPropagation();openPUDetail('${pu.code}')">${pu.code} <span style='font-size:8px;opacity:.65'>🔍</span></td>
       <td class="desc" style="font-weight:700">${pu.desc}</td>
       <td>${puBadge(pu.puType)}</td>
       <td>${liabBadge(pu.liab)}</td>
@@ -1658,10 +1663,9 @@ document.addEventListener('mouseout', function(e){
   if (!tr.contains(e.relatedTarget) && !_pp.contains(e.relatedTarget)) hidePUPopup();
 });
 document.addEventListener('click', function(e){
-  // Don't close popup if clicking inside it
   if (e.target.closest('#puPopup')) return;
   const tr = e.target.closest('tr[data-pu]');
-  if (tr) { clearTimeout(_ppTimer); showPUPopup(e, tr.dataset.pu); }
+  if (tr) { hidePUPopup(); }
 });
 
 // Live clock
@@ -1745,8 +1749,8 @@ function showPUPopup(e,code){
     </div>
     </div>
     <div style="background:#F5F8FC;border-top:1px solid #E0EAF4;padding:6px 14px;display:flex;align-items:center;justify-content:space-between">
-      <span style="font-size:8px;color:#8AAAC8">₹ '000s &nbsp;·&nbsp; Click row for details</span>
-      <button onclick="openPUDetail(currentPopupCode)" style="background:#1C3A5E;color:#fff;border:none;padding:4px 10px;border-radius:4px;cursor:pointer;font-size:9px;font-weight:700;pointer-events:auto">View Full Details →</button>
+      <span style="font-size:8px;color:#8AAAC8">📊 Quick Summary View</span>
+      <span style="font-size:8px;color:#1A7A4A;font-weight:700">👆 Click PU Code cell for Full Details</span>
     </div>
     </div>`;
   const vw=window.innerWidth,vh=window.innerHeight;
@@ -1807,82 +1811,123 @@ function parseUpload(file, type) {
       const ws   = wb.Sheets[wb.SheetNames[0]];
       const rows = XLSX.utils.sheet_to_json(ws, {header:1, defval:0});
 
+      // Normalise cell to trimmed uppercase, collapse whitespace
+      function norm(v){ return String(v==null?'':v).replace(/\s+/g,' ').trim().toUpperCase(); }
+
+      // Extract PU code from any common format:
+      //   "PU-01", "PU - 1", "PU01", "01", "1", "30"
+      function extractPU(v){
+        const s = norm(v);
+        if(!s || s==='PUCODE' || s==='TOTAL' || s==='GRAND TOTAL' || s==='SUB TOTAL') return null;
+        let m = s.match(/^PU\s*-?\s*(\d+)$/);
+        if(m) return m[1].padStart(2,'0');
+        m = s.match(/^(\d{1,2})$/);
+        if(m) return m[1].padStart(2,'0');
+        return null;
+      }
+
+      // Auto-detect which column holds PU codes:
+      //   1. Header says PUCODE / PU CODE / PU NO / PU
+      //   2. Scan first 8 data rows for a cell matching PU pattern
+      //   3. Fall back to col B (index 1)
+      function findPUCol(hdr, dataRows){
+        let ci = hdr.findIndex(h=>h.includes('PUCODE')||h==='PU CODE'||h==='PU NO'||h==='PU');
+        if(ci>=0) return ci;
+        for(let r=0;r<Math.min(8,dataRows.length);r++){
+          for(let c=0;c<dataRows[r].length;c++){
+            if(extractPU(dataRows[r][c])!==null) return c;
+          }
+        }
+        return 1; // default col B
+      }
+
       if (type === 'budget') {
-        // ── Find header row with BG_ISL ──────────────────────
+        // Find header row containing BG_ISL (handles "BG_ISL", "BG ISL")
         let hdrRow = -1;
         for(let i=0;i<rows.length;i++){
-          if(rows[i].some(cv=>String(cv||'').toUpperCase().includes('BG_ISL'))){hdrRow=i;break;}
+          if(rows[i].some(cv=>{ const n=norm(cv); return n.includes('BG_ISL')||n.includes('BG ISL'); })){
+            hdrRow=i; break;
+          }
         }
         if(hdrRow<0) throw new Error('Cannot find BG_ISL column header in this file');
-        const hdr    = rows[hdrRow].map(cv=>String(cv||'').toUpperCase());
-        const bgCol  = hdr.findIndex(h=>h.includes('BG_ISL'));
-        const rgCol  = hdr.findIndex(h=>h.includes('RG')&&!h.includes('BG'));
-        const atCol  = hdr.findIndex(h=>h.includes('TILL'));
-        const puCol  = 1; // PUCODE always col B
+
+        const hdr   = rows[hdrRow].map(cv=>norm(cv));
+        const bgCol = hdr.findIndex(h=>h.includes('BG_ISL')||h.includes('BG ISL'));
+        const rgCol = hdr.findIndex(h=>/^RG$/.test(h)||h.includes('REVISED GRANT'));
+        const atCol = hdr.findIndex(h=>h.includes('TILL')||h.includes('ACTUAL'));
+        const puCol = findPUCol(hdr, rows.slice(hdrRow+1));
+
         let parsed={}, puCount=0;
         for(let i=hdrRow+1;i<rows.length;i++){
           const row=rows[i];
-          const puLabel=String(row[puCol]||'').trim();
-          if(!puLabel||puLabel.toUpperCase()==='TOTAL'||puLabel.toUpperCase()==='PUCODE') continue;
-          const m=puLabel.match(/PU\s*-\s*(\d+)/i);
-          if(!m) continue;
-          const code=m[1].padStart(2,'0');
+          const code=extractPU(row[puCol]);
+          if(!code) continue;
           parsed[code]={
-            bg_isl: Number(row[bgCol])||0,
-            rg:     rgCol>0?(Number(row[rgCol])||0):0,
-            actuals_till: atCol>0?(Number(row[atCol])||0):0
+            bg_isl:       bgCol>=0 ? (Number(row[bgCol])||0) : 0,
+            rg:           rgCol>=0 ? (Number(row[rgCol])||0) : 0,
+            actuals_till: atCol>=0 ? (Number(row[atCol])||0) : 0
           };
           puCount++;
         }
-        if(puCount===0) throw new Error('No PU data found — check file format');
+        if(puCount===0) throw new Error('No PU rows found — verify PUCODE & BG_ISL columns exist');
         _pendingBudget = {data:parsed, filename:file.name, puCount, at:new Date()};
         setDZState(type,'done',`✅ Parsed ${puCount} PU codes from "${file.name}"`);
         addLog('Budget Available', file.name, puCount, null);
 
       } else {
-        // ── Find header row with APR ──────────────────────────
+        // Find header row — look for APR in any variant: "APR", "APR 2026", "APR-26", "APRIL"
+        const APR_RE = /^APR(IL)?[\s\-_]?(20)?\d{0,2}$/;
+        const ALL_M  = /^(APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC|JAN|FEB|MAR)/;
         let hdrRow=-1;
+        // Pass 1: strict — find a cell matching APR pattern
         for(let i=0;i<rows.length;i++){
-          if(rows[i].some(cv=>String(cv||'').toUpperCase().trim()==='APR')){hdrRow=i;break;}
+          if(rows[i].some(cv=>APR_RE.test(norm(cv)))){hdrRow=i;break;}
         }
-        if(hdrRow<0) throw new Error('Cannot find APR column header in this file');
-        const hdr=rows[hdrRow].map(cv=>String(cv||'').toUpperCase().trim());
+        // Pass 2: loose — row has 3+ month-name cells
+        if(hdrRow<0){
+          for(let i=0;i<rows.length;i++){
+            if(rows[i].filter(cv=>ALL_M.test(norm(cv))).length>=3){hdrRow=i;break;}
+          }
+        }
+        if(hdrRow<0) throw new Error('Cannot find month header row — expected APR…MAR column headers');
+
+        const hdr = rows[hdrRow].map(cv=>norm(cv));
         const FY_M=['APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC','JAN','FEB','MAR'];
         const mCols={};
         FY_M.forEach((ml,idx)=>{
-          const ci=hdr.findIndex(h=>h===ml||h.startsWith(ml));
+          const ci = hdr.findIndex(h=>
+            h===ml ||
+            h.startsWith(ml+' ') || h.startsWith(ml+'-') || h.startsWith(ml+'_') ||
+            (ml==='APR' && (h==='APRIL'||h.startsWith('APRIL ')))
+          );
           if(ci>=0) mCols[FY_MONTHS[idx]]=ci;
         });
-        if(Object.keys(mCols).length<3) throw new Error('Cannot find month columns (APR/MAY/JUN…)');
+        if(Object.keys(mCols).length<3)
+          throw new Error('Found header row but could not map ≥3 month columns — check APR…MAR headers');
 
-        // Auto-sense current month from data: last month with non-zero actuals
-        let detectedMonthIdx = 0;
-        let parsed={}, puCount=0;
-        const puCol=1;
+        const puCol = findPUCol(hdr, rows.slice(hdrRow+1));
+        let detectedMonthIdx=0, parsed={}, puCount=0;
+
         for(let i=hdrRow+1;i<rows.length;i++){
           const row=rows[i];
-          const puLabel=String(row[puCol]||'').trim();
-          if(!puLabel||puLabel.toUpperCase()==='TOTAL'||puLabel.toUpperCase()==='PUCODE') continue;
-          const m=puLabel.match(/PU\s*-\s*(\d+)/i);
-          if(!m) continue;
-          const code=m[1].padStart(2,'0');
+          const code=extractPU(row[puCol]);
+          if(!code) continue;
           const vals={};
           FY_MONTHS.forEach((mk,idx)=>{
             vals[mk]= mCols[mk]!==undefined ? (Number(row[mCols[mk]])||0) : 0;
           });
           parsed[code]=vals;
           puCount++;
-          // Detect: latest month that has any non-zero value
           FY_MONTHS.forEach((mk,idx)=>{
             if(vals[mk]!==0 && idx>=detectedMonthIdx) detectedMonthIdx=idx;
           });
         }
-        if(puCount===0) throw new Error('No PU data found — check file format');
+        if(puCount===0)
+          throw new Error('No PU rows found — verify PU code column has values like PU-01, 01 etc.');
 
         const detectedMonthKey   = FY_MONTHS[detectedMonthIdx];
         const detectedMonthLabel = FY_MONTH_LABELS[detectedMonthIdx];
         const detectedYear       = detectedMonthIdx<=8?2026:2027;
-
         _pendingMonth = {
           data:parsed, filename:file.name, puCount,
           detectedMonthIdx, detectedMonthKey, detectedMonthLabel, detectedYear,
@@ -1899,7 +1944,6 @@ function parseUpload(file, type) {
   };
   reader.readAsArrayBuffer(file);
 }
-
 function addLog(fileType, filename, puCount, monthDetected) {
   _uploadHistory.unshift({
     fileType, filename, puCount, monthDetected,
